@@ -5,5 +5,8 @@ const memberController = require("./controllers/memberController")
  *              Router                 *
  ***************************************/
 
+//Member related APIs
 router.post("/signup", memberController.signup)
+router.get("/login", memberController.login)
+
 module.exports = router;

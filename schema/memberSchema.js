@@ -27,7 +27,7 @@ const memberSchema = new mongoose.Schema(
     },
     mb_type: {
       type: String,
-      default: "USER",
+      required:true,
       enum: {
         values: mb_type_enums,
         message: "{{VALUE} is not among permitted list}",
