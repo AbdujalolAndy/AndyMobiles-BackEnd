@@ -1,4 +1,5 @@
 const assert = require("assert");
+const bcrypt = require("bcryptjs");
 const MemberSchema = require("../schema/memberSchema");
 const Definer = require("../lib/Definer");
 
@@ -9,6 +10,9 @@ class Member {
 
   async signupData(data) {
     try {
+      const salt = await bcrypt.genSalt();
+      const hash_password = await bcrypt.hash(data.mb_password, salt);
+      data.mb_password = hash_password;
       const member = new this.memberModel(data);
       const result = await member.save();
       return result;
