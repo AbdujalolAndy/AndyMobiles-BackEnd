@@ -11,8 +11,7 @@ class Member {
   async signupData(data) {
     try {
       const salt = await bcrypt.genSalt();
-      const hash_password = await bcrypt.hash(data.mb_password, salt);
-      data.mb_password = hash_password;
+      data.mb_password = await bcrypt.hash(data.mb_password, salt);
       const member = new this.memberModel(data);
       const result = await member.save();
       return result;
@@ -24,9 +23,12 @@ class Member {
   async loginData(data) {
     try {
       const member = await this.memberModel.findOne({ mb_nick: data.mb_nick });
-      assert.ok(data.mb_nick == member.mb_nick, Definer.auth_err1);
-      assert.ok(data.mb_password == member.mb_password, Definer.auth_err2);
-
+      assert.ok(member, Definer.auth_err1);
+      const exsist_member = await bcrypt.compare(
+        data.mb_password,
+        member.mb_password
+      );
+      assert.ok(exsist_member, Definer.auth_err2);
       return member;
     } catch (err) {
       throw err;

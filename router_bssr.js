@@ -1,12 +1,15 @@
 const router = require("express").Router();
-const memberController = require("./controllers/memberController")
+const memberController = require("./controllers/memberController");
 /***************************************
  *  BACKEND SERVER SIDE RENDERING      *
  *              Router                 *
  ***************************************/
 
 //Member related APIs
-router.post("/signup", memberController.signup)
-router.get("/login", memberController.login)
+router
+  .get("/", memberController.homePage)
+  .post("/signup", memberController.signup)
+  .get("/login", memberController.login)
+  .get("/authentification", memberController.checkAuthentification);
 
 module.exports = router;
