@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { status_enums, mb_type_enums } = require("../lib/enums");
+const { status_enums, mb_type_enums, mb_top_enums } = require("../lib/enums");
 
 const memberSchema = new mongoose.Schema(
   {
@@ -32,6 +32,18 @@ const memberSchema = new mongoose.Schema(
         values: mb_type_enums,
         message: "{{VALUE} is not among permitted list}",
       },
+    },
+    mb_top:{
+      type:String,
+      default:"N",
+      enum:{
+        values:mb_top_enums,
+        message:"{VALUE} is not among permitted list"
+      }
+    },
+    mb_products_cnt:{
+      type:Number,
+      default:0
     },
     mb_image: {
       type: String,

@@ -8,17 +8,19 @@ const memberController = module.exports;
 memberController.home = async (req, res) => {
   try {
     console.log("GET: cont/home");
-    res.render("home");
+    res.render("home", { member: req.member });
   } catch (err) {
     console.log("ERROR: cont/home");
     res.json({ state: "fail", message: err.message });
   }
 };
 
-memberController.allCompanies = async (req, res) => {
+memberController.getAllCompanies = async (req, res) => {
   try {
     console.log("GET: cont/homePage");
-    res.render("all-companies");
+    const member = new Member();
+    const allCompanies = await member.getAllCompaniesData();
+    res.render("all-companies", { companies: allCompanies, member:req.member });
   } catch (err) {
     console.log(`ERROR: cont/homepage, ${err.message}`);
     res.json({ state: "fail", message: err.message });
@@ -37,6 +39,19 @@ memberController.createToken = async (new_member) => {
     });
   } catch (err) {
     console.log(err.message);
+  }
+};
+
+memberController.memberUpdate = async (req, res) => {
+  try {
+    console.log("POST: cont/memberUpdate");
+    const data = req.body;
+    const member = new Member();
+    const result = await member.memberUpdateData(data);
+    res.json({ state: "sucess", value: result });
+  } catch (err) {
+    console.log("ERROR: cont/memberUpdate");
+    res.json({ state: "fail", message: err.message });
   }
 };
 
@@ -89,16 +104,15 @@ memberController.login = async (req, res) => {
   }
 };
 
-memberController.logout=async(req, res)=>{
-  try{
-    req.session.destroy(()=>{
-      res.redirect("/admin/register")
-    })
-  }catch(err){
+memberController.logout = async (req, res) => {
+  try {
+    res.cookie("access_token", null, { maxAge: 0, httpOnly: false });
+    res.redirect("/admin/register");
+  } catch (err) {
     console.log("ERROR: cont/logout");
-    res.json({state:"fail", message:err.message})
+    res.json({ state: "fail", message: err.message });
   }
-}
+};
 
 memberController.checkAuthentification = async (req, res) => {
   try {
@@ -110,5 +124,17 @@ memberController.checkAuthentification = async (req, res) => {
   } catch (err) {
     console.log(`ERROR: cont/checkAuthentification, ${err.message}`);
     res.json({ state: "fail", message: err.message });
+  }
+};
+
+memberController.memberRetrieveEjs = (req, res, next) => {
+  if (req.cookies.access_token) {
+    req.member = token.verify(
+      req.cookies.access_token,
+      process.env.SECRET_TOKEN
+    );
+    next();
+  } else {
+    res.render("404error");
   }
 };

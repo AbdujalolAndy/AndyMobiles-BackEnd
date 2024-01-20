@@ -5,6 +5,7 @@ const express_session = require("express-session");
 const MongoDb_store = require("connect-mongodb-session")(express_session);
 const router_bssr = require("./router_bssr");
 const router_bssp = require("./router_bssp");
+const token =  require("jsonwebtoken")
 
 const store = new MongoDb_store({
   uri: process.env.MONGODB_URL,
@@ -30,11 +31,6 @@ app.use(
     saveUninitialized: true,
   })
 );
-
-app.use((req, res, next) => {
-  res.locals.member = req.session.member;
-  next();
-});
 //view engine
 app.set("./views", "./views");
 app.set("view engine", "ejs");

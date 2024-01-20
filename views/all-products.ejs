@@ -1,7 +1,7 @@
 <%-include("./includes/header")%>
-    <link rel="stylesheet" href="/CSS/allCompanies.css" />
-    <link rel="stylesheet" href="/CSS/general.css" />
-    <title>Andy Mobiles Admin Page</title>
+    <link rel="stylesheet" href="/CSS/allProducts.css">
+    <link rel="stylesheet" href="/CSS/general.css">
+    <title>Products</title>
     </head>
 
     <body>
@@ -24,6 +24,9 @@
                             </li>
                             <%}%>
                                 <li class="nav-item">
+                                    <a class="nav-link nav-link-fade-up" href="#">Add Product</a>
+                                </li>
+                                <li class="nav-item">
                                     <a class="nav-link nav-link-fade-up" href="#">Notification</a>
                                 </li>
                 </ul>
@@ -35,8 +38,8 @@
             </div>
         </nav>
         <div class="container">
-            <div class="homePage">
-                <div class="homePage-title">
+            <div class="products">
+                <div class="subject-title">
                     All Companies
                 </div>
                 <div class="table-list">
@@ -47,7 +50,7 @@
                                     NO
                                 </th>
                                 <th>
-                                    Company Name
+                                    Product Name
                                 </th>
                                 <th>
                                     Amount of Products
@@ -60,30 +63,30 @@
                                 </th>
                             </tr>
                         </thead>
-
+    
                         <tbody>
-                            <%companies.map((ele,index)=>{%>
+                            <%[1,2,3,4,5,5,6].map((ele,index)=>{%>
                                 <tr>
                                     <td>
                                         <%-index+1%>
                                     </td>
                                     <td>
-                                        <%-ele.mb_nick%>
+                                        iphone
                                     </td>
                                     <td>
-                                        <%-ele.mb_products_cnt%>
+                                        
                                     </td>
                                     <td class="form-check form-switch d-flex justify-content-center mt-1">
                                         <input class="form-check-input mb_top" type="checkbox" role="switch"
-                                            <%-ele.mb_top==="Y" ? "checked" :""%> id=<%-ele._id%> >
+                                            checked>
                                     </td>
                                     <td>
-                                        <select class="form-select mb_status" id =<%-ele._id%>>
-                                            <option value="ACTIVE" <%-ele.mb_status==="ACTIVE" ? "selected" :""%>>Active
+                                        <select class="form-select mb_status" >
+                                            <option value="ACTIVE" >Active
                                             </option>
-                                            <option value="DEACTIVE" <%-ele.mb_status==="DEACTIVE" ? "selected" :""%>
+                                            <option value="DEACTIVE" 
                                                 >DeActive</option>
-                                            <option value="DELETED" <%-ele.mb_status==="DELETED" ? "selected" :""%>
+                                            <option value="DELETED" 
                                                 >Deleted</option>
                                         </select>
                                     </td>
@@ -94,26 +97,5 @@
                 </div>
             </div>
         </div>
-        <script>
-            $(".mb_top").on("change", (e) => {
-                const mb_id = e.target.id;
-                const mb_top = e.target.checked ? "Y" : "N";
-                const update_data = { _id: mb_id, mb_top: mb_top };
-                if(confirm("Do you want to change Company's top status ?")){
-                    axios.post("/admin/memberupdate", update_data).then(response => console.log(response.data.value)).catch(err => console.log(err.message))
-                }
-            })
-            $(".mb_status").on("change", (e)=>{
-                const mb_id = e.target.id;
-                const mb_status = e.target.value;
-                const update_data = {
-                    _id:mb_id,
-                    mb_status:mb_status
-                }
-                if(confirm("Do you want to change Company's status ?")){
-                    axios.post("/admin/memberupdate", update_data).then(response=>console.log(response.data.value)).catch(err=>console.log(err.message))
-                }
-            })
-        </script>
     </body>
     <%-include("./includes/footer")%>

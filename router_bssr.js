@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const memberController = require("./controllers/memberController");
+const productController = require("./controllers/productController");
 /***************************************
  *  BACKEND SERVER SIDE RENDERING      *
  *              Router                 *
@@ -12,7 +13,19 @@ router
   .get("/logout", memberController.logout)
   .get("/authentification", memberController.checkAuthentification)
   .get("/register", memberController.register)
-  .get("/all-companies", memberController.allCompanies)
-  .get("/home", memberController.home)
+  .get(
+    "/all-companies",
+    memberController.memberRetrieveEjs,
+    memberController.getAllCompanies
+  )
+  .get("/home", memberController.memberRetrieveEjs, memberController.home)
+  .post("/memberUpdate", memberController.memberUpdate);
+
+//Product related APIs
+router.get(
+  "/all-products",
+  memberController.memberRetrieveEjs,
+  productController.getAllProducts
+);
 
 module.exports = router;
