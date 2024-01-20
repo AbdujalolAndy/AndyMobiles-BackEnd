@@ -24,17 +24,20 @@ app.use(
     store: store,
     cookie: {
       maxAge: 60 * 1000 * 30,
-      httpOnly:false,
+      httpOnly: false,
     },
     resave: true,
     saveUninitialized: true,
   })
 );
 
+app.use((req, res, next) => {
+  res.locals.member = req.session.member;
+  next();
+});
 //view engine
 app.set("./views", "./views");
 app.set("view engine", "ejs");
-
 //router
 app.use("/admin", router_bssr);
 app.use("/", router_bssp);

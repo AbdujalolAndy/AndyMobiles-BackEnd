@@ -7,9 +7,12 @@ const memberController = require("./controllers/memberController");
 
 //Member related APIs
 router
-  .get("/", memberController.homePage)
   .post("/signup", memberController.signup)
-  .get("/login", memberController.login)
-  .get("/authentification", memberController.checkAuthentification);
+  .post("/login", memberController.login)
+  .get("/logout", memberController.logout)
+  .get("/authentification", memberController.checkAuthentification)
+  .get("/register", memberController.register)
+  .get("/all-companies", memberController.allCompanies)
+  .get("/home", memberController.home)
 
 module.exports = router;

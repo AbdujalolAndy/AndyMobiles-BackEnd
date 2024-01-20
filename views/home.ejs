@@ -1,0 +1,47 @@
+<%-include("./includes/header")%>
+    <link rel="stylesheet" href="/CSS/homePage.css">
+    <link rel="stylesheet" href="/CSS/general.css">
+    <title>Home</title>
+    </head>
+
+    <body>
+        <nav class="navbar w-100">
+            <div class="container d-flex justify-content-evenly">
+                <div class="navbar-brand"><a href="/admin/home">Admin</a></div>
+                <ul class="nav">
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-fade-up" aria-current="page" href="/admin/home">Home</a>
+                    </li>
+                    <%if(member.mb_type==="ADMIN"){%>
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-fade-up" aria-current="page"
+                                href="/admin/all-companies">Companies</a>
+                        </li>
+                        <%}else if(member.mb_type==="COMPANY" ){%>
+                            <li class="nav-item">
+                                <a class="nav-link nav-link-fade-up" aria-current="page"
+                                    href="/admin/all-products">Products</a>
+                            </li>
+                            <%}%>
+                                <li class="nav-item">
+                                    <a class="nav-link nav-link-fade-up" href="#">Pricing</a>
+                                </li>
+                </ul>
+                <div class="avatar d-flex gap-3">
+                    <img src=<%=member.mb_image? member.mb_image:"/icons/avatar_ex_3.jpg"%> alt="">
+                    <i class="fa-regular fa-envelope"></i>
+                    <a href="/admin/logout" class="btn btn-outline-secondary m-auto">Logout</a>
+                </div>
+            </div>
+        </nav>
+        <div class="container-fluid">
+            <h1 class="text-center mt-5 navbar-brand">Welcome to Admin Page</h1>
+            <div class="new_footer_top mt-5">
+                <div class="footer_bg">
+                    <div class="footer_bg_one"></div>
+                    <div class="footer_bg_two"></div>
+                </div>
+            </div>
+        </div>
+    </body>
+    <%-include("./includes/footer")%>

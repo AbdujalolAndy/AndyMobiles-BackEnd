@@ -1,0 +1,111 @@
+<%-include("./includes/header")%>
+    <link rel="stylesheet" href="/CSS/register.css" />
+    <title>Register</title>
+    </head>
+
+    <body>
+        <div id="container">
+            <div class="login">
+                <div class="content">
+                    <h1>Log In</h1>
+                    <form method="post" onsubmit="return login()" action="/admin/login">
+                        <input type="text" name="mb_nick" class="mb_nick" placeholder="User Name">
+                        <input type="password" name="mb_password" class="mb_password" placeholder="Password">
+                        <span class="clearfix"></span>
+                        <button type="submit">Log In</button>
+                    </form>
+                </div>
+            </div>
+            <div class="page front">
+                <div class="content">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="feather feather-user-plus">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                        <circle cx="8.5" cy="7" r="4" />
+                        <line x1="20" y1="8" x2="20" y2="14" />
+                        <line x1="23" y1="11" x2="17" y2="11" />
+                    </svg>
+                    <h1>Hello, friend!</h1>
+                    <p>Enter your personal details and start journey with us</p>
+                    <button type="" id="register">Register <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                            height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right-circle">
+                            <circle cx="12" cy="12" r="10" />
+                            <polyline points="12 16 16 12 12 8" />
+                            <line x1="8" y1="12" x2="16" y2="12" />
+                        </svg></button>
+                </div>
+            </div>
+            <div class="page back">
+                <div class="content">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="feather feather-log-in">
+                        <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
+                        <polyline points="10 17 15 12 10 7" />
+                        <line x1="15" y1="12" x2="3" y2="12" />
+                    </svg>
+                    <h1>Welcome Back!</h1>
+                    <p>To keep connected with us please login with your personal info</p>
+                    <button type="" id="login"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left-circle">
+                            <circle cx="12" cy="12" r="10" />
+                            <polyline points="12 8 8 12 12 16" />
+                            <line x1="16" y1="12" x2="8" y2="12" />
+                        </svg> Log In</button>
+                </div>
+            </div>
+            <div class="register">
+                <div class="content">
+                    <h1>Sign Up</h1>
+                    <form onsubmit="return signup()" method="POST" action="/admin/signup">
+                        <input type="text" name="mb_nick" class="mb_nick" placeholder="User Name">
+                        <select name="mb_type" class="mb_type" id="user_type">
+                            <option>Please choose Your position...</option>
+                            <option value="COMPANY">Company</option>
+                            <option value="ADMIN">Admin</option>
+                        </select>
+                        <input type="text" class="mb_phone" name="mb_phone" placeholder="Phone number">
+                        <input type="password" name="mb_password" class="mb_password" placeholder="Password">
+                        <input type="password" class="mb_confirm_password" placeholder="Password Confirm">
+                        <span class="clearfix"></span>
+                        <button type="submit" name="signup">Register</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <script src="/JS/register.js"></script>
+        <script>
+            function signup() {
+                const mb_nick = $(".mb_nick").val();
+                const mb_type = $(".mb_type").val();
+                const mb_password = $(".mb_password").val();
+                const mb_confirm_password = $(".mb_confirm_password").val();
+                const mb_phone = $(".mb_phone").val()
+                if (mb_nick === "" || mb_password === "") {
+                    alert("c")
+                    return false
+                } else if (mb_phone === "" || mb_type === "" || mb_confirm_password === "") {
+                    alert("Fill all inputs!")
+                    return false
+                } else if (mb_password !== mb_confirm_password) {
+                    alert("New password is not the same with confirm password")
+                    return false
+                }
+                return true
+            }
+
+            function login() {
+                const mb_nick = $(".mb_nick").val();
+                const mb_password = $(".mb_password").val();
+                if(mb_nick==="" || mb_password===""){
+                    alert("Fill all inputs!")
+                    return false
+                }
+                return true
+            }
+        </script>
+    </body>
+    <%-include("./includes/footer")%>

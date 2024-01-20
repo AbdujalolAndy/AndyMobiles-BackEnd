@@ -27,7 +27,7 @@ const memberSchema = new mongoose.Schema(
     },
     mb_type: {
       type: String,
-      required:true,
+      required: true,
       enum: {
         values: mb_type_enums,
         message: "{{VALUE} is not among permitted list}",
@@ -35,11 +35,11 @@ const memberSchema = new mongoose.Schema(
     },
     mb_image: {
       type: String,
-      default:null,
+      default: "",
     },
     mb_address: {
       type: String,
-      default:null
+      default: "",
     },
     mb_likes: {
       type: Number,
@@ -59,7 +59,7 @@ const memberSchema = new mongoose.Schema(
     },
     mb_description: {
       type: String,
-      default:null
+      default: "",
     },
   },
   { timestamps: true }

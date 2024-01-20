@@ -5,12 +5,22 @@ const Definer = require("../lib/Definer");
 
 const memberController = module.exports;
 
-memberController.homePage = async () => {
+memberController.home = async (req, res) => {
+  try {
+    console.log("GET: cont/home");
+    res.render("home");
+  } catch (err) {
+    console.log("ERROR: cont/home");
+    res.json({ state: "fail", message: err.message });
+  }
+};
+
+memberController.allCompanies = async (req, res) => {
   try {
     console.log("GET: cont/homePage");
-    res.render("homepage");
+    res.render("all-companies");
   } catch (err) {
-    connsole.log(`ERROR: cont/homepage, ${err.message}`);
+    console.log(`ERROR: cont/homepage, ${err.message}`);
     res.json({ state: "fail", message: err.message });
   }
 };
@@ -30,6 +40,16 @@ memberController.createToken = async (new_member) => {
   }
 };
 
+memberController.register = async (req, res) => {
+  try {
+    console.log("GET: cont/register");
+    res.render("register");
+  } catch (err) {
+    console.log(`ERROR: cont/register, ${err.message}`);
+    res.json({ state: "fail", message: err.message });
+  }
+};
+
 memberController.signup = async (req, res) => {
   try {
     console.log("POST: cont/signup");
@@ -42,7 +62,8 @@ memberController.signup = async (req, res) => {
       maxAge: 1000 * 6 * 3600,
       httpOnly: false,
     });
-    res.json({ state: "success", data: new_member });
+    req.session.member = new_member;
+    res.redirect("/admin/home");
   } catch (err) {
     console.log(`ERROR: cont/signup, ${err.message}`);
     res.json({ state: "fail", message: err.message });
@@ -52,6 +73,7 @@ memberController.signup = async (req, res) => {
 memberController.login = async (req, res) => {
   try {
     const data = req.body;
+    console.log(data);
     const member = new Member();
     const result = await member.loginData(data);
     const token = await memberController.createToken(result);
@@ -59,12 +81,24 @@ memberController.login = async (req, res) => {
       maxAge: 1000 * 6 * 3600,
       httpOnly: false,
     });
-    res.json({ state: "success", data: result });
+    req.session.member = result;
+    res.redirect("/admin/home");
   } catch (err) {
     console.log(`ERROR: cont/login, ${err.message}`);
     res.json({ state: "fail", message: err.message });
   }
 };
+
+memberController.logout=async(req, res)=>{
+  try{
+    req.session.destroy(()=>{
+      res.redirect("/admin/register")
+    })
+  }catch(err){
+    console.log("ERROR: cont/logout");
+    res.json({state:"fail", message:err.message})
+  }
+}
 
 memberController.checkAuthentification = async (req, res) => {
   try {
