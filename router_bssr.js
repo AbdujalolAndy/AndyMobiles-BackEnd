@@ -22,10 +22,16 @@ router
   .post("/memberUpdate", memberController.memberUpdate);
 
 //Product related APIs
-router.get(
-  "/all-products",
-  memberController.memberRetrieveEjs,
-  productController.getAllProducts
-);
+router
+  .get(
+    "/all-products",
+    memberController.memberRetrieveEjs,
+    productController.getAllProducts
+  )
+  .get(
+    "/create-product",
+    memberController.memberRetrieveEjs,
+    productController.createProductProcess
+  );
 
 module.exports = router;

@@ -20,7 +20,10 @@ memberController.getAllCompanies = async (req, res) => {
     console.log("GET: cont/homePage");
     const member = new Member();
     const allCompanies = await member.getAllCompaniesData();
-    res.render("all-companies", { companies: allCompanies, member:req.member });
+    res.render("all-companies", {
+      companies: allCompanies,
+      member: req.member,
+    });
   } catch (err) {
     console.log(`ERROR: cont/homepage, ${err.message}`);
     res.json({ state: "fail", message: err.message });
@@ -88,7 +91,6 @@ memberController.signup = async (req, res) => {
 memberController.login = async (req, res) => {
   try {
     const data = req.body;
-    console.log(data);
     const member = new Member();
     const result = await member.loginData(data);
     const token = await memberController.createToken(result);
@@ -100,6 +102,44 @@ memberController.login = async (req, res) => {
     res.redirect("/admin/home");
   } catch (err) {
     console.log(`ERROR: cont/login, ${err.message}`);
+    res.json({ state: "fail", message: err.message });
+  }
+};
+
+memberController.signupJson = async (req, res) => {
+  try {
+    console.log("POST: cont/signupJson");
+    const data = req.body;
+    const member = new Member();
+    const result = await member.signupData(data);
+    const token = await this.createToken(result);
+    assert.ok(token, Definer.auth_err3);
+    res.cookie("access_token", token, {
+      maxAge: 1000 * 60 * 360,
+      httpOnly: false,
+    });
+    res.json({ state: "success", value: result });
+  } catch (err) {
+    console.log(`ERROR: cont/signupJson, ${err.message}`);
+    res.json({ state: "fail", message: err.message });
+  }
+};
+
+memberController.loginJson = async (req, res) => {
+  try {
+    console.log("GET: cont/loginJson");
+    const data = req.body;
+    const member = new Member();
+    const result = await member.loginData(data);
+    assert.ok(result, Definer.auth_err1);
+    const token = this.createToken(result);
+    res.cookie("access_token", token, {
+      maxAge: 1000 * 60 * 360,
+      httpOnly: false,
+    });
+    res.json({ state: "success", value: result });
+  } catch (err) {
+    console.log(`ERROR: cont/loginJson, ${err.message}`);
     res.json({ state: "fail", message: err.message });
   }
 };
@@ -136,5 +176,17 @@ memberController.memberRetrieveEjs = (req, res, next) => {
     next();
   } else {
     res.render("404error");
+  }
+};
+memberController.memberRetrieve = (req, res, next) => {
+  if (req.cookies.access_token) {
+    const member = token.verify(
+      req.cookies.access_token,
+      process.env.SECRET_TOKEN
+    );
+    req.member = member;
+    next();
+  }else{
+    next()
   }
 };

@@ -1,12 +1,21 @@
 const router = require("express").Router();
+const memberController = require("./controllers/memberController");
+const productController = require("./controllers/productController");
 
 /***************************************
  *     BACKEND SERVER SINGLE PAGE      *
  *              Router                 *
  ***************************************/
+//Member related APIs
+router
+  .post("/signup", memberController.signupJson)
+  .get("/login", memberController.loginJson);
 
-router.get("/", (req, res) => {
-  res.json({ state: "sucess", data: "Hello BSSP" });
-});
+//Product releted APIsX
+router.post(
+  "/product/create-product",
+  memberController.memberRetrieve,
+  productController.createProduct
+);
 
 module.exports = router;
