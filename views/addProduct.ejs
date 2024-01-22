@@ -5,6 +5,7 @@
     </head>
 
     <body>
+        <div class="addProduct_wall"></div>
         <nav class="navbar w-100">
             <div class="container d-flex justify-content-evenly">
                 <div class="navbar-brand"><a href="/admin/home">Admin</a></div>
@@ -28,7 +29,7 @@
                             </li>
                             <%}%>
                                 <li class="nav-item">
-                                    <a class="nav-link nav-link-fade-up" href="#">Pricing</a>
+                                    <a class="nav-link nav-link-fade-up" href="#">Notification</a>
                                 </li>
                 </ul>
                 <div class="avatar d-flex gap-3">
@@ -38,11 +39,400 @@
                 </div>
             </div>
         </nav>
-        <div class="form">
-            <form action="">
-                <fieldset>Creat Product</fieldset>
-                <h1>salom </h1>
+        <h1 class="fs-1 text-center mt-4 fw-bold">Add Your Product</h1>
+        <div class="demo-page">
+            <div class="demo-page-navigation">
+                <nav>
+                    <ul>
+                        <li>
+                            <a href="#product_name">
+                                <i class="fa-solid pe-2 fa-signature"></i>
+                                Product Name
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#photo_insert">
+                                <i class="fa-solid pe-2 fa-photo-film"></i>
+                                Insert Photo
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#color">
+                                <i class="fa-solid pe-2 fa-palette"></i>
+                                Color
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#display">
+                                <i class="fa-solid pe-2 fa-display"></i>
+                                Display
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#core">
+                                <i class="fa-solid pe-2 fa-mobile"></i>
+                                Core & Chip
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#memory">
+                                <i class="fa-solid pe-2 fa-database"></i>
+                                Memory
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="#ram">
+                                <i class="fa-solid pe-2 fa-memory"></i>
+                                Ram
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#camera">
+                                <i class="fa-solid pe-2 fa-camera-retro"></i>
+                                Mobile Camera
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#water_proof">
+                                <i class="fa-solid pe-2 fa-droplet-slash"></i>
+                                Mobile Water Proof
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#used">
+                                <i class="fa-solid pe-2 fa-user-clock"></i>
+                                Product Secondary Hand
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#price">
+                                <i class="fa-solid pe-2 fa-sack-dollar"></i>
+                                Product Price
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#description">
+                                <i class="fa-solid pe-2 fa-comment-dots"></i>
+                                Product Description</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <!-- Page Content -->
+            <form method="post" action="#" class="demo-page-content">
+                <!--Poduct Name-->
+                <section id="product_name" class="product_name d-flex flex-column position-relative">
+                    <div class="product_name">
+                        <label for="name" class="form-label fs-1 mb-5">Mobile Phone Name</label>
+                        <input type="text" name="product_name" class="form-control p-4 fs-6" id="name"
+                            placeholder="ex.Iphone 14 Pro Max">
+                    </div>
+                    <a href="#photo_insert" class="btn btn-outline-success align-self-end"
+                        style="position: absolute;bottom: 2rem;width: 15rem;">Next</a>
+                </section>
+                <!--Poduct Name-->
+
+                <!--Photo Insert-->
+                <section id="photo_insert"
+                    class="photo_insert d-flex flex-column justify-content-center align-items-center"
+                    style="position: relative;">
+                    <div class="cards mb-5 gap-3 d-flex flex-wrap">
+                        <div class="card" style="width: 30%;">
+                            <div class="photo" style="width: 100%;">
+                                <img src="/icons/upload.svg" alt="avatar" style="width: 100%; height: 100%;">
+                            </div>
+                            <div class="card-footer position-relative">
+                                <input type="file" name="product_image" class="opacity-0">
+                                <button class="btn position-absolute w-100" style="top:0; right: 0;"><i
+                                        class="fa-solid fa-upload"></i></button>
+                            </div>
+                        </div>
+                        <div class="card" style="width: 30%;">
+                            <div class="photo" style="width: 100%;">
+                                <img src="/icons/upload.svg" alt="avatar" style="width: 100%; height: 100%;">
+                            </div>
+                            <div class="card-footer position-relative">
+                                <input type="file" name="product_image" class="opacity-0">
+                                <button class="btn position-absolute w-100" style="top:0; right: 0;"><i
+                                        class="fa-solid fa-upload"></i></button>
+                            </div>
+                        </div>
+                        <div class="card" style="width: 30%;">
+                            <div class="photo" style="width: 100%;">
+                                <img src="/icons/upload.svg" alt="avatar" style="width: 100%; height: 100%;">
+                            </div>
+                            <div class="card-footer position-relative">
+                                <input type="file" name="product_image" class="opacity-0">
+                                <button class="btn position-absolute w-100" style="top:0; right: 0;"><i
+                                        class="fa-solid fa-upload"></i></button>
+                            </div>
+                        </div>
+                        <div class="card" style="width: 30%;">
+                            <div class="photo" style="width: 100%;">
+                                <img src="/icons/upload.svg" alt="avatar" style="width: 100%; height: 100%;">
+                            </div>
+                            <div class="card-footer position-relative">
+                                <input type="file" name="product_image" class="opacity-0">
+                                <button class="btn position-absolute w-100" style="top:0; right: 0;"><i
+                                        class="fa-solid fa-upload"></i></button>
+                            </div>
+                        </div>
+                        <div class="card" style="width: 30%;">
+                            <div class="photo" style="width: 100%;">
+                                <img src="/icons/upload.svg" alt="avatar" style="width: 100%; height: 100%;">
+                            </div>
+                            <div class="card-footer position-relative">
+                                <input type="file" name="product_image" class="opacity-0">
+                                <button class="btn position-absolute w-100" style="top:0; right: 0;"><i
+                                        class="fa-solid fa-upload"></i></button>
+                            </div>
+                        </div>
+                        <div class="card" style="width: 30%;">
+                            <div class="photo" style="width: 100%;">
+                                <img src="/icons/upload.svg" alt="avatar" style="width: 100%; height: 100%;">
+                            </div>
+                            <div class="card-footer position-relative">
+                                <input type="file" name="product_image" class="opacity-0">
+                                <button class="btn position-absolute w-100" style="top:0; right: 0;"><i
+                                        class="fa-solid fa-upload"></i></button>
+                            </div>
+                        </div>
+                        <p class="text-danger">***Upload Only PNG,JPG,JPEG formatted files</p>
+                    </div>
+
+                    <a href="#product_name" class="btn btn-outline-danger align-self-start"
+                        style="position: absolute;bottom: 2rem;width: 15rem;">Back</a>
+                    <a href="#color" class="btn btn-outline-success align-self-end"
+                        style="position: absolute;bottom: 2rem;width: 15rem;">Next</a>
+                </section>
+                <!--Photo Insert-->
+
+                <!--Color choose-->
+                <section id="color" class="color_choose d-flex position-relative d-flex flex-column">
+                    <label class="fs-1 mb-5 form-label">Choose Phone Color</label>
+                    <div class="select_color_list position-relative">
+                        <select name="product_color" class="product_color form-select p-4">
+                            <option value="">Colors</option>
+                            <option value="Black">Black</option>
+                            <option value="Blue">Blue</option>
+                            <option value="Gold">Gold</option>
+                            <option value="Green">Green</option>
+                            <option value="Gray">Gray</option>
+                            <option value="Pink">Pink</option>
+                            <option value="Midnight">Midnight</option>
+                            <option value="Purple">Purple</option>
+                            <option value="Red">Red</option>
+                            <option value="Silver">Silver</option>
+                            <option value="White">White</option>
+                            <option value="Yellow">Yellow</option>
+                        </select>
+                        <div class="colors-list position-absolute d-flex gap-1">
+                            <div class="black bg-dark color"></div>
+                            <div class="blue bg-primary color"></div>
+                            <div class="gold bg-warning color"></div>
+                            <div class="green bg-success color"></div>
+                            <div class="gray bg-secondary color"></div>
+                            <div class="pink bg-pink color"></div>
+                            <div class="midnight bg-info-subtle color"></div>
+                            <div class="purple bg-purple color"></div>
+                            <div class="red bg-danger color"></div>
+                            <div class="silver bg-silver color"></div>
+                            <div class="white bg-light color"></div>
+                            <div class="yellow color"></div>
+                        </div>
+                    </div>
+                    <a href="#photo_insert" class="btn btn-outline-danger align-self-start"
+                        style="position: absolute;bottom: 2rem;width: 15rem;">Back</a>
+                    <a href="#display" class="btn btn-outline-success align-self-end"
+                        style="position: absolute;bottom: 2rem;width: 15rem;">Next</a>
+                </section>
+                <!--Color choose-->
+
+                <!--Display inch-->
+                <section id="display" class="display_choose d-flex flex-column">
+                    <div class="input-display">
+                        <label for="display" class="form-label fs-1 mb-5">Display Resolution</label>
+                        <input type="number" id="display" class="form-control p-3" name="product_display">
+                        <p class="text-danger">***Only number acceptable</p>
+                    </div>
+                    <a href="#color" class="btn btn-outline-danger align-self-start"
+                        style="position: absolute;bottom: 2rem;width: 15rem;">Back</a>
+                    <a href="#core" class="btn btn-outline-success align-self-end"
+                        style="position: absolute;bottom: 2rem;width: 15rem;">Next</a>
+                </section>
+                <!--Display inch-->
+
+                <!--Core&Chip-->
+                <section id="core" class="product_name d-flex flex-column position-relative">
+                    <div class="product_name">
+                        <label for="name" class="form-label fs-1 mb-5">Core & Chip</label>
+                        <input type="text" name="product_core" class="form-control p-4 fs-6" id="name"
+                            placeholder="ex. M2 core ">
+                    </div>
+                    <a href="#display" class="btn btn-outline-danger align-self-start"
+                        style="position: absolute;bottom: 2rem;width: 15rem;">Back</a>
+                    <a href="#memory" class="btn btn-outline-success align-self-end"
+                        style="position: absolute;bottom: 2rem;width: 15rem;">Next</a>
+                </section>
+                <!--Core&Chip-->
+
+                <!--Memory-->
+                <section id="memory" class="product_name d-flex flex-column position-relative">
+                    <div class="product_memory-data">
+                        <label for="memory" class="form-label fs-1 mb-5">Product Memory Capacity</label>
+                        <select name="product_ram" class="form-select p-3" id="memory">
+                            <option value="128">128 GB</option>
+                            <option value="256">256 GB</option>
+                            <option value="512">512 GB</option>
+                            <option value="1">1 TB</option>
+                            <option value="2">2 TB</option>
+                        </select>
+                    </div>
+                    <a href="#core" class="btn btn-outline-danger align-self-start"
+                        style="position: absolute;bottom: 2rem;width: 15rem;">Back</a>
+                    <a href="#ram" class="btn btn-outline-success align-self-end"
+                        style="position: absolute;bottom: 2rem;width: 15rem;">Next</a>
+                </section>
+                <!--Memory-->
+
+                <!--Ram-->
+                <section id="ram" class="product_name d-flex flex-column position-relative">
+                    <div class="product_memory-data">
+                        <label for="memory" class="form-label fs-1 mb-5">RAM Capacity</label>
+                        <select name="product_ram" class="form-select p-3" id="memory">
+                            <option value="4">4 GB</option>
+                            <option value="6">6 GB</option>
+                            <option value="8">8 GB</option>
+                            <option value="12">12 GB</option>
+                            <option value="6">16 GB</option>
+                            <option value="24">24 GB</option>
+                        </select>
+                    </div>
+                    <a href="#memory" class="btn btn-outline-danger align-self-start"
+                        style="position: absolute;bottom: 2rem;width: 15rem;">Back</a>
+                    <a href="#camera" class="btn btn-outline-success align-self-end"
+                        style="position: absolute;bottom: 2rem;width: 15rem;">Next</a>
+                </section>
+                <!--Ram-->
+
+                <!--Camera-->
+                <section id="camera" class="product_name d-flex flex-column position-relative">
+                    <div class="product_camera-data">
+                        <label for="camera" class="form-label fs-1 mb-5">Mobile Camera Mega Pixel </label>
+                        <select name="product_camera" class="form-select p-3" id="camera">
+                            <option value="14">14 MP</option>
+                            <option value="18">18 MP</option>
+                            <option value="24">24 MP</option>
+                            <option value="23">23 MP</option>
+                            <option value="48">48 MP</option>
+                        </select>
+                    </div>
+                    <a href="#ram" class="btn btn-outline-danger align-self-start"
+                        style="position: absolute;bottom: 2rem;width: 15rem;">Back</a>
+                    <a href="#water_proof" class="btn btn-outline-success align-self-end"
+                        style="position: absolute;bottom: 2rem;width: 15rem;">Next</a>
+                </section>
+                <!--Camera-->
+
+                <!--WATER PROOF-->
+                <section id="water_proof" class="product_name d-flex flex-column position-relative">
+                    <div class="product_memory-data">
+                        <label for="memory" class="form-label fs-1 mb-5">Is it water proof product?</label>
+                        <div class="water_proof_is d-flex justify-content-evenly mt-4">
+                            <div class="form-check">
+                                <input class="form-check-input fs-4" type="radio" name="product_water_proof"
+                                    id="yesProof">
+                                <label class="form-check-label fs-5" for="yesProof">
+                                    Yes, absolutly.
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input fs-4" type="radio" name="product_water_proof"
+                                    id="noProof" checked>
+                                <label class="form-check-label fs-5" for="noProof">
+                                    No, it is not.
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="#camera" class="btn btn-outline-danger align-self-start"
+                        style="position: absolute;bottom: 2rem;width: 15rem;">Back</a>
+                    <a href="#used" class="btn btn-outline-success align-self-end"
+                        style="position: absolute;bottom: 2rem;width: 15rem;">Next</a>
+                </section>
+                <!--WATER PROOF-->
+
+                <!--Second Hand-->
+                <section id="used" class="product_name d-flex flex-column position-relative">
+                    <div class="product_memory-data">
+                        <label for="memory" class="form-label fs-2 mb-5">Has your product been used before ?</label>
+
+                        <div class="date_used">
+                            <div class="form-data mb-3">
+                                <label for="manufacture form-label">Date of manufacture</label>
+                                <input type="date" name="product_manufacture" class="form-control w-50">
+                            </div>
+                            <div class="form-data">
+                                <label for="manufacture form-label">Used till date bottom</label>
+                                <input type="date" name="product_till_used" class="form-control w-50">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="water_proof_is d-flex justify-content-evenly mt-4">
+                        <div class="form-check">
+                            <input class="form-check-input fs-4" type="radio" name="product_second_hand"
+                                id="yesProof">
+                            <label class="form-check-label fs-5" for="yesProof">
+                                Yes, absolutly.
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input fs-4" type="radio" name="product_second_hand"
+                                id="noProof" checked>
+                            <label class="form-check-label fs-5" for="noProof">
+                                No, it is not.
+                            </label>
+                        </div>
+                    </div>
+                    <p class="text-danger">***If it is new poduct. Just select, No, it is not.</p>
+                    <a href="#water_proof" class="btn btn-outline-danger align-self-start"
+                        style="position: absolute;bottom: 2rem;width: 15rem;">Back</a>
+                    <a href="#deal" class="btn btn-outline-success align-self-end"
+                        style="position: absolute;bottom: 2rem;width: 15rem;">Next</a>
+                </section>
+                <!--Second Hand-->
+
+                <!--Poduct Price-->
+                <section id="price" class="product_name d-flex flex-column position-relative ">
+                    <h1 class="fs-1 fom-label">How much is your poduct?</h1>
+                    <div class="input-group mt-5 w-50">
+                        <input type="number" name="product_price" class="form-control p-3">
+                        <div class="currency">
+                            $
+                        </div>
+                    </div>
+                    <p class="text-danger">***Only numbe acceptable</p>
+                    <a href="#camera" class="btn btn-outline-danger align-self-start"
+                        style="position: absolute;bottom: 2rem;width: 15rem;">Back</a>
+                    <a href="#" class="btn btn-outline-success align-self-end"
+                        style="position: absolute;bottom: 2rem;width: 15rem;">Next</a>
+                </section>
+                <!--Poduct Price-->
+
+                <!--Poduct description-->
+                <section id="description" class="product_name d-flex flex-column position-relative ">
+                    <h1 class="fs-1 fom-label">Product Description</h1>
+                    <div class="desciption_text">
+                        <textarea name="poduct_description" class="form-control" cols="30" rows="10"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-outline-success align-self-end"
+                    style="position: absolute;bottom: 2rem;width: 15rem;">Add Poduct</button>
+                </section>
+                <!--Poduct description-->
             </form>
         </div>
+        <script src="/JS/addPoduct.js"></script>
     </body>
-<%-include("./includes/footer")%>
+    <%-include("./includes/footer")%>

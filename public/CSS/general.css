@@ -1,6 +1,7 @@
 /* Core  */
 body {
-    background-color: #fff;
+    background-image:url("../icons/wall.webp");
+    background-size: cover;
     height: 100vh;
     width: 100%;
     padding: 0;

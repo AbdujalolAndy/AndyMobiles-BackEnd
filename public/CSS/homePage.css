@@ -1,10 +1,12 @@
-.new_footer_area {
-    background: #fbfbfd;
+.home-title{
+    margin-top: 100px;
 }
-
-
 .new_footer_top {
+    width: 90%;
+    margin:150px auto;
     padding: 120px 0px 270px;
+    background-color: #fff;
+    border-radius: 50px;
     position: relative;
     overflow-x: hidden;
 }

@@ -74,6 +74,10 @@ const productSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    product_description:{
+        type:String,
+        default:""
+    }
   },
   { timestamps: true }
 );
