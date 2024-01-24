@@ -33,13 +33,15 @@ class Product {
     try {
       const company_id = shapeMongooseObjectId(member._id);
       let result;
-      if (query.order) {
+      if (query.order === "ALL") {
+        result = await this.productModel
+          .find({ company_id: company_id })
+          .exec();
+      } else {
         result = await this.productModel
           .find({ company_id: company_id, product_status: query.order })
           .exec();
-        return result;
       }
-      result = await this.productModel.find({ company_id: company_id }).exec();
       return result;
     } catch (err) {
       throw err;

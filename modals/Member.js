@@ -35,11 +35,18 @@ class Member {
       throw err;
     }
   }
-  async getAllCompaniesData() {
+  async getAllCompaniesData(query) {
     try {
-      const allCompanies = await this.memberModel
-        .find({ mb_type: "COMPANY" })
-        .exec();
+      let allCompanies;
+      if (query.order === "ALL") {
+        allCompanies = await this.memberModel
+          .find({ mb_type: "COMPANY"})
+          .exec();
+      } else {
+        allCompanies = await this.memberModel
+          .find({ mb_type: "COMPANY", mb_status: query.order })
+          .exec();
+      }
       return allCompanies;
     } catch (err) {
       throw err;
@@ -49,9 +56,9 @@ class Member {
   async memberUpdateData(data) {
     try {
       const id = shapeMongooseObjectId(data._id);
-      delete data._id
+      delete data._id;
       const result = await this.memberModel
-        .findByIdAndUpdate({ _id: id }, data, {returnDocument:"after"})
+        .findByIdAndUpdate({ _id: id }, data, { returnDocument: "after" })
         .exec();
       return result;
     } catch (err) {

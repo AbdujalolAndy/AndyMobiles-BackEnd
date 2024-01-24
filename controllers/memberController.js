@@ -19,7 +19,7 @@ memberController.getAllCompanies = async (req, res) => {
   try {
     console.log("GET: cont/homePage");
     const member = new Member();
-    const allCompanies = await member.getAllCompaniesData();
+    const allCompanies = await member.getAllCompaniesData(req.query);
     res.render("all-companies", {
       companies: allCompanies,
       member: req.member,

@@ -7,7 +7,7 @@
     <body>
         <nav class="navbar w-100">
             <div class="container d-flex justify-content-evenly">
-                <div class="navbar-brand"><a href="/admin/home">Admin</a></div>
+                <div class="navbar-brand"><a href="/admin/">Admin</a></div>
                 <ul class="nav">
                     <li class="nav-item">
                         <a class="nav-link nav-link-fade-up" aria-current="page" href="/admin">Home</a>
@@ -15,12 +15,12 @@
                     <%if(member.mb_type==="ADMIN"){%>
                         <li class="nav-item">
                             <a class="nav-link nav-link-fade-up" aria-current="page"
-                                href="/admin/all-companies">Companies</a>
+                                href="/admin/companies/?order=ALL">Companies</a>
                         </li>
                         <%}else if(member.mb_type==="COMPANY" ){%>
                             <li class="nav-item">
-                                <a class="nav-link nav-link-fade-up" aria-current="page" href="/admin/all-products"
-                                    id="active">Products</a>
+                                <a class="nav-link nav-link-fade-up" aria-current="page"
+                                    href="/admin/products/?order=ALL">Products</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link nav-link-fade-up" aria-current="page"
@@ -44,16 +44,17 @@
                     All Products
                 </div>
                 <div class="dropdown filter ms-5">
-                    <button class="btn btn-light dropdown-toggle w-50" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                      <%-filterTitle%>
+                    <button class="btn btn-light dropdown-toggle w-50" type="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        <%-filterTitle%>
                     </button>
                     <ul class="dropdown-menu">
-                      <li><a class="dropdown-item" href="/admin/all-products?order=ALL">All</a></li>
-                      <li><a class="dropdown-item" href="/admin/all-products?order=ONSALE">Onsale</a></li>
-                      <li><a class="dropdown-item" href="/admin/all-products?order=NOSALE">Nosale</a></li>
-                      <li><a class="dropdown-item" href="/admin/all-products?order=DELETED">Deleted</a></li>
+                        <li><a class="dropdown-item" href="/admin/products?order=ALL">All</a></li>
+                        <li><a class="dropdown-item" href="/admin/products?order=ONSALE">Onsale</a></li>
+                        <li><a class="dropdown-item" href="/admin/products?order=NOSALE">Nosale</a></li>
+                        <li><a class="dropdown-item" href="/admin/products?order=DELETED">Deleted</a></li>
                     </ul>
-                  </div>
+                </div>
                 <div class="table-list">
                     <table>
                         <thead>
@@ -129,9 +130,12 @@
                                     </td>
                                     <td>
                                         <select class="form-select product_status" id=<%-ele._id%>>
-                                            <option value="ONSALE" <%-ele.product_status==="ONSALE"?"selected":""%>>Onsale</option>
-                                            <option value="NOSALE" <%-ele.product_status==="NOSALE"?"selected":""%>>Nosale</option>
-                                            <option value="DELETED" <%-ele.product_status==="DELETED"?"selected":""%>>Deleted</option>
+                                            <option value="ONSALE" <%-ele.product_status==="ONSALE" ?"selected":""%>
+                                                >Onsale</option>
+                                            <option value="NOSALE" <%-ele.product_status==="NOSALE" ?"selected":""%>
+                                                >Nosale</option>
+                                            <option value="DELETED" <%-ele.product_status==="DELETED" ?"selected":""%>
+                                                >Deleted</option>
                                         </select>
                                     </td>
                                 </tr>
@@ -142,10 +146,10 @@
             </div>
         </div>
         <script>
-            $(".product_status").on("change",(e)=>{
-                const product_status = {product_status:e.target.value};
+            $(".product_status").on("change", (e) => {
+                const product_status = { product_status: e.target.value };
                 const product_id = e.target.id;
-                if(confirm("Do you want to change current status of your product ?")){
+                if (confirm("Do you want to change current status of your product ?")) {
                     axios.post(`/admin/product-edit/${product_id}`, product_status).then();
                 }
             })

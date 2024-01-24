@@ -8,7 +8,7 @@
         <div class="addProduct_wall"></div>
         <nav class="navbar w-100">
             <div class="container d-flex justify-content-evenly">
-                <div class="navbar-brand"><a href="/admin/home">Admin</a></div>
+                <div class="navbar-brand"><a href="/admin/">Admin</a></div>
                 <ul class="nav">
                     <li class="nav-item">
                         <a class="nav-link nav-link-fade-up" aria-current="page" href="/admin">Home</a>
@@ -16,12 +16,12 @@
                     <%if(member.mb_type==="ADMIN"){%>
                         <li class="nav-item">
                             <a class="nav-link nav-link-fade-up" aria-current="page"
-                                href="/admin/all-companies">Companies</a>
+                                href="/admin/companies/?order=ALL">Companies</a>
                         </li>
                         <%}else if(member.mb_type==="COMPANY" ){%>
                             <li class="nav-item">
                                 <a class="nav-link nav-link-fade-up" aria-current="page"
-                                    href="/admin/all-products">Products</a>
+                                    href="/admin/products/?order=ALL">Products</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link nav-link-fade-up" aria-current="page" id="active"

@@ -10,9 +10,10 @@ body {
 }
 
 /* Navbar Style */
-#active{
-    color:#5e2ced
+#active {
+    color: #5e2ced
 }
+
 .navbar {
     box-shadow: 10px 10px 10px rgb(218, 194, 194);
     background-color: aliceblue;
@@ -78,4 +79,56 @@ body {
 :root {
     --underline-height: 0.5em;
     --transition-duration: 0.5s;
+}
+
+/* Table Style */
+.filter {
+    position: absolute;
+    width: 300px;
+    right: 0px;
+    top: 40px
+}
+
+.table-list {
+    background-color: aliceblue;
+    border-radius: 20px;
+    width: 90%;
+    margin: 0 auto;
+}
+
+table {
+    width: 100%;
+    overflow: scroll;
+    max-height: 500px;
+}
+
+table,
+th,
+td {
+    text-align: center;
+    padding: 10px;
+    cursor: pointer;
+}
+
+th {
+    border-bottom: 1px solid black;
+    font-size: 19px;
+    padding: 20px 5px;
+}
+
+tr:nth-child(even) {
+    background-color: rgb(172, 169, 169);
+}
+
+tbody tr:nth-child(odd) {
+    background-color: rgb(243, 243, 235);
+}
+
+tbody tr {
+    transition: transform 1s ease;
+}
+
+tbody tr:hover {
+    transform: scaleX(1.1);
+
 }
