@@ -17,6 +17,34 @@ class Product {
       throw err;
     }
   }
+  async updateProductData(product_id, data) {
+    try {
+      const id = shapeMongooseObjectId(product_id);
+      const result = await this.productModel.fin
+        .findByIdAndUpdate({ _id: id }, data)
+        .exec();
+      return result;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  async getAllProductsData(member, query) {
+    try {
+      const company_id = shapeMongooseObjectId(member._id);
+      let result;
+      if (query.order) {
+        result = await this.productModel
+          .find({ company_id: company_id, product_status: query.order })
+          .exec();
+        return result;
+      }
+      result = await this.productModel.find({ company_id: company_id }).exec();
+      return result;
+    } catch (err) {
+      throw err;
+    }
+  }
 }
 
 module.exports = Product;

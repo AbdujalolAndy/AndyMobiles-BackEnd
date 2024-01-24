@@ -18,7 +18,7 @@ router
     memberController.memberRetrieveEjs,
     memberController.getAllCompanies
   )
-  .get("/home", memberController.memberRetrieveEjs, memberController.home)
+  .get("/", memberController.memberRetrieveEjs, memberController.home)
   .post("/memberUpdate", memberController.memberUpdate);
 
 //Product related APIs
@@ -32,6 +32,11 @@ router
     "/create-product",
     memberController.memberRetrieveEjs,
     productController.createProductProcess
-  );
+  )
+  .post(
+    "/product-edit/:id",
+    memberController.memberRetrieveEjs,
+    productController.updateProduct
+  )
 
 module.exports = router;

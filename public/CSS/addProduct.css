@@ -89,7 +89,14 @@ section {
   height: 50vh;
 }
 .photo_insert{
-  height: 90vh;
+  height: 94vh;
+}
+.product_secondhand{
+  height: 40vh;
+}
+.price-warning{
+  top:50%;
+  left: 30%;
 }
 
 
@@ -150,6 +157,33 @@ section ul {
   margin-top: 0.5em;
   padding-left: 1em;
   list-style-type: disc;
+}
+.cards>.card{
+  width: 31%;
+}
+.cards .card img{
+  height: 100%;
+  width: 100%;
+}
+.cards>.card>.card_photo{
+  width: 100%;
+  height: 75%;
+}
+.cards>.card>.card-footer>input{
+  opacity: 0;
+  position: absolute;
+  cursor: pointer;
+}
+.product_image{
+  position: absolute;
+  z-index: 10;
+  top:10px;
+  right: 50px;
+  opacity: 1;
+  width: 1px;
+}
+.product_description{
+  height: 60vh;
 }
 /* Color list Select */
 

@@ -10,7 +10,7 @@
                 <div class="navbar-brand"><a href="/admin/home">Admin</a></div>
                 <ul class="nav">
                     <li class="nav-item">
-                        <a class="nav-link nav-link-fade-up" aria-current="page" href="/admin/home">Home</a>
+                        <a class="nav-link nav-link-fade-up" aria-current="page" href="/admin">Home</a>
                     </li>
                     <%if(member.mb_type==="ADMIN"){%>
                         <li class="nav-item">
@@ -19,8 +19,8 @@
                         </li>
                         <%}else if(member.mb_type==="COMPANY" ){%>
                             <li class="nav-item">
-                                <a class="nav-link nav-link-fade-up" aria-current="page"
-                                    href="/admin/all-products">Products</a>
+                                <a class="nav-link nav-link-fade-up" aria-current="page" href="/admin/all-products"
+                                    id="active">Products</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link nav-link-fade-up" aria-current="page"
@@ -39,10 +39,21 @@
             </div>
         </nav>
         <div class="container">
-            <div class="products">
+            <div class="products position-relative">
                 <div class="subject-title">
-                    All Companies
+                    All Products
                 </div>
+                <div class="dropdown filter ms-5">
+                    <button class="btn btn-light dropdown-toggle w-50" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      <%-filterTitle%>
+                    </button>
+                    <ul class="dropdown-menu">
+                      <li><a class="dropdown-item" href="/admin/all-products?order=ALL">All</a></li>
+                      <li><a class="dropdown-item" href="/admin/all-products?order=ONSALE">Onsale</a></li>
+                      <li><a class="dropdown-item" href="/admin/all-products?order=NOSALE">Nosale</a></li>
+                      <li><a class="dropdown-item" href="/admin/all-products?order=DELETED">Deleted</a></li>
+                    </ul>
+                  </div>
                 <div class="table-list">
                     <table>
                         <thead>
@@ -51,44 +62,76 @@
                                     NO
                                 </th>
                                 <th>
-                                    Product Name
+                                    Name
                                 </th>
                                 <th>
-                                    Amount of Products
+                                    Color
                                 </th>
                                 <th>
-                                    Top Company
+                                    Memory
                                 </th>
                                 <th>
-                                    Change Status
+                                    Ram
+                                </th>
+                                <th>
+                                    Water Proof
+                                </th>
+                                <th>
+                                    Manufactor Date
+                                </th>
+                                <th>
+                                    Current Condition
+                                </th>
+                                <th>
+                                    Discount
+                                </th>
+                                <th>
+                                    Price
+                                </th>
+                                <th>
+                                    Current Status
                                 </th>
                             </tr>
                         </thead>
-    
+
                         <tbody>
-                            <%[1,2,3,4,5,5,6].map((ele,index)=>{%>
-                                <tr>
+                            <%poducts.map((ele,index)=>{%>
+                                <tr key=<%-ele._id%>>
                                     <td>
                                         <%-index+1%>
                                     </td>
                                     <td>
-                                        iphone
+                                        <%-ele.product_name%>
                                     </td>
                                     <td>
-                                        
-                                    </td>
-                                    <td class="form-check form-switch d-flex justify-content-center mt-1">
-                                        <input class="form-check-input mb_top" type="checkbox" role="switch"
-                                            checked>
+                                        <%-ele.product_color%>
                                     </td>
                                     <td>
-                                        <select class="form-select mb_status" >
-                                            <option value="ACTIVE" >Active
-                                            </option>
-                                            <option value="DEACTIVE" 
-                                                >DeActive</option>
-                                            <option value="DELETED" 
-                                                >Deleted</option>
+                                        <%-ele.product_memory%>
+                                    </td>
+                                    <td>
+                                        <%-ele.product_ram%>
+                                    </td>
+                                    <td>
+                                        <%-ele.product_water_proof%>
+                                    </td>
+                                    <td>
+                                        <%-ele.product_date_manufacture%>
+                                    </td>
+                                    <td>
+                                        <%-ele.product_condition%>
+                                    </td>
+                                    <td>
+                                        <%-ele.product_discount%>
+                                    </td>
+                                    <td>
+                                        <%-ele.product_price%>
+                                    </td>
+                                    <td>
+                                        <select class="form-select product_status" id=<%-ele._id%>>
+                                            <option value="ONSALE" <%-ele.product_status==="ONSALE"?"selected":""%>>Onsale</option>
+                                            <option value="NOSALE" <%-ele.product_status==="NOSALE"?"selected":""%>>Nosale</option>
+                                            <option value="DELETED" <%-ele.product_status==="DELETED"?"selected":""%>>Deleted</option>
                                         </select>
                                     </td>
                                 </tr>
@@ -98,5 +141,14 @@
                 </div>
             </div>
         </div>
+        <script>
+            $(".product_status").on("change",(e)=>{
+                const product_status = {product_status:e.target.value};
+                const product_id = e.target.id;
+                if(confirm("Do you want to change current status of your product ?")){
+                    axios.post(`/admin/product-edit/${product_id}`, product_status).then();
+                }
+            })
+        </script>
     </body>
-    <%-include("./includes/footer")%>
+<%-include("./includes/footer")%>

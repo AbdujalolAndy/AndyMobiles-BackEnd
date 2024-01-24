@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { product_status_enums } = require("../lib/enums");
 
 const productSchema = new mongoose.Schema(
   {
@@ -9,6 +10,10 @@ const productSchema = new mongoose.Schema(
     product_name: {
       type: String,
       required: true,
+    },
+    product_images: {
+      type: Array,
+      default: [],
     },
     product_color: {
       type: String,
@@ -54,13 +59,21 @@ const productSchema = new mongoose.Schema(
         message: "{VALUE} is not among permitted list",
       },
     },
-    product_second_hand: {
+    product_date_manufacture: {
       type: String,
-      default: "N",
-      enum: {
-        values: ["Y", "N"],
+      required:true
+    },
+    product_condition: {
+      type: String,
+      default: "GOOD",
+    },
+    product_status:{
+      type:String,
+      default:"NOSALE",
+      enum:{
+        values:product_status_enums,
         message: "{VALUE} is not among permitted list",
-      },
+      }
     },
     product_discount: {
       type: Number,
@@ -74,17 +87,23 @@ const productSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
-    product_description:{
-        type:String,
-        default:""
-    }
+    product_description: {
+      type: String,
+      default: "",
+    },
   },
   { timestamps: true }
 );
 
 productSchema.index(
-  { company_id: 1, product_name: 1, product_memory: 1, product_core: 1, product_color:1, },
+  {
+    company_id: 1,
+    product_name: 1,
+    product_memory: 1,
+    product_core: 1,
+    product_color: 1,
+  },
   { unique: true }
 );
 
-module.exports = mongoose.model("Product", productSchema)
+module.exports = mongoose.model("Product", productSchema);

@@ -81,7 +81,7 @@ memberController.signup = async (req, res) => {
       httpOnly: false,
     });
     req.session.member = new_member;
-    res.redirect("/admin/home");
+    res.redirect("/admin");
   } catch (err) {
     console.log(`ERROR: cont/signup, ${err.message}`);
     res.json({ state: "fail", message: err.message });
@@ -99,7 +99,7 @@ memberController.login = async (req, res) => {
       httpOnly: false,
     });
     req.session.member = result;
-    res.redirect("/admin/home");
+    res.redirect("/admin");
   } catch (err) {
     console.log(`ERROR: cont/login, ${err.message}`);
     res.json({ state: "fail", message: err.message });
@@ -132,7 +132,7 @@ memberController.loginJson = async (req, res) => {
     const member = new Member();
     const result = await member.loginData(data);
     assert.ok(result, Definer.auth_err1);
-    const token = this.createToken(result);
+    const token = await memberController.createToken(result);
     res.cookie("access_token", token, {
       maxAge: 1000 * 60 * 360,
       httpOnly: false,

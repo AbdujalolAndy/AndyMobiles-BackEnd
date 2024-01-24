@@ -10,11 +10,11 @@
                 <div class="navbar-brand"><a href="/admin/home">Admin</a></div>
                 <ul class="nav">
                     <li class="nav-item">
-                        <a class="nav-link nav-link-fade-up" aria-current="page" href="/admin/home">Home</a>
+                        <a class="nav-link nav-link-fade-up" aria-current="page" href="/admin">Home</a>
                     </li>
                     <%if(member.mb_type==="ADMIN"){%>
                         <li class="nav-item">
-                            <a class="nav-link nav-link-fade-up" aria-current="page"
+                            <a class="nav-link nav-link-fade-up" aria-current="page" id="active"
                                 href="/admin/all-companies">Companies</a>
                         </li>
                         <%}else if(member.mb_type==="COMPANY" ){%>
