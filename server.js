@@ -1,18 +1,17 @@
 const env = require("dotenv");
 const mongoose = require("mongoose");
-const http = require("http");
 const color = require("colors/safe");
 env.config();
 
 const MONGODB_URL = process.env.MONGODB_URL || null;
 const PORT = process.env.PORT || 3001;
+
 mongoose.set({ strictQuery: false });
 mongoose
   .connect(MONGODB_URL)
   .then((data) => {
     console.log(color.bgBlue("Connected to the server!"));
-    const app = require("./app");
-    const server = http.createServer(app);
+    const server = require("./app")
     server.listen(
       PORT,
       console.info(

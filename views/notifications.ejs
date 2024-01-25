@@ -1,0 +1,143 @@
+<%-include("./includes/header")%>
+    <link rel="stylesheet" href="/CSS/notification.css">
+    <link rel="stylesheet" href="/CSS/general.css">
+    <title>Notifications</title>
+    </head>
+
+    <body>
+        <nav class="navbar w-100">
+            <div class="container d-flex justify-content-evenly">
+                <div class="navbar-brand"><a href="/admin/">Admin</a></div>
+                <ul class="nav">
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-fade-up" aria-current="page" href="/admin">Home</a>
+                    </li>
+                    <%if(member.mb_type==="ADMIN"){%>
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-fade-up" aria-current="page"
+                                href="/admin/companies/?order=ALL">Companies</a>
+                        </li>
+                        <%}else if(member.mb_type==="COMPANY" ){%>
+                            <li class="nav-item">
+                                <a class="nav-link nav-link-fade-up" aria-current="page"
+                                    href="/admin/products/?order=ALL">Products</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link nav-link-fade-up" aria-current="page"
+                                    href="/admin/create-product">Add Product</a>
+                            </li>
+                            <%}%>
+                                <li class="nav-item">
+                                    <a class="nav-link nav-link-fade-up" id="active"
+                                        href="/admin/notifications">Notification</a>
+                                </li>
+                </ul>
+                <div class="avatar d-flex gap-3">
+                    <img src=<%=member.mb_image? member.mb_image:"/icons/avatar_ex_3.jpg"%> class="avatar_img" alt="">
+                    <a href="/admin/notifications" class="position-relative nav-item text-dark">
+                        <i class="fa-regular fa-envelope"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                        0
+                        </span>
+                    </a>
+                    <a href="/admin/logout" class="btn btn-outline-secondary m-auto">Logout</a>
+                </div>
+            </div>
+        </nav>
+        <div class="container">
+            <div class="notification">
+                <div class="notification-chat">
+                    <%notifications.map((ele)=>{%>
+                        <%if(ele.notify_reciever===member.mb_nick){%>
+                            <div class="msg-left d-flex gap-2">
+                                <img src=<%-ele.notify_sender_image%> class="msg_avatar" alt="">
+                                <div class="sender-msg">
+                                    <div class="sender-name">
+                                        <%-ele.notify_sender%>
+                                    </div>
+                                    <div class="sender-msg">
+                                        <%-ele.notify_context%>
+                                    </div>
+                                </div>
+                                <div class="msg_date_left">
+                                    <%-new Date(ele.createdAt).getFullYear()%>-
+                                    <%-String(new Date(ele.createdAt).getMonth() + 1).padStart(2, '0')%>-
+                                    <%-String(new Date(ele.createdAt).getDate()).padStart(2, '0')%>
+                                    <%-String(new Date(ele.createdAt).getHours()).padStart(2, '0')%>:
+                                    <%-String(new Date(ele.createdAt).getMinutes()).padStart(2, '0')%>
+                                </div>
+                            </div>
+                            <%}else if (ele.notify_sender===member.mb_nick){%>
+                                <div class="msg-right gap-2">
+                                    <div class="reciever-msg">
+                                        <div class="sender-name">
+                                            <%-ele.notify_sender%>
+                                        </div>
+                                        <div>
+                                        <%-ele.notify_context%>
+                                        </div>
+                                    </div>
+                                    <img src=<%-ele.notify_sender_image%> class="msg_avatar" alt="">
+                                    <div class="msg_date_right">
+                                        <%-new Date(ele.createdAt).getFullYear()%>-
+                                        <%-String(new Date(ele.createdAt).getMonth() + 1).padStart(2, '0')%>-
+                                        <%-String(new Date(ele.createdAt).getDate()).padStart(2, '0')%>
+                                        <%-String(new Date(ele.createdAt).getHours()).padStart(2, '0')%>:
+                                        <%-String(new Date(ele.createdAt).getMinutes()).padStart(2, '0')%>
+                                    </div>
+                                </div>
+                                <%}%>
+                                    <%})%>
+
+                </div>
+
+                <div class="notification-msg">
+                    <div class="notify-receiver">
+                        <input type="text" placeholder="Who do you want to send a message to?"
+                            class="form-control reciever_name mb-2">
+                    </div>
+                    <textarea name="notify_context" class="form-control" cols="30" rows="10"></textarea>
+                    <button class="btn btn-success fw-bold" onclick="return submit_msg()">Submit</button>
+                </div>
+            </div>
+        </div>
+        <script src="/socket.io/socket.io.js"></script>
+        <script>
+            const socket = io();
+            let messages = 0
+            socket.on('privateMessage', (data) => {
+                    messages++
+                    $(".badge").text(messages)
+                    if(window.location.pathname.includes("/admin/notifications")){
+                        window.location.reload()
+                    }
+                });
+            function submit_msg() {
+                const targetClientId = $(".reciever_name").val();
+                const message = $("textarea").val()
+                const sender_image = $(".avatar_img").attr("src")
+                alert(sender_image)
+                socket.emit('privateMessage', { targetClientId, message,sender_image });
+
+                // Listen for private messages from the server
+                socket.on('privateMessage', (data) => {
+                    const { senderClientId, message } = data;
+                    console.log(`Received private message from ${senderClientId}: ${message}`);
+                });
+
+                // Listen for error messages from the server
+                socket.on('errorMessage', (data) => {
+                    const { text } = data;
+                    console.error(`Error: ${text}`);
+                });
+
+                // Listen for general messages from the server
+                socket.on('message', (data) => {
+                    const { text, clientId } = data;
+                    console.log(`Message from server to client ${clientId}: ${text}`);
+                });
+            }
+
+        </script>
+    </body>
+<%-include("./includes/footer")%>

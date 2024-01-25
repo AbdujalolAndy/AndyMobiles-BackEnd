@@ -15,7 +15,7 @@ router
   .get("/authentification", memberController.checkAuthentification)
   .get("/register", memberController.register)
   .get(
-    "/all-companies",
+    "/companies",
     memberController.memberRetrieveEjs,
     memberController.getAllCompanies
   )
@@ -25,7 +25,7 @@ router
 //Product related APIs
 router
   .get(
-    "/all-products",
+    "/products",
     memberController.memberRetrieveEjs,
     productController.getAllProducts
   )
@@ -38,8 +38,12 @@ router
     "/product-edit/:id",
     memberController.memberRetrieveEjs,
     productController.updateProduct
-  )
+  );
 
 //Notification related APIs
-router.get("/notifications", memberController.memberRetrieveEjs, )
+router.get(
+  "/notifications",
+  memberController.memberRetrieveEjs,
+  notificationController.getNotifications
+);
 module.exports = router;

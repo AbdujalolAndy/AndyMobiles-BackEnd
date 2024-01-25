@@ -1,0 +1,81 @@
+/* Notication Page */
+.notification {
+    width: 100%;
+    margin-top: 10px;
+}
+
+.notification-chat {
+    height: 90vh;
+    background-image: url("../icons/telegram_wallpapaer.jpg");
+    overflow-y: scroll;
+    border-radius: 20px;
+}
+
+
+
+.notification-msg {
+    padding: 10px 10px 5px 10px;
+    position: relative;
+}
+
+.notification-msg>button {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+}
+
+.reciever_name {
+    width: 20rem;
+}
+
+.msg-left {
+    background-color: #e6e5e5;
+    position: relative;
+    width: 80%;
+    height: 150px;
+    border-radius: 10px;
+    margin-top: 15px;
+    margin-left: 10px;
+    padding: 10px;
+}
+.msg-right {
+    background-color: #e6e5e5;
+    display: flex;
+    justify-content: end;
+    position: relative;
+    width: 80%;
+    height: 150px;
+    border-radius: 10px;
+    margin-top: 15px;
+    margin-left: 15rem;
+    padding: 10px;
+}
+
+
+.msg_avatar {
+    height: 120px;
+    width: 120px;
+    border-radius: 50%;
+}
+
+.sender-name {
+    display: inline-block;
+    font-weight: 600;
+    font-size: 28px;
+}
+
+.msg_date_left{
+    position: absolute;
+    bottom: 0;
+    right: 5px;
+    font-size: 15px;
+}
+.msg_date_right{
+    position: absolute;
+    bottom: 0;
+    left: 5px;
+    font-size: 15px;
+}
+.reciever-msg{
+    text-align: end;
+}

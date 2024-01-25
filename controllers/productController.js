@@ -54,7 +54,7 @@ productController.getAllProducts = async (req, res) => {
     assert.ok(req.member.mb_type === "COMPANY", Definer.smth_err1);
     const product = new Product();
     const allProducts = await product.getAllProductsData(req.member, req.query);
-    res.render("all-products", {
+    res.render("products", {
       member: req.member,
       poducts: allProducts,
       filterTitle: req.query.order ?? "All",

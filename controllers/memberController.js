@@ -20,7 +20,8 @@ memberController.getAllCompanies = async (req, res) => {
     console.log("GET: cont/homePage");
     const member = new Member();
     const allCompanies = await member.getAllCompaniesData(req.query);
-    res.render("all-companies", {
+    req.session.companies = allCompanies
+    res.render("companies", {
       companies: allCompanies,
       member: req.member,
     });
@@ -36,6 +37,7 @@ memberController.createToken = async (new_member) => {
       _id: new_member._id,
       mb_nick: new_member.mb_nick,
       mb_type: new_member.mb_type,
+      mb_image: new_member.mb_image
     };
     return token.sign(upload_data, process.env.SECRET_TOKEN, {
       expiresIn: "6h",

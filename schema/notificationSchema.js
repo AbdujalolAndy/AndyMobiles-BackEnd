@@ -3,15 +3,14 @@ const { Schema, model } = require("mongoose");
 const notifySchema = new Schema(
   {
     notify_sender: {
-      type: Schema.Types.ObjectId,
+      type: String,
       required: true,
+    },
+    notify_sender_image:{
+      type:String
     },
     notify_reciever: {
-      type: Schema.Types.ObjectId,
-      required: true,
-    },
-    notify_subject: {
-      type: String,
+      type: String || Array,
       required: true,
     },
     notify_context: {

@@ -15,12 +15,12 @@
                     <%if(member.mb_type==="ADMIN"){%>
                         <li class="nav-item">
                             <a class="nav-link nav-link-fade-up" aria-current="page"
-                                href="/admin/all-companies/?order=ALL">Companies</a>
+                                href="/admin/companies/?order=ALL">Companies</a>
                         </li>
                         <%}else if(member.mb_type==="COMPANY" ){%>
                             <li class="nav-item">
                                 <a class="nav-link nav-link-fade-up" aria-current="page"
-                                    href="/admin/all-products/?order=ALL">Products</a>
+                                    href="/admin/products/?order=ALL">Products</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link nav-link-fade-up" aria-current="page"
@@ -28,12 +28,17 @@
                             </li>
                             <%}%>
                                 <li class="nav-item">
-                                    <a class="nav-link nav-link-fade-up" href="#">Notification</a>
+                                    <a class="nav-link nav-link-fade-up" href="/admin/notifications">Notification</a>
                                 </li>
                 </ul>
                 <div class="avatar d-flex gap-3">
-                    <img src=<%=member.mb_image? member.mb_image:"/icons/avatar_ex_3.jpg"%> alt="">
-                    <i class="fa-regular fa-envelope"></i>
+                    <img src=<%=member.mb_image? member.mb_image:"/icons/avatar_ex_3.jpg"%> class="avatar_img" alt="">
+                    <a href="/admin/notifications" class="position-relative nav-item text-dark">
+                        <i class="fa-regular fa-envelope"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                        0
+                        </span>
+                    </a>
                     <a href="/admin/logout" class="btn btn-outline-secondary m-auto">Logout</a>
                 </div>
             </div>
