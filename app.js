@@ -8,6 +8,7 @@ const router_bssr = require("./router_bssr");
 const router_bssp = require("./router_bssp");
 const jwt = require("jsonwebtoken");
 const NotificationModel = require("./schema/notificationSchema");
+const memberSchema = require("./schema/memberSchema");
 
 const store = new MongoDb_store({
   uri: process.env.MONGODB_URL,
@@ -56,19 +57,22 @@ io.on("connection", (socket) => {
   const clientId = member.mb_nick;
   socket.clientId = clientId;
 
-  socket.on("privateMessage", async (data) => {
-    const { targetClientId, message, sender_image } = data;
+  socket.on("new_msg", async (data) => {
+    const { targetClientId, message, sender_image, reply_msg } = data;
+    console.log("message written:", message)
     const notification = new NotificationModel({
       notify_sender:clientId,
       notify_sender_image:sender_image?? "/icons/default_user.svg",
       notify_reciever:targetClientId,
-      notify_context:message
+      notify_context:message,
+      notify_reply:reply_msg
     })
     if (targetClientId) {
-      people[targetClientId].emit("privateMessage", {
+      people[targetClientId].emit("create_msg", {
         senderClientId: clientId,
         message,
       });
+      await memberSchema.findOneAndUpdate({mb_nick:targetClientId}, {$inc:{mb_new_messages:1}})
       await notification.save()
     } else {
       socket.emit("errorMessage", { text: "Target client not found." });

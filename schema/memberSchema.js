@@ -49,6 +49,10 @@ const memberSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    mb_new_messages:{
+      type:Number,
+      default:0
+    },
     mb_address: {
       type: String,
       default: "",

@@ -1,4 +1,5 @@
 const { Schema, model } = require("mongoose");
+const { notify_enums } = require("../lib/enums");
 
 const notifySchema = new Schema(
   {
@@ -14,9 +15,17 @@ const notifySchema = new Schema(
       required: true,
     },
     notify_context: {
-      type: String,
+      type:Object,
       required: true,
     },
+    notify_reply:{
+      type:String,
+      default:"N",
+      enum:{
+        values:notify_enums,
+        message:"{VALUE} is not permitted list!"
+      }
+    }
   },
   { timestamps: true }
 );

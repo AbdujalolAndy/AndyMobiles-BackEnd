@@ -38,6 +38,18 @@
     margin-left: 10px;
     padding: 10px;
 }
+.msg-reply{
+    background-color: #e6e5e5;
+    display: flex;
+    justify-content: start;
+    position: relative;
+    width: 98%;
+    margin: 0 auto;
+    height: 150px;
+    border-radius: 10px;
+    margin-top: 15px;
+    padding: 10px;
+}
 .msg-right {
     background-color: #e6e5e5;
     display: flex;
@@ -66,16 +78,42 @@
 
 .msg_date_left{
     position: absolute;
-    bottom: 0;
-    right: 5px;
+    bottom: 10px;
+    right: 20px;
     font-size: 15px;
 }
 .msg_date_right{
     position: absolute;
-    bottom: 0;
-    left: 5px;
+    bottom: 10px;
+    left: 20px;
     font-size: 15px;
 }
 .reciever-msg{
     text-align: end;
+}
+
+.reply{
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
+}
+.reply_msg{
+    text-align: start;
+}
+.cancel_btn{
+    border: none;
+    border-radius: 10px;
+    height: 25px;
+    box-shadow: 5px 5px 0px black;
+    transition: box-shadow 0.3s;
+    margin-top: 1.2rem;
+}
+.cancel_btn:hover{
+    box-shadow: 0px 0px 0px black;
+}
+.replier{
+    display:none;
+    gap:10px;
+    justify-content: center;
 }
