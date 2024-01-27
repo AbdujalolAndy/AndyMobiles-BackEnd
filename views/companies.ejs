@@ -63,6 +63,7 @@
                         <li><a class="dropdown-item" href="/admin/companies?order=DELETED">DELETED</a></li>
                     </ul>
                 </div>
+                
                 <div class="table-list">
                     <table>
                         <thead>
@@ -132,7 +133,7 @@
                 const mb_status = e.target.value;
                 const update_data = {
                     _id: mb_id,
-                    mb_status: mb_status
+                    mb_status: mb_status,
                 }
                 if (confirm("Do you want to change Company's status ?")) {
                     axios.post("/admin/memberupdate", update_data).then(response => console.log(response.data.value)).catch(err => console.log(err.message))

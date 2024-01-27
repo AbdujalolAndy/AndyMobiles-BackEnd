@@ -20,7 +20,7 @@ class Product {
   async updateProductData(product_id, data) {
     try {
       const id = shapeMongooseObjectId(product_id);
-      const result = await this.productModel.fin
+      const result = await this.productModel
         .findByIdAndUpdate({ _id: id }, data)
         .exec();
       return result;
