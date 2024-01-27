@@ -30,9 +30,12 @@
                                 <li class="nav-item">
                                     <a class="nav-link nav-link-fade-up" href="/admin/notifications">Notification</a>
                                 </li>
+                                <li class="nav-item"> 
+                                    <a class="nav-link nav-link-fade-up" href="/admin/my-page">My Page</a>
+                                </li>
                 </ul>
                 <div class="avatar d-flex gap-3">
-                    <img src=<%=member.mb_image? member.mb_image:"/icons/avatar_ex_3.jpg"%> class="avatar_img" alt="">
+                    <img src=<%-member.mb_image? `../${member.mb_image}`:"/icons/default_user.svg"%> class="avatar_img" alt="">
                     <a href="/admin/notifications" class="position-relative nav-item text-dark">
                         <i class="fa-regular fa-envelope"></i>
                         <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">

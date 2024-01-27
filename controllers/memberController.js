@@ -2,6 +2,7 @@ const assert = require("assert");
 const Member = require("../modals/Member");
 const token = require("jsonwebtoken");
 const Definer = require("../lib/Definer");
+const bcrypt = require("bcryptjs")
 
 const memberController = module.exports;
 
@@ -15,12 +16,22 @@ memberController.home = async (req, res) => {
   }
 };
 
+memberController.myPage = async (req, res) => {
+  try {
+    console.log("GET: cont/myPage");
+    console.log(req.member)
+    res.render("myPage", { member: req.member });
+  } catch (err) {
+    console.log(`ERROR: cont/myPage, ${err.message}`);
+    res.json({ state: "fail", message: err.message });
+  }
+};
+
 memberController.getAllCompanies = async (req, res) => {
   try {
     console.log("GET: cont/homePage");
     const member = new Member();
     const allCompanies = await member.getAllCompaniesData(req.query);
-    req.session.companies = allCompanies
     res.render("companies", {
       companies: allCompanies,
       member: req.member,
@@ -37,7 +48,10 @@ memberController.createToken = async (new_member) => {
       _id: new_member._id,
       mb_nick: new_member.mb_nick,
       mb_type: new_member.mb_type,
-      mb_image: new_member.mb_image
+      mb_image: new_member.mb_image,
+      mb_phone:new_member.mb_phone,
+      mb_address:new_member.mb_address,
+      mb_description:new_member.mb_description
     };
     return token.sign(upload_data, process.env.SECRET_TOKEN, {
       expiresIn: "6h",
@@ -50,9 +64,23 @@ memberController.createToken = async (new_member) => {
 memberController.memberUpdate = async (req, res) => {
   try {
     console.log("POST: cont/memberUpdate");
+    assert.ok(req.member, Definer.auth_err5)
     const data = req.body;
+    if(data.mb_password){
+      const salt = await bcrypt.genSalt();
+      data.mb_password = await bcrypt.hash(data.mb_password, salt)
+    }
     const member = new Member();
-    const result = await member.memberUpdateData(data);
+    const result = await member.memberUpdateData(req.member,req.file, data);
+    assert.ok(result, Definer.smth_err1);
+    const token = await memberController.createToken(result);
+    console.log(token)
+    if(!data._id){
+      res.cookie("access_token", token, {
+        maxAge: 1000 * 6 * 3600,
+        httpOnly: false,
+      });
+    }
     res.json({ state: "sucess", value: result });
   } catch (err) {
     console.log("ERROR: cont/memberUpdate");
@@ -188,7 +216,7 @@ memberController.memberRetrieve = (req, res, next) => {
     );
     req.member = member;
     next();
-  }else{
-    next()
+  } else {
+    next();
   }
 };

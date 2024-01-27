@@ -49,13 +49,9 @@ const memberSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
-    mb_new_messages:{
-      type:Number,
-      default:0
-    },
     mb_address: {
       type: String,
-      default: "",
+      default: "Not have Address",
     },
     mb_likes: {
       type: Number,
@@ -75,7 +71,7 @@ const memberSchema = new mongoose.Schema(
     },
     mb_description: {
       type: String,
-      default: "",
+      default: "Not have description",
     },
   },
   { timestamps: true }

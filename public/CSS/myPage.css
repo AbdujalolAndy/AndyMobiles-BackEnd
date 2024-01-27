@@ -1,0 +1,48 @@
+.nav-img {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.nav-img img {
+    width: 85%;
+    height: 180px;
+    border-radius: 20px;
+    box-shadow: 10px 10px 10px rgb(29, 29, 29);
+}
+
+.nav-img h1 {
+    font-family: "Grape Nuts", cursive;
+    font-weight: bold;
+}
+
+.mb_photo {
+    height: 90vh;
+}
+
+.member_image {
+    width: 600px;
+    height: 550px
+}
+
+.member_image .card_photo img {
+    height: 490px;
+    width: 100%;
+}
+
+.mb_image_uploader {
+    position: absolute;
+    top: 10px;
+    left: 40%;
+    opacity: 0;
+}
+#mb_name,
+#mb_phone,
+#mb_address,
+#mb_password {
+    height: 50vh;
+}
+
+#mb_description{
+    height: 60vh; 
+}

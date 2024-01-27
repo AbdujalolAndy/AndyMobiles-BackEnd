@@ -40,7 +40,7 @@ class Member {
       let allCompanies;
       if (query.order === "ALL") {
         allCompanies = await this.memberModel
-          .find({ mb_type: "COMPANY"})
+          .find({ mb_type: "COMPANY" })
           .exec();
       } else {
         allCompanies = await this.memberModel
@@ -53,8 +53,17 @@ class Member {
     }
   }
 
-  async memberUpdateData(data) {
+  async memberUpdateData(member, image, data) {
     try {
+      if (!data._id) {
+        data._id = member._id;
+        data.mb_image = image ?image.path.replace(/\\/g, "/") : "";
+      }
+      for (let prop in data) {
+        if (!data[prop]) {
+          delete data[prop];
+        }
+      }
       const id = shapeMongooseObjectId(data._id);
       delete data._id;
       const result = await this.memberModel

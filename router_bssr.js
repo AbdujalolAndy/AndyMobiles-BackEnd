@@ -20,7 +20,11 @@ router
     memberController.getAllCompanies
   )
   .get("/", memberController.memberRetrieveEjs, memberController.home)
-  .post("/memberUpdate", memberController.memberUpdate);
+  .post(
+    "/memberUpdate",
+    memberController.memberRetrieve,
+    memberController.memberUpdate
+  );
 
 //Product related APIs
 router
@@ -45,5 +49,12 @@ router.get(
   "/notifications",
   memberController.memberRetrieveEjs,
   notificationController.getNotifications
+);
+
+//My Page Related APIs
+router.get(
+  "/my-page",
+  memberController.memberRetrieveEjs,
+  memberController.myPage
 );
 module.exports = router;

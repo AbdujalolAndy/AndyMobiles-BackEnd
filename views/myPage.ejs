@@ -1,0 +1,205 @@
+<%-include("./includes/header")%>
+    <link rel="stylesheet" href="/CSS/myPage.css">
+    <link rel="stylesheet" href="/CSS/modifier.css">
+    <link rel="stylesheet" href="/CSS/general.css">
+    <title>My Page</title>
+    </head>
+
+    <body>
+        <div class="addProduct_wall"></div>
+        <nav class="navbar w-100">
+            <div class="container d-flex justify-content-evenly">
+                <div class="navbar-brand"><a href="/admin/">Admin</a></div>
+                <ul class="nav">
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-fade-up" aria-current="page" href="/admin">Home</a>
+                    </li>
+                    <%if(member.mb_type==="ADMIN"){%>
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-fade-up" aria-current="page"
+                                href="/admin/companies/?order=ALL">Companies</a>
+                        </li>
+                        <%}else if(member.mb_type==="COMPANY" ){%>
+                            <li class="nav-item">
+                                <a class="nav-link nav-link-fade-up" aria-current="page"
+                                    href="/admin/products/?order=ALL">Products</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link nav-link-fade-up" aria-current="page"
+                                    href="/admin/create-product">Add Product</a>
+                            </li>
+                            <%}%>
+                                <li class="nav-item" > 
+                                    <a class="nav-link nav-link-fade-up" href="/admin/notifications">Notification</a>
+                                </li>
+                                <li class="nav-item" > 
+                                    <a class="nav-link nav-link-fade-up"id="active" href="/admin/my-page">My Page</a>
+                                </li>
+                </ul>
+                <div class="avatar d-flex gap-3">
+                    <img src=<%-member.mb_image? `../${member.mb_image}`:"/icons/default_user.svg"%> class="avatar_img" alt="">
+                    <a href="/admin/notifications" class="position-relative nav-item text-dark">
+                        <i class="fa-regular fa-envelope"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                        0
+                        </span>
+                    </a>
+                    <a href="/admin/logout" class="btn btn-outline-secondary m-auto">Logout</a>
+                </div>
+            </div>
+        </nav>
+        <h1 class="fs-1 text-center text-dark mt-4 fw-bold">My Page Settings</h1>
+        <div class="demo-page">
+
+            <!--navigation-->
+            <div class="demo-page-navigation">
+                <nav>
+                    <div class="nav-img">
+                        <h1><%-member.mb_nick%></h1>
+                        <img class="nav-image" src=<%-member.mb_image? `../${member.mb_image}`:"/icons/default_user.svg"%> alt="">
+                    </div>
+                    <ul class="mt-2">
+                        <li>
+                            <a href="#mb_name">
+                                <i class="fa-solid pe-2 fa-signature"></i>
+                                Member Name
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#mb_photo">
+                                <i class="fa-solid pe-2 fa-photo-film"></i>
+                                Insert Photo
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#mb_phone">
+                                <i class="fa-solid pe-2 fa-phone"></i>
+                                Phone Number
+                            </a>
+                        </li>
+                        
+                        <li>
+                            <a href="#mb_address">
+                                <i class="fa-solid pe-2 fa-house"></i>
+                                Address 
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#mb_password">
+                                <i class="fa-solid pe-2 fa-lock"></i>
+                                Password Change
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#mb_description">
+                                <i class="fa-solid pe-2 fa-comment"></i>
+                                Description
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <!--navigation-->
+
+            <!-- Page Content -->
+            <div class="demo-page-content">
+                <!--Poduct Name-->
+                <section id="mb_name" class=" d-flex flex-column position-relative">
+                    <div class="product_name">
+                        <label for="name" class="form-label fs-1 mb-5">Member Name</label>
+                        <input type="text" name="mb_nick" class="form-control p-4 fs-6" id="name"
+                            placeholder=<%-member.mb_nick%>>
+                    </div>
+                    <a href="#mb_photo" class="btn btn-outline-success align-self-end"
+                        style="position: absolute;bottom: 2rem;width: 15rem;">Next</a>
+                </section>
+                <!--Poduct Name-->
+
+                <!--Photo Insert-->
+                <section id="mb_photo"
+                    class="mb_photo d-flex flex-column justify-content-center align-items-center"
+                    style="position: relative;">
+                    <div class="member_image card">
+                        <div class="card_photo">
+                            <img src="/icons/upload.svg" alt="avatar" class="mb_image">
+                        </div>
+                        <div class="card-footer position-relative">
+                            <input type="file" name="mb_image" class="mb_image_uploader"
+                                onchange="previewFileHandler(this, 1)">
+                            <button type="button" class="btn btn-success w-100 cursor-pointer"
+                                style="top:0; right: 0;"><i class="fa-solid fa-upload"></i></button>
+                        </div>
+                    </div>
+                    <p class="text-danger">***Upload Only PNG,JPG,JPEG formatted files</p>
+                    <a href="#mb_name" class="btn btn-outline-danger align-self-start"
+                        style="position: absolute;bottom: 2rem;width: 15rem;">Back</a>
+                    <a href="#mb_phone" class="btn btn-outline-success align-self-end"
+                        style="position: absolute;bottom: 2rem;width: 15rem;">Next</a>
+                </section>
+                <!--Photo Insert-->
+
+                <!--Mb Phone-->
+                <section id="mb_phone" class="d-flex flex-column">
+                    <div>
+                        <label for="tel_phone" class="form-label fs-1 mb-5">Phone update</label>
+                        <input type="text" id="tel_phone" class="form-control p-3" name="mb_phone" placeholder="<%=member.mb_phone%>">
+                        <p class="text-danger">***Only number acceptable, do not start with + or any symbol !</p>
+                    </div>
+                    <a href="#mb_photo" class="btn btn-outline-danger align-self-start"
+                        style="position: absolute;bottom: 2rem;width: 15rem;">Back</a>
+                    <a href="#mb_address" class="btn btn-outline-success align-self-end"
+                        style="position: absolute;bottom: 2rem;width: 15rem;">Next</a>
+                </section>
+                <!--Mb Phone-->
+
+                <!--Address-->
+                <section id="mb_address" class="d-flex flex-column position-relative">
+                    <div>
+                        <label for="m_address" class="form-label fs-1 mb-5">Current Address</label>
+                        <input type="text" name="mb_address" class="form-control p-4 fs-6" id="m_address"
+                            placeholder="<%-member.mb_address%>">
+                    </div>
+                    <a href="#mb_phone" class="btn btn-outline-danger align-self-start"
+                        style="position: absolute;bottom: 2rem;width: 15rem;">Back</a>
+                    <a href="#mb_password" class="btn btn-outline-success align-self-end"
+                        style="position: absolute;bottom: 2rem;width: 15rem;">Next</a>
+                </section>
+                <!--Address-->
+
+                <!--Password-->
+                <section id="mb_password" class="product_name d-flex flex-column position-relative">
+                    <label class="fs-1 form-label mb-5">Password Reset</label>
+                    <div class="form-datas">
+                          <div class="form-floating mb-3">
+                            <input type="text" class="form-control" name="mb_password" id="new_password" placeholder="New Password">
+                            <label for="new_password">New Password</label>
+                          </div>
+                          <div class="form-floating">
+                            <input type="text" class="form-control" id="confirm_password" placeholder="New Password">
+                            <label for="confirm_password">Confirm Password</label>
+                          </div>
+                    </div>
+                    <a href="#mb_address" class="btn btn-outline-danger align-self-start"
+                        style="position: absolute;bottom: 2rem;width: 15rem;">Back</a>
+                    <a href="#mb_description" class="btn btn-outline-success align-self-end"
+                        style="position: absolute;bottom: 2rem;width: 15rem;">Next</a>
+                </section>
+                <!--Password-->
+
+                <!--Member description-->
+                <section id="mb_description" class="product_description d-flex flex-column position-relative ">
+                    <label class="fs-1  mb-3">Member Description</label>
+                    <div class="desciption_text">
+                        <textarea name="mb_description" class="form-control" cols="30" rows="10" placeholder="<%-member.mb_description%>"></textarea>
+                    </div>
+                    <a href="#mb_password" class="btn btn-outline-danger align-self-start"
+                    style="position: absolute;bottom: 2rem;width: 15rem;">Back</a>
+                    <button class="btn btn_submit btn-outline-success align-self-end"
+                        style="position: absolute;bottom: 2rem;width: 15rem;">Update Member</button>
+                </section>
+                <!--Member description-->
+            </form>
+        </div>
+        <script src="/JS/myPage.js"></script>]
+    </body>
+<%-include("./includes/footer")%>
