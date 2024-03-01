@@ -48,21 +48,20 @@ const io = require("socket.io")(server);
 const people = {};
 io.on("connection", (socket) => {
   const token = socket.handshake.headers.cookie
-    .split("; ")
-    .find((cookie) => cookie.startsWith("access_token="))
-    .split("=")[1];
+  .split("; ")
+  .find((cookie) => cookie.startsWith("access_token="))
+  .split("=")[1];
   const member = jwt.verify(token, process.env.SECRET_TOKEN);
-  console.log("User connected", member.mb_nick);
+  console.log("User connected::", member.mb_nick);
   people[member.mb_nick] = socket;
-
-  const clientId = member.mb_nick;
-  socket.clientId = clientId;
+  socket.clientId = member.mb_nick;
+  io.emit("onlineUsers", {onlinePeople:Object.keys(people)})
 
   socket.on("new_msg", async (data) => {
     const { targetClientId, message, sender_image, reply_msg } = data;
     console.log("message written:", message);
     const notification = new NotificationModel({
-      notify_sender: clientId,
+      notify_sender: member.mb_nick,
       notify_sender_image: sender_image ?? "/icons/default_user.svg",
       notify_reciever: targetClientId,
       notify_context: message,
@@ -71,7 +70,7 @@ io.on("connection", (socket) => {
     if (targetClientId) {
       if (people[targetClientId]) {
         people[targetClientId].emit("create_msg", {
-          senderClientId: clientId,
+          senderClientId: member.mb_nick,
           message,
         });
       }

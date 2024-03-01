@@ -34,12 +34,16 @@
                                     <a class="nav-link nav-link-fade-up" href="/admin/my-page">My Page</a>
                                 </li>
                 </ul>           
-                <div class="avatar d-flex gap-3">
-                    <img src=<%-member.mb_image? `../${member.mb_image}`:"/icons/default_user.svg"%> class="avatar_img" alt=""/>
+                <div class="avatar d-flex gap-3 align-items-center">
+                    <a href="/admin/my-page">
+                        <img src=<%-member.mb_image? `/${member.mb_image}`:"/icons/default_user.svg"%>
+                        class="avatar_img"
+                        alt="">
+                    </a>
                     <a href="/admin/notifications" class="position-relative nav-item text-dark">
                         <i class="fa-regular fa-envelope"></i>
-                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                        0
+                        <span class="position-absolute top-0 start-100 translate-middle p-2 bg-success border border-light rounded-circle">
+                        
                         </span>
                     </a>
                     <a href="/admin/logout" class="btn btn-outline-secondary m-auto">Logout</a>

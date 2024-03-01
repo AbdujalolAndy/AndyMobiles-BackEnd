@@ -27,7 +27,8 @@ productController.createProduct = async (req, res) => {
     const product = new Product();
     const result = await product.createProductData(req.member, data);
     console.log("new Product", result);
-    res.json({ state: "success", value: result });
+    res.send(window.location.reload());
+    
   } catch (err) {
     console.log(`ERROR: cont/createProducts, ${err.message}`);
     res.json({ state: "fail", message: err.message });
@@ -54,6 +55,7 @@ productController.getAllProducts = async (req, res) => {
     assert.ok(req.member.mb_type === "COMPANY", Definer.smth_err1);
     const product = new Product();
     const allProducts = await product.getAllProductsData(req.member, req.query);
+    console.log(req.member)
     res.render("products", {
       member: req.member,
       poducts: allProducts,

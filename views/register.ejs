@@ -62,6 +62,12 @@
                     <h1>Sign Up</h1>
                     <form onsubmit="return signup()" method="POST" action="/admin/signup">
                         <input type="text" name="mb_nick" class="mb_nick" placeholder="User Name">
+                        <select name="mb_type" class="mb_type" id="user_type">
+                            <option>Please choose Your position...</option>
+                            <option value="COMPANY">Company</option>
+                            <option value="ADMIN" disabled>Admin</option>
+                        </select>
+                        <p class="text-light" style="font-size: 12px;">For Admin member type, Contact with web-Admin</p>
                         <input type="text" class="mb_phone" name="mb_phone" placeholder="Phone number">
                         <input type="password" name="mb_password" class="mb_password" placeholder="Password">
                         <input type="password" class="mb_confirm_password" placeholder="Password Confirm">
