@@ -7,3 +7,7 @@
     margin:70px  auto 30px auto;
     text-align: center;
 }
+
+.products .discount_percent{
+    width: 50px;
+}

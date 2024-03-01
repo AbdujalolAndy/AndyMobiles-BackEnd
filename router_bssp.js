@@ -1,8 +1,12 @@
 const router = require("express").Router();
 const memberController = require("./controllers/memberController");
 const productController = require("./controllers/productController");
-const photoImageUploaderProduct = require("./utilities/multerUploader")("products");
-const photoImageUploaderMember = require("./utilities/multerUploader")("members");
+const photoImageUploaderProduct = require("./utilities/multerUploader")(
+  "products"
+);
+const photoImageUploaderMember = require("./utilities/multerUploader")(
+  "members"
+);
 
 /***************************************
  *     BACKEND SERVER SINGLE PAGE      *
@@ -25,6 +29,12 @@ router.post(
   memberController.memberRetrieve,
   photoImageUploaderProduct.array("product_images", 6),
   productController.createProduct
+);
+
+router.post(
+  "/products/targetProductEdit/:id",
+  memberController.memberRetrieveEjs,
+  productController.updateProduct
 );
 
 module.exports = router;

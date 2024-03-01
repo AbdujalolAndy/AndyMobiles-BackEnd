@@ -9,7 +9,7 @@ const memberSchema = new mongoose.Schema(
       required: true,
     },
     mb_phone: {
-      type: String,
+      type: Number,
       unique: true,
       required: true,
     },
@@ -27,23 +27,23 @@ const memberSchema = new mongoose.Schema(
     },
     mb_type: {
       type: String,
-      required: true,
+      default: "USER",
       enum: {
         values: mb_type_enums,
         message: "{{VALUE} is not among permitted list}",
       },
     },
-    mb_top:{
-      type:String,
-      default:"N",
-      enum:{
-        values:mb_top_enums,
-        message:"{VALUE} is not among permitted list"
-      }
+    mb_top: {
+      type: String,
+      default: "N",
+      enum: {
+        values: mb_top_enums,
+        message: "{VALUE} is not among permitted list",
+      },
     },
-    mb_products_cnt:{
-      type:Number,
-      default:0
+    mb_products_cnt: {
+      type: Number,
+      default: 0,
     },
     mb_image: {
       type: String,

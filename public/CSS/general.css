@@ -129,10 +129,10 @@ tbody tr:nth-child(odd) {
 }
 
 tbody tr {
-    transition: transform 1s ease;
+    transition: all .5s ease;
 }
 
 tbody tr:hover {
-    transform: scaleX(1.1);
+    background-color: rgb(113, 113, 113);
 
 }

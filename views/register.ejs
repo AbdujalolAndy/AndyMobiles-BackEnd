@@ -62,11 +62,6 @@
                     <h1>Sign Up</h1>
                     <form onsubmit="return signup()" method="POST" action="/admin/signup">
                         <input type="text" name="mb_nick" class="mb_nick" placeholder="User Name">
-                        <select name="mb_type" class="mb_type" id="user_type">
-                            <option>Please choose Your position...</option>
-                            <option value="COMPANY">Company</option>
-                            <option value="ADMIN">Admin</option>
-                        </select>
                         <input type="text" class="mb_phone" name="mb_phone" placeholder="Phone number">
                         <input type="password" name="mb_password" class="mb_password" placeholder="Password">
                         <input type="password" class="mb_confirm_password" placeholder="Password Confirm">
@@ -80,7 +75,6 @@
         <script>
             function signup() {
                 const mb_nick = $(".mb_nick").val();
-                const mb_type = $(".mb_type").val();
                 const mb_password = $(".mb_password").val();
                 const mb_confirm_password = $(".mb_confirm_password").val();
                 const mb_phone = $(".mb_phone").val()

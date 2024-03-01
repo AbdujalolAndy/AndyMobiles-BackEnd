@@ -1,5 +1,9 @@
 const mongoose = require("mongoose");
-const { product_status_enums } = require("../lib/enums");
+const {
+  product_status_enums,
+  notify_enums,
+  product_market_enums,
+} = require("../lib/enums");
 
 const productSchema = new mongoose.Schema(
   {
@@ -43,13 +47,8 @@ const productSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    product_deal: {
-      type: String,
-      default: "N",
-      enum: {
-        values: ["Y", "N"],
-        message: "{VALUE} is not among permitted list",
-      },
+    product_monthly_price: {
+      type: Number,
     },
     product_water_proof: {
       type: String,
@@ -59,25 +58,29 @@ const productSchema = new mongoose.Schema(
         message: "{VALUE} is not among permitted list",
       },
     },
-    product_date_manufacture: {
+    product_status: {
       type: String,
-      required:true
-    },
-    product_condition: {
-      type: String,
-      default: "GOOD",
-    },
-    product_status:{
-      type:String,
-      default:"NOSALE",
-      enum:{
-        values:product_status_enums,
+      default: "PROCESS",
+      enum: {
+        values: product_status_enums,
         message: "{VALUE} is not among permitted list",
-      }
+      },
+    },
+    product_new_released: {
+      type: String,
+      default: "N",
+      enum: {
+        values: notify_enums,
+        message: "{VALUE} is not among permitted list",
+      },
     },
     product_discount: {
       type: Number,
       default: 0,
+    },
+    product_monthly_fee_period: {
+      type: Number,
+      required: true,
     },
     product_likes: {
       type: Number,

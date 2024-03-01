@@ -32,16 +32,17 @@
                                 <li class="nav-item">
                                     <a class="nav-link nav-link-fade-up" href="/admin/notifications">Notification</a>
                                 </li>
-                                <li class="nav-item"> 
+                                <li class="nav-item">
                                     <a class="nav-link nav-link-fade-up" href="/admin/my-page">My Page</a>
                                 </li>
                 </ul>
                 <div class="avatar d-flex gap-3">
-                    <img src=<%-member.mb_image? `../${member.mb_image}`:"/icons/default_user.svg"%> class="avatar_img" alt="">
+                    <img src=<%-member.mb_image? `../${member.mb_image}`:"/icons/default_user.svg"%> class="avatar_img"
+                    alt="">
                     <a href="/admin/notifications" class="position-relative nav-item text-dark">
                         <i class="fa-regular fa-envelope"></i>
                         <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                        0
+                            0
                         </span>
                     </a>
                     <a href="/admin/logout" class="btn btn-outline-secondary m-auto">Logout</a>
@@ -105,21 +106,15 @@
                             </a>
                         </li>
                         <li>
-                            <a href="#water_proof">
-                                <i class="fa-solid pe-2 fa-droplet-slash"></i>
-                                Mobile Water Proof
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#used">
-                                <i class="fa-solid pe-2 fa-user-clock"></i>
-                                Product Secondary Hand
-                            </a>
-                        </li>
-                        <li>
                             <a href="#price">
                                 <i class="fa-solid pe-2 fa-sack-dollar"></i>
                                 Product Price
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#monthly_fee">
+                                <i class="fa-solid pe-2 fa-calendar"></i>
+                                Monthly Payment
                             </a>
                         </li>
                         <li>
@@ -133,7 +128,8 @@
             <!--navigation-->
 
             <!-- Page Content -->
-            <form method="POST" action="/product/create-product" class="demo-page-content" enctype="multipart/form-data">
+            <form method="POST" action="/product/create-product" class="demo-page-content"
+                enctype="multipart/form-data">
 
                 <!--Poduct Name-->
                 <section id="product_name" class="product_name d-flex flex-column position-relative">
@@ -273,7 +269,7 @@
                 <section id="display" class="display_choose d-flex flex-column">
                     <div class="input-display">
                         <label for="display" class="form-label fs-1 mb-5">Display Resolution</label>
-                        <input type="number" id="display" class="form-control p-3" name="product_display">
+                        <input type="number" step="0.01" id="display" class="form-control p-3" name="product_display">
                         <p class="text-danger">***Only number acceptable</p>
                     </div>
                     <a href="#color" class="btn btn-outline-danger align-self-start"
@@ -355,65 +351,17 @@
                 </section>
                 <!--Camera-->
 
-                <!--WATER PROOF-->
-                <section id="water_proof" class="product_name d-flex flex-column position-relative">
-                    <div class="product_memory-data">
-                        <label for="memory" class="form-label fs-1 mb-5">Is it water proof product?</label>
-                        <div class="water_proof_is d-flex align-items-center justify-content-center">
-                            <div class="form-check form-switch ms-3">
-                                <input class="form-check-input fs-3" name="product_water_proof" type="checkbox"
-                                    role="switch" id="proofCheck" value="N">
-                            </div>
-                            <h1 class="text-center mt-3 proof-text">No, It is not</h1>
-                        </div>
-                    </div>
-                    <a href="#camera" class="btn btn-outline-danger align-self-start"
-                        style="position: absolute;bottom: 2rem;width: 15rem;">Back</a>
-                    <a href="#used" class="btn btn-outline-success align-self-end"
-                        style="position: absolute;bottom: 2rem;width: 15rem;">Next</a>
-                </section>
-                <!--WATER PROOF-->
-
-                <!--Second Hand-->
-                <section id="used" class="product_secondhand d-flex flex-column position-relative">
-                    <div class="product_memory-data">
-                        <label for="memory" class="form-label fs-2 mb-5">Has your product been used before ?</label>
-
-                        <div class="date_used d-flex">
-                            <div class="form-data w-50">
-                                <label for="manufacture form-label product_made">Date of manufacture</label>
-                                <input type="date" name="product_date_manufacture"
-                                    class="form-control w-50 product-made">
-                            </div>
-                            <div class="form-data w-50">
-                                <label for="condition form-label l">Product Current Condition</label>
-                                <select name="product_condition" id="condition" class="form-select w-50">
-                                    <option value="A+">A+</option>
-                                    <option value="A">A</option>
-                                    <option value="B">B</option>
-                                    <option value="C">C</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <p class="text-danger">***If it is a new poduct. Just, leave the blank empty.</p>
-                    <a href="#water_proof" class="btn btn-outline-danger align-self-start"
-                        style="position: absolute;bottom: 2rem;width: 15rem;">Back</a>
-                    <a href="#price" class="btn btn-outline-success align-self-end"
-                        style="position: absolute;bottom: 2rem;width: 15rem;">Next</a>
-                </section>
-                <!--Second Hand-->
-
                 <!--Poduct Price-->
                 <section id="price" class="product_name d-flex flex-column position-relative ">
                     <h1 class="fs-1 fom-label">How much your poduct costs?</h1>
-                        <div class="input-group mt-5 w-50 m-auto">
-                            <input type="number" name="product_price" class="form-control p-3">
-                            <div class="currency">
-                                $
-                            </div>
+                    <div class="input-group mt-5 w-50 m-auto">
+                        <input type="number" step="0.01" min="100" max="4000" name="product_price"
+                            class="form-control p-3 actual_price">
+                        <div class="currency">
+                            $
                         </div>
-                        <p class="text-danger position-absolute price-warning">***Only number acceptable</p>
+                    </div>
+                    <p class="text-danger position-absolute price-warning">***Only number acceptable</p>
 
                     <a href="#used" class="btn btn-outline-danger align-self-start"
                         style="position: absolute;bottom: 2rem;width: 15rem;">Back</a>
@@ -421,6 +369,26 @@
                         style="position: absolute;bottom: 2rem;width: 15rem;">Next</a>
                 </section>
                 <!--Poduct Price-->
+                <!--Monthly Fee-->
+                <section id="monthly_fee" class="product_name d-flex flex-column position-relative">
+                    <div class="product_camera-data">
+                        <label for="eachFee" class="form-label fs-1 mb-5">Monthly Fee Payment Option </label>
+                        <select name="product_monthly_fee_period" class="form-select p-3 eachFee" id="eachFee">
+                            <option value=0>0 Month</option>
+                            <option value=6>6 Months</option>
+                            <option value=12>12 Months</option>
+                            <option value=24>24 Months</option>
+                        </select>
+                        <div class="text-danger">If you do not offer monthly payment, Please choose <b>0 months</b>
+                            option</div>
+                        <div>Payment Per month:$ <b><span>0</span></b></div>
+                    </div>
+                    <a href="#price" class="btn btn-outline-danger align-self-start"
+                        style="position: absolute;bottom: 2rem;width: 15rem;">Back</a>
+                    <a href="#description" class="btn btn-outline-success align-self-end"
+                        style="position: absolute;bottom: 2rem;width: 15rem;">Next</a>
+                </section>
+                <!--Monthly Fee-->
 
                 <!--Poduct description-->
                 <section id="description" class="product_description d-flex flex-column position-relative ">
@@ -429,14 +397,95 @@
                         <textarea name="product_description" class="form-control" cols="30" rows="10"></textarea>
                     </div>
                     <a href="#price" class="btn btn-outline-danger align-self-start"
-                    style="position: absolute;bottom: 2rem;width: 15rem;">Back</a>
+                        style="position: absolute;bottom: 2rem;width: 15rem;">Back</a>
                     <button type="submit" class="btn btn-outline-success align-self-end"
                         style="position: absolute;bottom: 2rem;width: 15rem;">Add Poduct</button>
                 </section>
                 <!--Poduct description-->
-                
             </form>
         </div>
-        <script src="/JS/addPoduct.js"></script>
+        <script>
+            $(".product_color").on("change", (e) => {
+                $(
+                    ".blue, .gold, .green, .gray, .pink, .midnight, .purple, .red, .silver, .white, .yellow, .black"
+                ).css("border", "none");
+
+                const selectedColor = e.target.value.toLowerCase();
+                if (selectedColor !== "") {
+                    if (selectedColor === "red") {
+                        $("." + selectedColor).css("border", "4px solid blue");
+                    } else {
+                        $("." + selectedColor).css("border", "4px solid red");
+                    }
+                }
+            });
+
+            $(".demo-page-content").on("submit", (e) => {
+                const product_name = $(".poduct_name").val(),
+                    product_color = $(".product_color").val(),
+                    product_display = $(".product_display").val(),
+                    product_core = $(".product_core").val(),
+                    product_memory = $(".product_memory").val(),
+                    product_ram = $(".product_ram").val(),
+                    product_camera = $(".product_camera").val(),
+                    product_price = $(".product_price").val(),
+                    product_deal = $(".product_deal").val(),
+                    product_water_proof = $("#proofCheck").on("change", (e) =>
+                        e.target.checked ? "Y" : "N"
+                    ),
+                    product_second_hand = $(".product_second_hand").val(),
+                    product_description = $(".product_description").val(),
+                    product_manufacture = $(".product_manufacture").val(),
+                    product_till_used = $(".product_till_used").val();
+                if (
+                    product_name === "" ||
+                    product_color === "" ||
+                    product_display === "" ||
+                    product_core === "" ||
+                    product_memory === "" ||
+                    product_ram === "" ||
+                    product_camera === "" ||
+                    product_price === "" ||
+                    product_deal === "" ||
+                    product_water_proof === "" ||
+                    product_second_hand === ""
+                ) {
+                    alert("Please, fill all blanks !");
+                    return false;
+                }
+                return true;
+            });
+
+            function previewFileHandler(input, order) {
+                const className = input.className;
+                const file = $(`.${className}`)[0].files[0];
+                const valid_types = ["image/jpeg", "image/png", "image/jpg"];
+                if (!valid_types.includes(file.type)) {
+                    alert("Please, Insert Valid formatted file");
+                } else {
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = () => {
+                            $(`.image_${order}`).attr("src", reader.result);
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                }
+            }
+            $(".actual_price").on("change", (e) => {
+                if (e.target.value * 1 < 100) {
+                    alert("Product Price should be higher than $100");
+                    e.target.value = ""
+                }
+            })
+            $(".eachFee").on("change", (e) => {
+                const months = e.target.value * 1;
+                const actual_fee = $(".actual_price").val() * 1;
+                const monthlyFee = Math.floor(actual_fee / months)
+                if (months> 0) {
+                    e.target.parentElement.children[3].children[0].innerHTML = monthlyFee
+                }
+            });
+        </script>
     </body>
 <%-include("./includes/footer")%>

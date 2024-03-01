@@ -19,7 +19,7 @@
                         </li>
                         <%}else if(member.mb_type==="COMPANY" ){%>
                             <li class="nav-item">
-                                <a class="nav-link nav-link-fade-up" aria-current="page"
+                                <a class="nav-link nav-link-fade-up" id="active" aria-current="page"
                                     href="/admin/products/?order=ALL">Products</a>
                             </li>
                             <li class="nav-item">
@@ -30,16 +30,17 @@
                                 <li class="nav-item">
                                     <a class="nav-link nav-link-fade-up" href="/admin/notifications">Notification</a>
                                 </li>
-                                <li class="nav-item"> 
+                                <li class="nav-item">
                                     <a class="nav-link nav-link-fade-up" href="/admin/my-page">My Page</a>
                                 </li>
                 </ul>
                 <div class="avatar d-flex gap-3">
-                    <img src=<%-member.mb_image? `../${member.mb_image}`:"/icons/default_user.svg"%> class="avatar_img" alt="">
+                    <img src=<%-member?.mb_image||"/icons/cute_girl.jpg"%> class="avatar_img"
+                    alt="">
                     <a href="/admin/notifications" class="position-relative nav-item text-dark">
                         <i class="fa-regular fa-envelope"></i>
                         <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                        0
+                            0
                         </span>
                     </a>
                     <a href="/admin/logout" class="btn btn-outline-secondary m-auto">Logout</a>
@@ -58,8 +59,8 @@
                     </button>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="/admin/products?order=ALL">All</a></li>
-                        <li><a class="dropdown-item" href="/admin/products?order=ONSALE">Onsale</a></li>
-                        <li><a class="dropdown-item" href="/admin/products?order=NOSALE">Nosale</a></li>
+                        <li><a class="dropdown-item" href="/admin/products?order=PROCESS">Process</a></li>
+                        <li><a class="dropdown-item" href="/admin/products?order=PAUSED">Paused</a></li>
                         <li><a class="dropdown-item" href="/admin/products?order=DELETED">Deleted</a></li>
                     </ul>
                 </div>
@@ -83,22 +84,19 @@
                                     Ram
                                 </th>
                                 <th>
-                                    Water Proof
-                                </th>
-                                <th>
-                                    Manufactor Date
-                                </th>
-                                <th>
-                                    Current Condition
-                                </th>
-                                <th>
                                     Discount
                                 </th>
                                 <th>
-                                    Price
+                                    Actual Price
                                 </th>
                                 <th>
-                                    Current Status
+                                    Product Status
+                                </th>
+                                <th>
+                                    In Market
+                                </th>
+                                <th>
+                                    Mothly Fee
                                 </th>
                             </tr>
                         </thead>
@@ -122,28 +120,38 @@
                                         <%-ele.product_ram%>
                                     </td>
                                     <td>
-                                        <%-ele.product_water_proof%>
+                                        <input type="number" id=<%-ele._id%> placeholder=<%-ele.product_discount%>
+                                            class="discount_percent me-2">%
                                     </td>
                                     <td>
-                                        <%-ele.product_date_manufacture%>
-                                    </td>
-                                    <td>
-                                        <%-ele.product_condition%>
-                                    </td>
-                                    <td>
-                                        <%-ele.product_discount%>
-                                    </td>
-                                    <td>
-                                        <%-ele.product_price%>
+                                        $<%-ele.product_price%>
                                     </td>
                                     <td>
                                         <select class="form-select product_status" id=<%-ele._id%>>
-                                            <option value="ONSALE" <%-ele.product_status==="ONSALE" ?"selected":""%>
-                                                >Onsale</option>
-                                            <option value="NOSALE" <%-ele.product_status==="NOSALE" ?"selected":""%>
-                                                >Nosale</option>
+                                            <option value="PROCESS" <%-ele.product_status==="PROCESS" ?"selected":""%>
+                                                >Process</option>
+                                            <option value="PAUSED" <%-ele.product_status==="PAUSED" ?"selected":""%>
+                                                >Paused</option>
                                             <option value="DELETED" <%-ele.product_status==="DELETED" ?"selected":""%>
                                                 >Deleted</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <div class="form-check form-switch" id=<%-ele._id%>>
+                                            <input class="form-check-input new_released" type="checkbox" role="switch"
+                                                id="new_product" <%-ele.product_new_released=="Y" ?"checked":""%>>
+                                            <label class="form-check-label" for="new_product">New Released
+                                            </label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <select name="" id=<%-ele._id%> class="monthly_fee form-select">
+                                            <option value="12" <%-ele.product_monthly_fee_period==0?"selected":""%>>0
+                                                Months</option>
+                                            <option value="12" <%-ele.product_monthly_fee_period==12?"selected":""%>>12
+                                                Months</option>
+                                            <option value="24" <%-ele.product_monthly_fee_period==24?"selected":""%>>24
+                                                Months</option>
                                         </select>
                                     </td>
                                 </tr>
@@ -154,13 +162,32 @@
             </div>
         </div>
         <script>
+            $(".monthly_fee").on("change", (e) => {
+                if (e.target.id && confirm("Do you want to change current monthly fee of your product ?")) {
+                    axios.post(`/products/targetProductEdit/${e.target.id}`, { product_monthly_fee_period: e.target.value })
+                }
+            })
+            $(".new_released").on("change", (e) => {
+                const product_id = e.target.parentElement.id;
+                const product_update = e.target.checked ? "Y" : "N"
+                if (confirm("Do you want to change current new released of your product ?")) {
+                    axios.post(`/products/targetProductEdit/${product_id}`, { product_new_released: product_update })
+                }
+            })
+            $(".discount_percent").on("change", (e) => {
+                const product_update = { product_discount: e.target.value };
+                const product_id = e.target.id;
+                if ((e.target.value > 0 && e.target.value <= 100) && confirm("Do you want to change current discount of your product ?")) {
+                    axios.post(`/products/targetProductEdit/${product_id}`, product_update).then().catch(err => alert(err.message))
+                }
+            })
             $(".product_status").on("change", (e) => {
                 const product_status = { product_status: e.target.value };
                 const product_id = e.target.id;
                 if (confirm("Do you want to change current status of your product ?")) {
-                    axios.post(`/admin/product-edit/${product_id}`, product_status).then();
+                    axios.post(`/products/targetProductEdit/${product_id}`, product_status).then();
                 }
             })
         </script>
     </body>
-<%-include("./includes/footer")%>
+    <%-include("./includes/footer")%>

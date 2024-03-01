@@ -47,6 +47,19 @@ class Product {
       throw err;
     }
   }
+
+  async getTargetProductsData(filterData){
+    try{ 
+      const match={product_status:"PROCESS",}
+      filterData.company_id= shapeMongooseObjectId(filterData?.company_id);
+      const result = await this.productModel.aggregate([
+        {$match:match}
+      ]
+      )
+    }catch(err){
+      throw err
+    }
+  }
 }
 
 module.exports = Product;

@@ -45,7 +45,7 @@ app.use("/", router_bssp);
 const server = http.createServer(app);
 const io = require("socket.io")(server);
 //SOCKET IO
-const people={};
+const people = {};
 io.on("connection", (socket) => {
   const token = socket.handshake.headers.cookie
     .split("; ")
@@ -53,35 +53,38 @@ io.on("connection", (socket) => {
     .split("=")[1];
   const member = jwt.verify(token, process.env.SECRET_TOKEN);
   console.log("User connected", member.mb_nick);
-  people[member.mb_nick]=socket
+  people[member.mb_nick] = socket;
 
   const clientId = member.mb_nick;
   socket.clientId = clientId;
 
   socket.on("new_msg", async (data) => {
     const { targetClientId, message, sender_image, reply_msg } = data;
-    console.log("message written:", message)
+    console.log("message written:", message);
     const notification = new NotificationModel({
-      notify_sender:clientId,
-      notify_sender_image:sender_image?? "/icons/default_user.svg",
-      notify_reciever:targetClientId,
-      notify_context:message,
-      notify_reply:reply_msg
-    })
+      notify_sender: clientId,
+      notify_sender_image: sender_image ?? "/icons/default_user.svg",
+      notify_reciever: targetClientId,
+      notify_context: message,
+      notify_reply: reply_msg,
+    });
     if (targetClientId) {
-      people[targetClientId].emit("create_msg", {
-        senderClientId: clientId,
-        message,
-      });
-      await memberSchema.findOneAndUpdate({mb_nick:targetClientId}, {$inc:{mb_new_messages:1}})
-      await notification.save()
+      if (people[targetClientId]) {
+        people[targetClientId].emit("create_msg", {
+          senderClientId: clientId,
+          message,
+        });
+      }
+      await memberSchema.findOneAndUpdate(
+        { mb_nick: targetClientId },
+        { $inc: { mb_new_messages: 1 } }
+      );
+      await notification.save();
     } else {
       socket.emit("errorMessage", { text: "Target client not found." });
     }
-
   });
-  socket.on("disconnect", () => {
-  });
+  socket.on("disconnect", () => {});
 });
 
 module.exports = server;

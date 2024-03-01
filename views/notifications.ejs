@@ -99,16 +99,16 @@
                             </div>
                         <%}else if (ele.notify_sender===member.mb_nick){%>
                             <div class="msg-right gap-2">
-                                        <div class="reciever-msg">
+                                <div class="reciever-msg">
                                             <div class="sender-name">
                                                 <%-ele.notify_sender%>
                                             </div>
                                             <div>
                                                 <%-ele.notify_context.new_msg%>
                                             </div>
-                                        </div>
-                                        <img src=<%-ele.notify_sender_image%> class="msg_avatar" alt="">
-                                        <div class="msg_date_right">
+                                </div>
+                                <img src=<%-ele.notify_sender_image%> class="msg_avatar" alt="">
+                                <div class="msg_date_right">
                                             <%-new Date(ele.createdAt).getFullYear()%> -
                                                 <%-String(new Date(ele.createdAt).getMonth() + 1).padStart(2, '0' )%> -
                                                     <%-String(new Date(ele.createdAt).getDate()).padStart(2, '0' )%>
@@ -116,7 +116,7 @@
                                                             )%> :
                                                             <%-String(new
                                                                 Date(ele.createdAt).getMinutes()).padStart(2, '0' )%>
-                                        </div>
+                                </div>
                             </div>
                         <%}%> 
                     <%})%>

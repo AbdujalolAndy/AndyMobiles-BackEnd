@@ -38,11 +38,6 @@ router
     memberController.memberRetrieveEjs,
     productController.createProductProcess
   )
-  .post(
-    "/product-edit/:id",
-    memberController.memberRetrieveEjs,
-    productController.updateProduct
-  );
 
 //Notification related APIs
 router.get(
