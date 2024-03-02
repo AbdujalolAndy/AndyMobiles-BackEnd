@@ -41,10 +41,6 @@ const memberSchema = new mongoose.Schema(
         message: "{VALUE} is not among permitted list",
       },
     },
-    mb_products_cnt: {
-      type: Number,
-      default: 0,
-    },
     mb_image: {
       type: String,
       default: "",

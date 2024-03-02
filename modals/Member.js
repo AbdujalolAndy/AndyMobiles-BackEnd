@@ -53,11 +53,45 @@ class Member {
     }
   }
 
+  async getAllUsersData(order) {
+    try {
+      let result;
+      switch (order) {
+        case "ALL":
+          result = await this.memberModel.find({ mb_type: "USER" });
+          break;
+        case "ACTIVE":
+          result = await this.memberModel.find({
+            mb_type: "USER",
+            mb_status: "ACTIVE",
+          });
+          break;
+        case "PAUSED":
+          result = await this.memberModel.find({
+            mb_type: "USER",
+            mb_status: "PAUSED",
+          });
+          break;
+        case "DELETED":
+          result = await this.memberModel.find({
+            mb_type: "USER",
+            mb_status: "DELETED",
+          });
+          break;
+        default:
+          break;
+      }
+      return result;
+    } catch (err) {
+      throw err;
+    }
+  }
+
   async memberUpdateData(member, image, data) {
     try {
       if (!data._id) {
         data._id = member._id;
-        data.mb_image = image ?image.path.replace(/\\/g, "/") : "";
+        data.mb_image = image ? image.path.replace(/\\/g, "/") : "";
       }
       for (let prop in data) {
         if (!data[prop]) {

@@ -14,11 +14,11 @@
                     </li>
                     <%if(member.mb_type==="ADMIN"){%>
                         <li class="nav-item">
-                            <a class="nav-link nav-link-fade-up" aria-current="page" id="active"
+                            <a class="nav-link nav-link-fade-up" aria-current="page"
                                 href="/admin/companies/?order=ALL">Companies</a>
                         </li>
                         <li class="nav-item" >
-                            <a class="nav-link nav-link-fade-up" aria-current="page"
+                            <a class="nav-link nav-link-fade-up" aria-current="page" id="active"
                                 href="/admin/all-users/?order=ALL">Users</a>
                         </li>
                         <%}else if(member.mb_type==="COMPANY" ){%>
@@ -65,10 +65,10 @@
                         <%-filterTitle%>
                     </button>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="/admin/companies=ALL">All</a></li>
-                        <li><a class="dropdown-item" href="/admin/companies?order=ACTIVE">ACTIVE</a></li>
-                        <li><a class="dropdown-item" href="/admin/companies?order=PAUSED">PAUSED</a></li>
-                        <li><a class="dropdown-item" href="/admin/companies?order=DELETED">DELETED</a></li>
+                        <li><a class="dropdown-item" href="/admin/all-users?order=ALL">All</a></li>
+                        <li><a class="dropdown-item" href="/admin/all-users?order=ACTIVE">ACTIVE</a></li>
+                        <li><a class="dropdown-item" href="/admin/all-users?order=PAUSED">PAUSED</a></li>
+                        <li><a class="dropdown-item" href="/admin/all-users?order=DELETED">DELETED</a></li>
                     </ul>
                 </div>
                 
@@ -80,13 +80,7 @@
                                     NO
                                 </th>
                                 <th>
-                                    Company Name
-                                </th>
-                                <th>
-                                    Amount of Products
-                                </th>
-                                <th>
-                                    Top Company
+                                    User Name
                                 </th>
                                 <th>
                                     Change Status
@@ -95,7 +89,7 @@
                         </thead>
 
                         <tbody>
-                            <%companies.map((ele,index)=>{%>
+                            <%allUsers?.map((ele,index)=>{%>
                                 <tr>
                                     <td>
                                         <%-index+1%>
@@ -104,18 +98,11 @@
                                         <%-ele.mb_nick%>
                                     </td>
                                     <td>
-                                        <%-amount_poducts[index]%>
-                                    </td>
-                                    <td class="form-check form-switch d-flex justify-content-center mt-1">
-                                        <input class="form-check-input mb_top" type="checkbox" role="switch"
-                                            <%-ele.mb_top==="Y" ? "checked" :""%> id=<%-ele._id%> >
-                                    </td>
-                                    <td>
                                         <select class="form-select mb_status" id=<%-ele._id%>>
                                             <option value="ACTIVE" <%-ele.mb_status==="ACTIVE" ? "selected" :""%>>Active
                                             </option>
                                             <option value="PAUSED" <%-ele.mb_status==="PAUSED" ? "selected" :""%>
-                                                >PAUSED</option>
+                                                >Paused</option>
                                             <option value="DELETED" <%-ele.mb_status==="DELETED" ? "selected" :""%>
                                                 >Deleted</option>
                                         </select>
@@ -128,14 +115,6 @@
             </div>
         </div>
         <script>
-            $(".mb_top").on("change", (e) => {
-                const mb_id = e.target.id;
-                const mb_top = e.target.checked ? "Y" : "N";
-                const update_data = { _id: mb_id, mb_top: mb_top };
-                if (confirm("Do you want to change Company's top status ?")) {
-                    axios.post("/admin/memberupdate", update_data).then(response => console.log(response.data.value)).catch(err => console.log(err.message))
-                }
-            })
             $(".mb_status").on("change", (e) => {
                 const mb_id = e.target.id;
                 const mb_status = e.target.value;

@@ -19,6 +19,10 @@
                             <a class="nav-link nav-link-fade-up" aria-current="page"
                                 href="/admin/companies/?order=ALL">Companies</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-fade-up" aria-current="page"
+                                href="/admin/all-users/?order=ALL">Users</a>
+                        </li>
                         <%}else if(member.mb_type==="COMPANY" ){%>
                             <li class="nav-item">
                                 <a class="nav-link nav-link-fade-up" aria-current="page"
@@ -60,6 +64,7 @@
                     <div class="nav-img">
                         <h1><%-member.mb_nick%></h1>
                         <img class="nav-image" src=<%-member.mb_image? `../${member.mb_image}`:"/icons/default_user.svg"%> alt="">
+                        <div class="mb_type"><%-member.mb_type%></div>
                     </div>
                     <ul class="mt-2">
                         <li>

@@ -2,7 +2,8 @@ const assert = require("assert");
 const Member = require("../modals/Member");
 const token = require("jsonwebtoken");
 const Definer = require("../lib/Definer");
-const bcrypt = require("bcryptjs")
+const bcrypt = require("bcryptjs");
+const Product = require("../modals/Product");
 
 const memberController = module.exports;
 
@@ -19,7 +20,7 @@ memberController.home = async (req, res) => {
 memberController.myPage = async (req, res) => {
   try {
     console.log("GET: cont/myPage");
-    console.log(req.member)
+    console.log(req.member);
     res.render("myPage", { member: req.member });
   } catch (err) {
     console.log(`ERROR: cont/myPage, ${err.message}`);
@@ -31,10 +32,19 @@ memberController.getAllCompanies = async (req, res) => {
   try {
     console.log("GET: cont/homePage");
     const member = new Member();
+    const product = new Product();
     const allCompanies = await member.getAllCompaniesData(req.query);
+    console.log("Companies query", req.query);
+    const amount_poducts = await Promise.all(
+      allCompanies.map(async (ele) => {
+        return (await product.getAllProductsData(ele, req.query)).length;
+      })
+    );
     res.render("companies", {
       companies: allCompanies,
       member: req.member,
+      amount_poducts: amount_poducts,
+      filterTitle: req.query.order,
     });
   } catch (err) {
     console.log(`ERROR: cont/homepage, ${err.message}`);
@@ -42,6 +52,20 @@ memberController.getAllCompanies = async (req, res) => {
   }
 };
 
+memberController.getAllUsers = async (req, res) => {
+  try {
+    const member = new Member();
+    const result = await member.getAllUsersData(req.query.order);
+    res.render("allUsers", {
+      filterTitle: req.query.order,
+      allUsers: result,
+      member:req.member
+    });
+  } catch (err) {
+    console.log("ERROR: cont/getAllUsers");
+    res.json({ state: "fail", message: err.message });
+  }
+};
 memberController.createToken = async (new_member) => {
   try {
     const upload_data = {
@@ -49,9 +73,9 @@ memberController.createToken = async (new_member) => {
       mb_nick: new_member.mb_nick,
       mb_type: new_member.mb_type,
       mb_image: new_member.mb_image,
-      mb_phone:new_member.mb_phone,
-      mb_address:new_member.mb_address,
-      mb_description:new_member.mb_description
+      mb_phone: new_member.mb_phone,
+      mb_address: new_member.mb_address,
+      mb_description: new_member.mb_description,
     };
     return token.sign(upload_data, process.env.SECRET_TOKEN, {
       expiresIn: "6h",
@@ -64,18 +88,18 @@ memberController.createToken = async (new_member) => {
 memberController.memberUpdate = async (req, res) => {
   try {
     console.log("POST: cont/memberUpdate");
-    assert.ok(req.member, Definer.auth_err5)
+    assert.ok(req.member, Definer.auth_err5);
     const data = req.body;
-    if(data.mb_password){
+    if (data.mb_password) {
       const salt = await bcrypt.genSalt();
-      data.mb_password = await bcrypt.hash(data.mb_password, salt)
+      data.mb_password = await bcrypt.hash(data.mb_password, salt);
     }
     const member = new Member();
-    const result = await member.memberUpdateData(req.member,req.file, data);
+    const result = await member.memberUpdateData(req.member, req.file, data);
     assert.ok(result, Definer.smth_err1);
     const token = await memberController.createToken(result);
-    console.log(token)
-    if(!data._id){
+    console.log(token);
+    if (!data._id) {
       res.cookie("access_token", token, {
         maxAge: 1000 * 6 * 3600,
         httpOnly: false,
