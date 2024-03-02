@@ -24,17 +24,18 @@ router
   );
 
 //Product releted APIsX
-router.post(
-  "/product/create-product",
-  memberController.memberRetrieve,
-  photoImageUploaderProduct.array("product_images", 6),
-  productController.createProduct
-);
-
-router.post(
-  "/products/targetProductEdit/:id",
-  memberController.memberRetrieveEjs,
-  productController.updateProduct
-);
+router
+  .get("/products/getTargetProducts", productController.getTargetProducts)
+  .post(
+    "/product/create-product",
+    memberController.memberRetrieve,
+    photoImageUploaderProduct.array("product_images", 6),
+    productController.createProduct
+  )
+  .post(
+    "/products/targetProductEdit/:id",
+    memberController.memberRetrieveEjs,
+    productController.updateProduct
+  );
 
 module.exports = router;

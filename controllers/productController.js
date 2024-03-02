@@ -69,10 +69,10 @@ productController.getAllProducts = async (req, res) => {
 
 productController.getTargetProducts = async (req, res) => {
   try {
-    const filterData = req.body;
+    const queries = req.query;
     const product = new Product();
-    const result = await product.getTargetProductsData(filterData);
-    req.json({ state: "success", value: result });
+    const result = await product.getTargetProductsData(queries);
+    res.json({ state: "success", value: result });
   } catch (err) {
     console.log(`ERROR: cont/getTargetProducts, ${err.message}`);
     res.json({ state: "fail", message: err.message });
