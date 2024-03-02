@@ -78,7 +78,7 @@ const productSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
-    product_monthly_fee_period: {
+    product_monthly_fee: {
       type: Number,
       required: true,
     },

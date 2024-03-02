@@ -46,8 +46,9 @@
                     </a>
                     <a href="/admin/notifications" class="position-relative nav-item text-dark">
                         <i class="fa-regular fa-envelope"></i>
-                        <span class="position-absolute top-0 start-100 translate-middle p-2 bg-success border border-light rounded-circle">
-                        
+                        <span
+                            class="position-absolute top-0 start-100 translate-middle p-2 bg-success border border-light rounded-circle">
+
                         </span>
                     </a>
                     <a href="/admin/logout" class="btn btn-outline-secondary m-auto">Logout</a>
@@ -130,8 +131,8 @@
                                         <input type="number" id=<%-ele._id%> placeholder=<%-ele.product_discount%>
                                             class="discount_percent me-2">%
                                     </td>
-                                    <td>
-                                        $<%-ele.product_price%>
+                                    <td id="actual_price">
+                                        $<span><%-ele.product_price%></span>
                                     </td>
                                     <td>
                                         <select class="form-select product_status" id=<%-ele._id%>>
@@ -153,11 +154,11 @@
                                     </td>
                                     <td>
                                         <select name="" id=<%-ele._id%> class="monthly_fee form-select">
-                                            <option value="12" <%-ele.product_monthly_fee_period==0?"selected":""%>>0
+                                            <option value=0 <%-Math.floor(ele.product_price/ele.product_monthly_fee)==0?"selected":""%>>0
                                                 Months</option>
-                                            <option value="12" <%-ele.product_monthly_fee_period==12?"selected":""%>>12
+                                            <option value=12 <%-Math.floor(ele.product_price/ele.product_monthly_fee)==12?"selected":""%>>12
                                                 Months</option>
-                                            <option value="24" <%-ele.product_monthly_fee_period==24?"selected":""%>>24
+                                            <option value=24 <%-Math.floor(ele.product_price/ele.product_monthly_fee)==24?"selected":""%>>24
                                                 Months</option>
                                         </select>
                                     </td>
@@ -170,8 +171,11 @@
         </div>
         <script>
             $(".monthly_fee").on("change", (e) => {
-                if (e.target.id && confirm("Do you want to change current monthly fee of your product ?")) {
-                    axios.post(`/products/targetProductEdit/${e.target.id}`, { product_monthly_fee_period: e.target.value })
+                let actual_price = e.target.parentElement.parentElement.children[6].children[0].innerText * 1;
+                let monthly_fee = Math.floor(actual_price/(e.target.value*1))
+                monthly_fee=(e.target.value*1)==0?actual_price:monthly_fee
+                if (e.target.id && confirm(`Do you want to change current monthly fee  of your product to ($${monthly_fee}) ?`)) {
+                    axios.post(`/products/targetProductEdit/${e.target.id}`, { product_monthly_fee:monthly_fee })
                 }
             })
             $(".new_released").on("change", (e) => {
@@ -197,4 +201,4 @@
             })
         </script>
     </body>
-    <%-include("./includes/footer")%>
+<%-include("./includes/footer")%>

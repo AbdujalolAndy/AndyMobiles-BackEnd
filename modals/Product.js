@@ -50,47 +50,77 @@ class Product {
 
   async getTargetProductsData(queries) {
     try {
-      const match={};
-      match["product_status"]="PROCESS"
+      //Initilization Filter
+      const match = {};
+      match["product_status"] = "PROCESS";
       if (queries.company_id) {
         queries.company_id = shapeMongooseObjectId(queries?.company_id);
         match["company_id"] = queries.company_id;
       }
       const pipelines = [];
       pipelines.push({ $match: match });
+      const sort = {};
+      //Top Filter
       switch (queries.order) {
         case "lowToHigh":
-          pipelines.push({ $sort: { product_price: 1 } });
+          sort["product_price"] = 1;
+          pipelines.push({ $sort: sort });
           break;
         case "highToLow":
-          pipelines.push({ $sort: { product_price: -1 } });
+          sort["product_price"] = -1;
+          pipelines.push({ $sort: sort });
           break;
         case "newToOld":
-          pipelines.push({ $sort: { createdAt: -1 } });
+          sort["createdAt"] = -1;
+          pipelines.push({ $sort: sort });
           break;
         case "oldToNew":
-          pipelines.push({ $sort: { createdAt: 1 } });
+          sort["createdAt"] = 1;
+          pipelines.push({ $sort: sort });
           break;
         case "like":
-          pipelines.push({ $sort: { product_likes: -1 } });
+          sort["product_likes"] = -1;
+          pipelines.push({ $sort: sort });
           break;
         case "view":
-          pipelines.push({ $sort: { product_views: -1 } });
+          sort["product_views"] = -1;
+          pipelines.push({ $sort: sort });
           break;
         case "new":
-          match["product_new_released"]= "Y";
+          match["product_new_released"] = "Y";
           break;
         case "random":
-          pipelines.push({ $sample: { size: queries.limit*1 } });
+          pipelines.push({ $sample: { size: queries.limit * 1 } });
           break;
         default:
           break;
       }
+
+      //Left Filter
+      if (queries.minPrice && queries.maxPrice) {
+        match["product_price"] = {
+          $gte: queries.minPrice * 1,
+          $lte: queries.maxPrice * 1,
+        };
+      }
       if (queries.page) {
         pipelines.push({ $skip: (queries.page * 1 - 1) * queries.limit });
       }
+      if (queries.color) {
+        match["product_color"] = queries.color;
+      }
+      if (queries.minMonthlyFee && queries.maxMonthlyFee) {
+        sort["product_monthly_fee"] = {
+          $gte: queries.minMonthlyFee*1,
+          $lte: queries.maxMonthlyFee*1,
+        };
+      }
+      if (queries.storage) {
+        match["product_storage"] = queries.storage * 1;
+      }
+      // Final result
       pipelines.push({ $limit: queries.limit * 1 });
-      const result = await this.productModel.aggregate(pipelines);
+      const result = await this.productModel.aggregate(pipelines).exec();
       return result;
     } catch (err) {
       throw err;
