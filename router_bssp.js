@@ -47,10 +47,12 @@ router
     productController.updateProduct
   );
 //Community related API
-router.post(
-  "/blogs/createBlog",
-  memberController.memberRetrieve,
-  photoImageUploaderCommunity.single("blog_image"),
-  communityController.createPost
-);
+router
+  .post(
+    "/blogs/createBlog",
+    memberController.memberRetrieve,
+    photoImageUploaderCommunity.single("blog_image"),
+    communityController.createPost
+  )
+  .get("/blogs/getTargetBlogs", communityController.getTargetBlogs);
 module.exports = router;

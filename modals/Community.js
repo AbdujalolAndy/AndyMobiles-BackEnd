@@ -11,7 +11,7 @@ class Community {
   async createPostData(member, file, data) {
     try {
       const mb_id = shapeMongooseObjectId(member._id);
-      console.log(mb_id)
+      console.log(mb_id);
       data.blog_image = file.pathname;
       const blog = new this.communityModel({
         mb_id: mb_id,
@@ -22,6 +22,50 @@ class Community {
       assert(blog, Definer.smth_err1);
       const result = await blog.save();
       return result;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  async getTargetBlogsData(queries) {
+    try {
+      //Matching
+      const match = {};
+      match.blog_status = "ACTIVE";
+      if (queries.order && queries.order !== "ALL") {
+        match.blog_category = queries.order;
+      }
+
+      //Filtering
+      const sort = {};
+      switch (queries.filter) {
+        case "newToOld":
+          sort["createdAt"] = -1;
+          break;
+        case "oldToNew":
+          sort["createdAt"] = 1;
+          break;
+        default:
+          break;
+      }
+
+      //Final Return
+      const limit = queries.limit * 1,
+        targetBlogs = await this.communityModel
+          .aggregate([
+            { $match: match },
+            { $sort: sort },
+            { $skip: (queries.page * 1 - 1) * queries.limit * 1 },
+            { $limit: queries.limit * 1 },
+            {$lookup:{
+              from:"members",
+              localField:"mb_id",
+              foreignField:"_id",
+              as:"mb_data"
+            }}
+          ])
+          .exec();
+      return targetBlogs;
     } catch (err) {
       throw err;
     }

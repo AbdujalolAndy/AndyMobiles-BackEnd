@@ -1,5 +1,5 @@
 const { Schema, model } = require("mongoose");
-const { blog_category_enums } = require("../lib/enums");
+const { blog_category_enums, blog_status_enums } = require("../lib/enums");
 
 const communitySchema = new Schema(
   {
@@ -13,7 +13,7 @@ const communitySchema = new Schema(
     },
     blog_category: {
       type: String,
-      required:true,
+      required: true,
       enum: {
         values: blog_category_enums,
         message: "{VALUE} is not among permitted enum list",
@@ -34,6 +34,14 @@ const communitySchema = new Schema(
     blog_comments: {
       type: Number,
       default: 0,
+    },
+    blog_status: {
+      type: String,
+      default: "ACTIVE",
+      enum: {
+        values: blog_status_enums,
+        message: "{VALUE} is not among permitted enum list",
+      },
     },
   },
   { timestamps: true }

@@ -19,3 +19,15 @@ communityController.createPost = async (req, res) => {
     res.json({ state: "fail", message: err.message });
   }
 };
+
+communityController.getTargetBlogs = async (req, res) => {
+  try {
+    const queries = req.query,
+      community = new Community(),
+      result = await community.getTargetBlogsData(queries);
+    res.json({ state: "success", value: result });
+  } catch (err) {
+    console.log(`ERROR: cont/getTargetBlogs, ${err.message}`);
+    res.json({ state: "fail", message: err.message });
+  }
+};
