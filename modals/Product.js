@@ -95,6 +95,10 @@ class Product {
         default:
           break;
       }
+      //Searching Item
+      if(queries.search){
+        match["product_name"]=new RegExp("^"+queries.search,"i")
+      }
 
       //Left Filter
       if (queries.minPrice && queries.maxPrice) {
