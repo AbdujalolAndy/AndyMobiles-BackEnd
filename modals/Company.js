@@ -15,7 +15,7 @@ class Company {
         mb_nick: "Huwai",
       };
       if (queries.search) {
-        match["mb_nick"]= new RegExp("^" + queries.search, "i")
+        match["mb_nick"] = new RegExp("^" + queries.search, "i");
       }
       pipelines.push({ $match: match });
       pipelines.push({ $sort: { [queries.order]: -1 } });
