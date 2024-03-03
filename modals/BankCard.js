@@ -8,7 +8,7 @@ class BankCard {
     this.bankModel = bankInfoSchema;
   }
 
-  async createBankCard(member, data) {
+  async createBankCardData(member, data) {
     try {
       const mb_id = shapeMongooseObjectId(member._id);
       //Validate Card Number
@@ -28,6 +28,19 @@ class BankCard {
       });
       //mongodb database
       const result = await bankCard.save();
+      return result;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  async getAllbankCardData(member) {
+    try {
+      const mb_id = shapeMongooseObjectId(member._id);
+      const result = await this.bankModel.find({
+        mb_id: mb_id,
+        card_status: "ACTIVE",
+      }).exec();
       return result;
     } catch (err) {
       throw err;
