@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const memberController = require("./controllers/memberController");
+const companyController = require("./controllers/companyController");
 const productController = require("./controllers/productController");
 const photoImageUploaderProduct = require("./utilities/multerUploader")(
   "products"
@@ -12,6 +13,7 @@ const photoImageUploaderMember = require("./utilities/multerUploader")(
  *     BACKEND SERVER SINGLE PAGE      *
  *              Router                 *
  ***************************************/
+
 //Member related APIs
 router
   .post("/signup", memberController.signupJson)
@@ -23,7 +25,10 @@ router
     memberController.memberUpdate
   );
 
-//Product releted APIsX
+//Brands related API
+router.get("/brands/getTargetBrands", companyController.getTargetBrands);
+
+//Product releted APIs
 router
   .get("/products/getTargetProducts", productController.getTargetProducts)
   .post(
