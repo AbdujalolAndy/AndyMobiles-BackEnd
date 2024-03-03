@@ -2,11 +2,15 @@ const router = require("express").Router();
 const memberController = require("./controllers/memberController");
 const companyController = require("./controllers/companyController");
 const productController = require("./controllers/productController");
+const communityController = require("./controllers/communityController");
 const photoImageUploaderProduct = require("./utilities/multerUploader")(
   "products"
 );
 const photoImageUploaderMember = require("./utilities/multerUploader")(
   "members"
+);
+const photoImageUploaderCommunity = require("./utilities/multerUploader")(
+  "community"
 );
 
 /***************************************
@@ -42,5 +46,11 @@ router
     memberController.memberRetrieveEjs,
     productController.updateProduct
   );
-
+//Community related API
+router.post(
+  "/blogs/createBlog",
+  memberController.memberRetrieve,
+  photoImageUploaderCommunity.single("blog_image"),
+  communityController.createPost
+);
 module.exports = router;
