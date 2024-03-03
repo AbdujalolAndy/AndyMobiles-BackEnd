@@ -98,7 +98,6 @@ memberController.memberUpdate = async (req, res) => {
     const result = await member.memberUpdateData(req.member, req.file, data);
     assert.ok(result, Definer.smth_err1);
     const token = await memberController.createToken(result);
-    console.log(token);
     if (!data._id) {
       res.cookie("access_token", token, {
         maxAge: 1000 * 6 * 3600,

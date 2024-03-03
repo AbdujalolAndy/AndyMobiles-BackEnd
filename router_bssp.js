@@ -3,6 +3,7 @@ const memberController = require("./controllers/memberController");
 const companyController = require("./controllers/companyController");
 const productController = require("./controllers/productController");
 const communityController = require("./controllers/communityController");
+const bankCadController = require("./controllers/bankCardController")
 const photoImageUploaderProduct = require("./utilities/multerUploader")(
   "products"
 );
@@ -20,8 +21,8 @@ const photoImageUploaderCommunity = require("./utilities/multerUploader")(
 
 //Member related APIs
 router
-  .post("/signup", memberController.signupJson)
   .get("/login", memberController.loginJson)
+  .post("/signup", memberController.signupJson)
   .post(
     "/member/member-edit",
     memberController.memberRetrieve,
@@ -55,4 +56,11 @@ router
     communityController.createPost
   )
   .get("/blogs/getTargetBlogs", communityController.getTargetBlogs);
+
+//Bank Card related API
+router.post(
+  "/bankcards/createBankCard",
+  memberController.memberRetrieve,
+  bankCadController.createBankCard
+);
 module.exports = router;
