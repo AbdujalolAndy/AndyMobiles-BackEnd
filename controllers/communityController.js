@@ -6,6 +6,7 @@ const communityController = module.exports;
 
 communityController.createPost = async (req, res) => {
   try {
+    console.log(`POST: cont/createPost`);
     assert(req.member, Definer.auth_err5);
     const community = new Community();
     const result = await community.createPostData(
@@ -22,6 +23,7 @@ communityController.createPost = async (req, res) => {
 
 communityController.getTargetBlogs = async (req, res) => {
   try {
+    console.log(`GET: cont/getTargetBlogs`);
     const queries = req.query,
       community = new Community(),
       result = await community.getTargetBlogsData(queries);

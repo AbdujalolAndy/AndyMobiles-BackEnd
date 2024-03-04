@@ -12,7 +12,7 @@ notificationController.getNotifications = async (req, res) => {
       notifications: notifications,
     });
   } catch (err) {
-    console.log("ERROR: cont/getNotifications");
+    console.log(`ERROR: cont/getNotifications, ${err.message}`);
     res.json({ state: "fail", message: err.message });
   }
 };

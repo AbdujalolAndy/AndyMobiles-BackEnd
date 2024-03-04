@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const http = require("http");
+const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
 const express_session = require("express-session");
 const MongoDb_store = require("connect-mongodb-session")(express_session);
@@ -16,6 +17,7 @@ const store = new MongoDb_store({
 });
 
 //middlewares
+// app.use(morgan("tiny"));
 app.use(express.static("./public"));
 app.use("/uploads", express.static("./uploads"));
 app.use(express.json());
@@ -48,14 +50,14 @@ const io = require("socket.io")(server);
 const people = {};
 io.on("connection", (socket) => {
   const token = socket.handshake.headers.cookie
-  .split("; ")
-  .find((cookie) => cookie.startsWith("access_token="))
-  .split("=")[1];
+    .split("; ")
+    .find((cookie) => cookie.startsWith("access_token="))
+    .split("=")[1];
   const member = jwt.verify(token, process.env.SECRET_TOKEN);
   console.log("User connected::", member.mb_nick);
   people[member.mb_nick] = socket;
   socket.clientId = member.mb_nick;
-  io.emit("onlineUsers", {onlinePeople:Object.keys(people)})
+  io.emit("onlineUsers", { onlinePeople: Object.keys(people) });
 
   socket.on("new_msg", async (data) => {
     const { targetClientId, message, sender_image, reply_msg } = data;

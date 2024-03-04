@@ -25,10 +25,8 @@ productController.createProduct = async (req, res) => {
     ).format("YYYY-MM-DD");
     console.log(data.product_date_manufacture);
     const product = new Product();
-    const result = await product.createProductData(req.member, data);
-    console.log("new Product", result);
+    await product.createProductData(req.member, data);
     res.send(window.location.reload());
-    
   } catch (err) {
     console.log(`ERROR: cont/createProducts, ${err.message}`);
     res.json({ state: "fail", message: err.message });
@@ -55,7 +53,7 @@ productController.getAllProducts = async (req, res) => {
     assert.ok(req.member.mb_type === "COMPANY", Definer.smth_err1);
     const product = new Product();
     const allProducts = await product.getAllProductsData(req.member, req.query);
-    console.log(req.member)
+    console.log(req.member);
     res.render("products", {
       member: req.member,
       poducts: allProducts,
@@ -69,6 +67,7 @@ productController.getAllProducts = async (req, res) => {
 
 productController.getTargetProducts = async (req, res) => {
   try {
+    console.log(`GET: cont/getTargetProducts`);
     const queries = req.query;
     const product = new Product();
     const result = await product.getTargetProductsData(queries);

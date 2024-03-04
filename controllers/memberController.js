@@ -12,7 +12,7 @@ memberController.home = async (req, res) => {
     console.log("GET: cont/home");
     res.render("home", { member: req.member });
   } catch (err) {
-    console.log("ERROR: cont/home");
+    console.log(`ERROR: cont/home, ${err.message}`);
     res.json({ state: "fail", message: err.message });
   }
 };
@@ -54,20 +54,22 @@ memberController.getAllCompanies = async (req, res) => {
 
 memberController.getAllUsers = async (req, res) => {
   try {
+    console.log("GET: cont/getAllUsers");
     const member = new Member();
     const result = await member.getAllUsersData(req.query.order);
     res.render("allUsers", {
       filterTitle: req.query.order,
       allUsers: result,
-      member:req.member
+      member: req.member,
     });
   } catch (err) {
-    console.log("ERROR: cont/getAllUsers");
+    console.log(`ERROR: cont/getAllUsers, ${err.message}`);
     res.json({ state: "fail", message: err.message });
   }
 };
 memberController.createToken = async (new_member) => {
   try {
+    console.log("CREATE: cont/createToken");
     const upload_data = {
       _id: new_member._id,
       mb_nick: new_member.mb_nick,
@@ -81,7 +83,7 @@ memberController.createToken = async (new_member) => {
       expiresIn: "6h",
     });
   } catch (err) {
-    console.log(err.message);
+    console.log(`ERROR: cont/createToken, ${err.message}`);
   }
 };
 
@@ -106,7 +108,7 @@ memberController.memberUpdate = async (req, res) => {
     }
     res.json({ state: "sucess", value: result });
   } catch (err) {
-    console.log("ERROR: cont/memberUpdate");
+    console.log(`ERROR: cont/memberUpdate, ${err.message}`);
     res.json({ state: "fail", message: err.message });
   }
 };
@@ -143,6 +145,7 @@ memberController.signup = async (req, res) => {
 
 memberController.login = async (req, res) => {
   try {
+    console.log(`GET: cont/login`);
     const data = req.body;
     const member = new Member();
     const result = await member.loginData(data);
@@ -199,10 +202,11 @@ memberController.loginJson = async (req, res) => {
 
 memberController.logout = async (req, res) => {
   try {
+    console.log("GET: cont/logout");
     res.cookie("access_token", null, { maxAge: 0, httpOnly: false });
     res.redirect("/admin/register");
   } catch (err) {
-    console.log("ERROR: cont/logout");
+    console.log(`ERROR: cont/logout, ${err.message}`);
     res.json({ state: "fail", message: err.message });
   }
 };
