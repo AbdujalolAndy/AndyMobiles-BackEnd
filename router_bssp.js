@@ -64,9 +64,14 @@ router
     memberController.memberRetrieve,
     bankCadController.createBankCard
   )
-  .get(
-    "/bankcards/getAllCards",
+  .post(
+    "/bankcards/bankCardEdit",
     memberController.memberRetrieve,
-    bankCadController.getAllBankCards
+    bankCadController.updateCard
+  )
+  .get(
+    "/bankcards/getTargetCard",
+    memberController.memberRetrieve,
+    bankCadController.getTargetCard
   );
 module.exports = router;

@@ -33,14 +33,29 @@ class BankCard {
       throw err;
     }
   }
-
-  async getAllbankCardData(member) {
+  async updateCardData(member, data) {
     try {
       const mb_id = shapeMongooseObjectId(member._id);
-      const result = await this.bankModel.find({
-        mb_id: mb_id,
-        card_status: "ACTIVE",
-      }).exec();
+      const result = await this.bankModel
+        .findOneAndUpdate({ mb_id: mb_id }, data, {
+          runValidators: true,
+          returnDocument: "after",
+        })
+        .exec();
+      return result;
+    } catch (err) {
+      throw err;
+    }
+  }
+  async getTargetCardData(member) {
+    try {
+      const mb_id = shapeMongooseObjectId(member._id);
+      const result = await this.bankModel
+        .find({
+          mb_id: mb_id,
+          card_status: "ACTIVE",
+        })
+        .exec();
       return result;
     } catch (err) {
       throw err;
