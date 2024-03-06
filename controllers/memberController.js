@@ -4,6 +4,7 @@ const token = require("jsonwebtoken");
 const Definer = require("../lib/Definer");
 const bcrypt = require("bcryptjs");
 const Product = require("../modals/Product");
+const Like = require("../modals/Like");
 
 const memberController = module.exports;
 
@@ -220,6 +221,20 @@ memberController.checkAuthentification = async (req, res) => {
     res.json({ state: "success", data: authenticated_user_data });
   } catch (err) {
     console.log(`ERROR: cont/checkAuthentification, ${err.message}`);
+    res.json({ state: "fail", message: err.message });
+  }
+};
+
+//Liked item API'S CALLBACK
+memberController.likeChosenItem = async (req, res) => {
+  try {
+    console.log("POST: cont/likeChosenItem");
+    assert.ok(req.member, Definer.auth_err5);
+    const like = new Like();
+    const result = await like.likeChosenItemData(req.member, req.body);
+    res.json({ state: "success", value: result });
+  } catch (err) {
+    console.log(`ERROR: cont/likeChosenItem, ${err.message}`);
     res.json({ state: "fail", message: err.message });
   }
 };

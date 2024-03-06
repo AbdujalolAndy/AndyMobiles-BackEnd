@@ -4,6 +4,7 @@ const companyController = require("./controllers/companyController");
 const productController = require("./controllers/productController");
 const communityController = require("./controllers/communityController");
 const bankCadController = require("./controllers/bankCardController");
+const orderController = require("./controllers/orderController");
 const photoImageUploaderProduct = require("./utilities/multerUploader")(
   "products"
 );
@@ -47,6 +48,7 @@ router
     memberController.memberRetrieveEjs,
     productController.updateProduct
   );
+
 //Community related API
 router
   .post(
@@ -74,4 +76,21 @@ router
     memberController.memberRetrieve,
     bankCadController.getTargetCard
   );
+
+//Like Item related APIs
+router.post(
+  "/liked-item",
+  memberController.memberRetrieve,
+  memberController.likeChosenItem
+);
+
+//WishList related APIs
+router.get(
+  "/wishlist/getTargetWishItems",
+  memberController.memberRetrieve,
+  orderController.getTargetWishItems
+);
+
+//Order Related APIs
+router.post("/orders/createOrder");
 module.exports = router;
