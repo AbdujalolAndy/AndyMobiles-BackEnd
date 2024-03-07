@@ -12,15 +12,3 @@ orderController.createOrder = async(req, res)=>{
         console.log(`ERROR: cont/createOrder, ${err.message}`)
     }
 }
-
-orderController.getTargetWishItems=async(req, res)=>{
-    try{
-        console.log("GET: cont/getTargetWishItems");
-        assert.ok(req.member, Definer.auth_err5);
-        const likedItems = new Like();
-        
-    }catch(err){
-        console.log(`ERROR: cont/getTargetWishItems, ${err.message}`)
-        res.json({state:"fail", message:err.message})
-    }
-}

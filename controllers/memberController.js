@@ -239,6 +239,19 @@ memberController.likeChosenItem = async (req, res) => {
   }
 };
 
+memberController.getAllWishedList = async (req, res) => {
+  try {
+    console.log("GET: cont/getAllWishList");
+    assert.ok(req.member, Definer.auth_err5);
+    const member = new Member();
+    const result = await member.getAllWishedItems(req.member);
+    res.json({ state: "success", value: result });
+  } catch (err) {
+    console.log(`ERROR: cont/getAllWishList, ${err.message}`);
+    res.json({ state: "fail", message: err.message });
+  }
+};
+
 memberController.memberRetrieveEjs = (req, res, next) => {
   if (req.cookies.access_token) {
     req.member = token.verify(

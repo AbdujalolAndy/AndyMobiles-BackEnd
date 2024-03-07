@@ -86,9 +86,9 @@ router.post(
 
 //WishList related APIs
 router.get(
-  "/wishlist/getTargetWishItems",
+  "/wishlist/getAllWishedItems",
   memberController.memberRetrieve,
-  orderController.getTargetWishItems
+  memberController.getAllWishedList
 );
 
 //Order Related APIs

@@ -94,18 +94,20 @@ class Like {
       let result;
       switch (like_group) {
         case "member":
-          result =await this.memberModel
+          result = await this.memberModel
             .findOneAndUpdate(
               { _id: like_item_id, mb_status: "ACTIVE" },
-              { $inc: { mb_likes: modifier } }
+              { $inc: { mb_likes: modifier } },
+              { returnDocument: "after" }
             )
             .exec();
           break;
         case "product":
-          result =await this.productModel
+          result = await this.productModel
             .findOneAndUpdate(
               { _id: like_item_id, product_status: "PROCESS" },
-              { $inc: { product_likes: modifier } }
+              { $inc: { product_likes: modifier } },
+              { returnDocument: "after" }
             )
             .exec();
           break;
@@ -113,14 +115,15 @@ class Like {
           result = await this.communityModel
             .findOneAndUpdate(
               { _id: like_item_id, blog_status: "ACTIVE" },
-              { $inc: { blog_likes: modifier } }
+              { $inc: { blog_likes: modifier } },
+              { returnDocument: "after" }
             )
             .exec();
           break;
         default:
           break;
       }
-      return result
+      return result;
     } catch (err) {
       throw err;
     }
@@ -128,7 +131,7 @@ class Like {
 
   async addLikeChosenItem(mb_id, like_group, like_item_id) {
     try {
-      const likedItem =new this.likeModel({
+      const likedItem = new this.likeModel({
         mb_id: mb_id,
         like_item_id: like_item_id,
         like_group: like_group,

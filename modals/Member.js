@@ -3,10 +3,12 @@ const bcrypt = require("bcryptjs");
 const MemberSchema = require("../schema/memberSchema");
 const Definer = require("../lib/Definer");
 const { shapeMongooseObjectId } = require("../lib/convert");
+const LikeSchema = require("../schema/likeSchema");
 
 class Member {
   constructor() {
     this.memberModel = MemberSchema;
+    this.likeModel = LikeSchema;
   }
 
   async signupData(data) {
@@ -104,6 +106,28 @@ class Member {
         .findByIdAndUpdate({ _id: id }, data, { returnDocument: "after" })
         .exec();
       return result;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  async getAllWishedItems(member, data) {
+    try {
+      const mb_id = shapeMongooseObjectId(member._id);
+      const wishedItems = await this.likeModel
+        .aggregate([
+          { $match: { mb_id: mb_id, like_group: "product" } },
+          {
+            $lookup: {
+              from: "products",
+              localField: "like_item_id",
+              foreignField: "_id",
+              as: "product_data",
+            },
+          },
+        ])
+        .exec();
+      return wishedItems;
     } catch (err) {
       throw err;
     }
