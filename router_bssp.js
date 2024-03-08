@@ -5,6 +5,7 @@ const productController = require("./controllers/productController");
 const communityController = require("./controllers/communityController");
 const bankCadController = require("./controllers/bankCardController");
 const orderController = require("./controllers/orderController");
+const followController = require("./controllers/followController")
 const photoImageUploaderProduct = require("./utilities/multerUploader")(
   "products"
 );
@@ -83,6 +84,18 @@ router.post(
   memberController.memberRetrieve,
   memberController.likeChosenItem
 );
+
+//Following
+router
+  .post(
+    "/follow/following",
+    memberController.memberRetrieve,
+    followController.followMember
+  )
+  .get(
+    "/follow/getFollowingMembers",
+   followController.getFollowingMembers
+  );
 
 //WishList related APIs
 router.get(

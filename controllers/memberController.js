@@ -1,10 +1,11 @@
-const assert = require("assert");
 const Member = require("../modals/Member");
 const token = require("jsonwebtoken");
 const Definer = require("../lib/Definer");
 const bcrypt = require("bcryptjs");
 const Product = require("../modals/Product");
 const Like = require("../modals/Like");
+const Follow = require("../modals/Follow");
+const assert = require("assert");
 
 const memberController = module.exports;
 
@@ -251,6 +252,7 @@ memberController.getAllWishedList = async (req, res) => {
     res.json({ state: "fail", message: err.message });
   }
 };
+
 
 memberController.memberRetrieveEjs = (req, res, next) => {
   if (req.cookies.access_token) {
