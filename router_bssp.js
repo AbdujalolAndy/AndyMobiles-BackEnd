@@ -93,9 +93,14 @@ router
     followController.followMember
   )
   .get(
-    "/follow/getFollowingMembers",
+    "/follow/followings",
     memberController.memberRetrieve,
     followController.getFollowingMembers
+  )
+  .get(
+    "/follow/followers",
+    memberController.memberRetrieve,
+    followController.getFollowerMembers
   );
 
 //WishList related APIs

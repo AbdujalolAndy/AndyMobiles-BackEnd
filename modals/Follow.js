@@ -82,27 +82,27 @@ class Follow {
 
   async modifyFollowCount(mb_id, other_mb_id, modifier) {
     try {
-        await this.memberModel
-          .findOneAndUpdate(
-            { _id: mb_id },
-            { $inc: { mb_followings: modifier } },
-            { returnDocument: "after" }
-          )
-          .exec()
-        await this.memberModel
-          .findOneAndUpdate(
-            { _id: other_mb_id },
-            { $inc: { mb_followers: modifier } },
-            { returnDocument: "after" }
-          )
-          .exec()
+      await this.memberModel
+        .findOneAndUpdate(
+          { _id: mb_id },
+          { $inc: { mb_followings: modifier } },
+          { returnDocument: "after" }
+        )
+        .exec();
+      await this.memberModel
+        .findOneAndUpdate(
+          { _id: other_mb_id },
+          { $inc: { mb_followers: modifier } },
+          { returnDocument: "after" }
+        )
+        .exec();
     } catch (err) {
       throw err;
     }
   }
-  async getFollowingMembersData(member, data) {
+  async getFollowingMembersData(data) {
     try {
-      const mb_id = shapeMongooseObjectId(member._id);
+      const mb_id = shapeMongooseObjectId(data.mb_id);
       const followers = await this.followModel.aggregate([
         { $match: { following_id: mb_id } },
         {
@@ -110,14 +110,37 @@ class Follow {
             from: "members",
             localField: "follower_id",
             foreignField: "_id",
+            pipeline: [{ $match: { mb_status: "ACTIVE", mb_type: "USER" } }],
             as: "member_data",
           },
         },
         { $skip: (data.page * 1 - 1) * data.limit },
         { $limit: data.limit * 1 },
-        { $unwind: "$member_data" },
       ]);
       return followers;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  async getFollowerMembersData(data) {
+    try {
+      const mb_id = shapeMongooseObjectId(data.mb_id);
+      const result = await this.followModel.aggregate([
+        { $match: { follower_id: mb_id } },
+        {
+          $lookup: {
+            from: "members",
+            localField: "following_id",
+            foreignField: "_id",
+            pipeline: [{ $match: { mb_status: "ACTIVE", mb_type: "USER" } }],
+            as: "member_data",
+          },
+        },
+        { $skip: (data.page * 1 - 1) * (data.limit * 1) },
+        { $limit: data.limit * 1 },
+      ]);
+      return result;
     } catch (err) {
       throw err;
     }
