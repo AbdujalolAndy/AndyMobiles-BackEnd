@@ -21,7 +21,7 @@ orderController.updateOrder = async (req, res) => {
   try {
     console.log("POST: cont/updateOrder");
     assert.ok(req.member, Definer.auth_err5);
-    const data = req.body;
+    const data = req.query;
     const order = new Order();
     const result = await order.updateOrderData(data);
     res.json({ state: "success", value: result });

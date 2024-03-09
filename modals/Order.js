@@ -95,9 +95,9 @@ class Order {
   }
   async updateOrderData(data) {
     try {
-      data.order_id = shapeMongooseObjectId(data.order_id);
+      data.id = shapeMongooseObjectId(data.id);
       const updatedOrder = await this.orderModel
-        .findOneAndUpdate({ _id: data.order_id }, data, {
+        .findOneAndUpdate({ _id: data.id }, data, {
           returnDocument: "after",
         })
         .exec();
