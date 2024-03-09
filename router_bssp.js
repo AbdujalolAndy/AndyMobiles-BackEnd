@@ -16,6 +16,7 @@ const photoImageUploaderCommunity = require("./utilities/multerUploader")(
   "community"
 );
 
+
 /***************************************
  *     BACKEND SERVER SINGLE PAGE      *
  *              Router                 *
@@ -63,17 +64,17 @@ router
 //Bank Card related API
 router
   .post(
-    "/bankcards/createBankCard",
+    "/bankcard/createBankCard",
     memberController.memberRetrieve,
     bankCadController.createBankCard
   )
   .post(
-    "/bankcards/bankCardEdit",
+    "/bankcard/bankCardEdit",
     memberController.memberRetrieve,
     bankCadController.updateCard
   )
   .get(
-    "/bankcards/getTargetCard",
+    "/bankcard/getTargetCard",
     memberController.memberRetrieve,
     bankCadController.getTargetCard
   );
@@ -111,5 +112,9 @@ router.get(
 );
 
 //Order Related APIs
-router.post("/orders/createOrder");
+router.post(
+  "/orders/createOrder",
+  memberController.memberRetrieve,
+  orderController.createOrder
+);
 module.exports = router;
