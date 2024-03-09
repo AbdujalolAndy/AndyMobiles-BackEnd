@@ -126,5 +126,10 @@ router
     "/orders/getAllOrders",
     memberController.memberRetrieve,
     orderController.getAllOrders
+  )
+  .get(
+    "/orders/getTargetOrder/:id",
+    memberController.memberRetrieve,
+    orderController.getTargetOrder
   );
 module.exports = router;

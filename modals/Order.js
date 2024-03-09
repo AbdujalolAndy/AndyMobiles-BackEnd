@@ -39,7 +39,7 @@ class Order {
         order_delivery_cost: order_delivery_cost,
         order_total_amount: order_total_amount,
         order_subtotal_amount: order_subtotal_amount,
-        order_product_qty:orders.length
+        order_product_qty: orders.length,
       };
       //Create order
       const order_id = await this.createOrderId(order_data);
@@ -79,26 +79,41 @@ class Order {
       const mb_id = shapeMongooseObjectId(member._id);
       //filter~page,limit,search
       const match = {};
-      match.mb_id=mb_id;
-      if(filter.search){
-        match.order_code = new RegExp("^"+filter.search,"i")
+      match.mb_id = mb_id;
+      if (filter.search) {
+        match.order_code = new RegExp("^" + filter.search, "i");
       }
-      const orders = await this.orderModel.aggregate([
-        {$match:match},
-        {$skip:((filter.page*1)-1)*(filter.limit*1)},
-        {$limit:filter.limit*1}
-      ]).exec()
-      return orders
+      const orders = await this.orderModel
+        .aggregate([
+          { $match: match },
+          { $skip: (filter.page * 1 - 1) * (filter.limit * 1) },
+          { $limit: filter.limit * 1 },
+        ])
+        .exec();
+      return orders;
     } catch (err) {
-      throw err
+      throw err;
     }
   }
-  async updateOrderData(data) {
+  async getTargetOrderData(member, data) {
     try {
-      data.id = shapeMongooseObjectId(data.id);
+      const mb_id = shapeMongooseObjectId(member._id);
+      const order_id = shapeMongooseObjectId(data.id);
+      const result = await this.orderModel
+        .findOne({ _id: order_id,mb_id:mb_id})
+        .exec();
+      return result;
+    } catch (err) {
+      throw err;
+    }
+  }
+  async updateOrderData(id,data) {
+    try {
+      const order_id = shapeMongooseObjectId(id);
       const updatedOrder = await this.orderModel
-        .findOneAndUpdate({ _id: data.id }, data, {
+        .findOneAndUpdate({ _id: order_id }, data, {
           returnDocument: "after",
+          runValidators:true
         })
         .exec();
       return updatedOrder;
