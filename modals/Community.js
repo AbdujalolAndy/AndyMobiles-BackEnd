@@ -35,6 +35,9 @@ class Community {
       if (queries.order && queries.order !== "ALL") {
         match.blog_category = queries.order;
       }
+      if (queries.mb_id) {
+        match.mb_id = shapeMongooseObjectId(queries.mb_id);
+      }
 
       //Filtering
       const sort = {};
@@ -57,12 +60,14 @@ class Community {
             { $sort: sort },
             { $skip: (queries.page * 1 - 1) * queries.limit * 1 },
             { $limit: queries.limit * 1 },
-            {$lookup:{
-              from:"members",
-              localField:"mb_id",
-              foreignField:"_id",
-              as:"mb_data"
-            }}
+            {
+              $lookup: {
+                from: "members",
+                localField: "mb_id",
+                foreignField: "_id",
+                as: "mb_data",
+              },
+            },
           ])
           .exec();
       return targetBlogs;
