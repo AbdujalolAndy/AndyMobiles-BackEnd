@@ -1,7 +1,7 @@
 const { shapeMongooseObjectId } = require("../lib/convert");
 const OrderItemSchema = require("../schema/orderItemSchema");
 const OrderSchema = require("../schema/orderSchema");
-const uuid = require("uuid")
+const uuid = require("uuid");
 
 class Order {
   constructor() {
@@ -13,7 +13,7 @@ class Order {
       //ToDo
       //shape Mongoose Object Id
       const mb_id = shapeMongooseObjectId(member._id);
-      const order_code = uuid.v1().slice(0,13)
+      const order_code = uuid.v1().slice(0, 13);
       //orders total amount
       let order_total_amount = 0;
       for (let order of orders) {
@@ -33,19 +33,20 @@ class Order {
       }
       const order_data = {
         mb_id: mb_id,
-        order_code:order_code,
+        order_code: order_code,
         order_delivery_cost: order_delivery_cost,
         order_status: "PAUSED",
         order_delivery_cost: order_delivery_cost,
         order_total_amount: order_total_amount,
         order_subtotal_amount: order_subtotal_amount,
+        order_product_qty:orders.length
       };
       //Create order
       const order_id = await this.createOrderId(order_data);
       //order_id to order every item
       await this.saveOrderItems(orders, order_id);
       //return order id
-      return order_id
+      return order_id;
     } catch (err) {
       throw err;
     }
@@ -60,17 +61,49 @@ class Order {
     }
   }
 
-  async saveOrderItems(orders,order_id){
-    try{
-      const promiseList=[]
-      orders.map((ele)=>{
-        ele.order_id = order_id._id
-        promiseList.push((new this.orderItemModel(ele)).save())
-      })
+  async saveOrderItems(orders, order_id) {
+    try {
+      const promiseList = [];
+      orders.map((ele) => {
+        ele.order_id = order_id._id;
+        promiseList.push(new this.orderItemModel(ele).save());
+      });
       const result = await Promise.all(promiseList);
-      return result
-    }catch(err){
+      return result;
+    } catch (err) {
+      throw err;
+    }
+  }
+  async getAllOrdersData(member, filter) {
+    try {
+      const mb_id = shapeMongooseObjectId(member._id);
+      //filter~page,limit,search
+      const match = {};
+      match.mb_id=mb_id;
+      if(filter.search){
+        match.order_code = new RegExp("^"+filter.search,"i")
+      }
+      const orders = await this.orderModel.aggregate([
+        {$match:match},
+        {$skip:((filter.page*1)-1)*(filter.limit*1)},
+        {$limit:filter.limit*1}
+      ]).exec()
+      return orders
+    } catch (err) {
       throw err
+    }
+  }
+  async updateOrderData(data) {
+    try {
+      data.order_id = shapeMongooseObjectId(data.order_id);
+      const updatedOrder = await this.orderModel
+        .findOneAndUpdate({ _id: data.order_id }, data, {
+          returnDocument: "after",
+        })
+        .exec();
+      return updatedOrder;
+    } catch (err) {
+      throw err;
     }
   }
 }

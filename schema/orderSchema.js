@@ -29,6 +29,10 @@ const OrderSchema = new Schema(
     order_subtotal_amount: {
       type: Number,
     },
+    order_product_qty:{
+      type:Number,
+      required:true
+    }
   },
   { timestamps: true }
 );

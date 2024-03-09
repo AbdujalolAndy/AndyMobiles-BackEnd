@@ -16,7 +16,6 @@ const photoImageUploaderCommunity = require("./utilities/multerUploader")(
   "community"
 );
 
-
 /***************************************
  *     BACKEND SERVER SINGLE PAGE      *
  *              Router                 *
@@ -112,9 +111,20 @@ router.get(
 );
 
 //Order Related APIs
-router.post(
-  "/orders/createOrder",
-  memberController.memberRetrieve,
-  orderController.createOrder
-);
+router
+  .post(
+    "/orders/createOrder",
+    memberController.memberRetrieve,
+    orderController.createOrder
+  )
+  .post(
+    "/orders/editOrder/:id",
+    memberController.memberRetrieve,
+    orderController.updateOrder
+  )
+  .get(
+    "/orders/getAllOrders",
+    memberController.memberRetrieve,
+    orderController.getAllOrders
+  );
 module.exports = router;
