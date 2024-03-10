@@ -44,3 +44,18 @@ bankCadController.getTargetCard = async (req, res) => {
     res.json({ state: "fail", message: err.message });
   }
 };
+
+bankCadController.transaction = async (req, res) => {
+  try {
+    console.log("POST: cont/transaction");
+    assert.ok(req.member, Definer.auth_err5);
+    const order_id = req.params.id;
+    const data = req.body;
+    const bankCard = new BankCard();
+    const result = await bankCard.transactionData(req.member, order_id, data);
+    res.json({ state: "sucess", value: result });
+  } catch (err) {
+    console.log(`ERROR: cont/transaction, ${err.message}`);
+    res.json({ state: "fail", message: err.message });
+  }
+};

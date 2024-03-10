@@ -3,7 +3,7 @@ const memberController = require("./controllers/memberController");
 const companyController = require("./controllers/companyController");
 const productController = require("./controllers/productController");
 const communityController = require("./controllers/communityController");
-const bankCadController = require("./controllers/bankCardController");
+const bankCardController = require("./controllers/bankCardController");
 const orderController = require("./controllers/orderController");
 const followController = require("./controllers/followController");
 const photoImageUploaderProduct = require("./utilities/multerUploader")(
@@ -65,17 +65,17 @@ router
   .post(
     "/bankcard/createBankCard",
     memberController.memberRetrieve,
-    bankCadController.createBankCard
+    bankCardController.createBankCard
   )
   .post(
     "/bankcard/bankCardEdit",
     memberController.memberRetrieve,
-    bankCadController.updateCard
+    bankCardController.updateCard
   )
   .get(
     "/bankcard/getTargetCard",
     memberController.memberRetrieve,
-    bankCadController.getTargetCard
+    bankCardController.getTargetCard
   );
 
 //Like Item related APIs
@@ -132,4 +132,11 @@ router
     memberController.memberRetrieve,
     orderController.getTargetOrder
   );
+
+//Transaction
+router.post(
+  "/bankCard/transaction/:id",
+  memberController.memberRetrieve,
+  bankCardController.transaction
+);
 module.exports = router;

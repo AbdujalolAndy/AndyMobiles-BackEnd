@@ -32,6 +32,15 @@ const OrderSchema = new Schema(
     order_product_qty:{
       type:Number,
       required:true
+    }, 
+    order_delivery_address:{
+      type:String,
+    },
+    order_owner_name:{
+      type:String,
+    },
+    order_delivery_postal:{
+      type:Number,
     }
   },
   { timestamps: true }
