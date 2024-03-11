@@ -70,7 +70,6 @@ class BankCard {
       const order_id = shapeMongooseObjectId(id);
       let transaction;
       const isDataEmpty = !!Object.keys(data)[0]
-      console.log(isDataEmpty)
       if (!isDataEmpty) {
         //Exsist bank card
         const existCard = await this.bankModel.findOne({ mb_id: mb_id }).exec();

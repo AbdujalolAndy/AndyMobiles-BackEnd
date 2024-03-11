@@ -1,11 +1,13 @@
 const assert = require("assert");
 const { shapeMongooseObjectId } = require("../lib/convert");
 const CommunitySchema = require("../schema/communityShema");
+const ReviewSchema = require("../schema/reviewSchema");
 const Definer = require("../lib/Definer");
 
 class Community {
   constructor() {
     this.communityModel = CommunitySchema;
+    this.reviewModel = ReviewSchema;
   }
 
   async createPostData(member, file, data) {
@@ -71,6 +73,23 @@ class Community {
           ])
           .exec();
       return targetBlogs;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  async createReviewData(member, id, data) {
+    try {
+      const mb_id = shapeMongooseObjectId(member._id),
+        item_id = shapeMongooseObjectId(id);
+      const review = new this.reviewModel({
+        mb_id: mb_id,
+        review_target_id: item_id,
+        review_context: data.review_context,
+        review_stars: data.review_stars
+      });
+      const result = await review.save();
+      return result;
     } catch (err) {
       throw err;
     }

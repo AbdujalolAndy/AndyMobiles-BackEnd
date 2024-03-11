@@ -3,6 +3,7 @@ const LikeSchema = require("../schema/likeSchema");
 const MemberSchema = require("../schema/memberSchema");
 const ProductSchema = require("../schema/productSchema");
 const CommunitySchema = require("../schema/communityShema");
+const ReviewSchema = require("../schema/reviewSchema");
 const Definer = require("../lib/Definer");
 const assert = require("assert");
 
@@ -12,6 +13,7 @@ class Like {
     this.memberModel = MemberSchema;
     this.productModel = ProductSchema;
     this.communityModel = CommunitySchema;
+    this.reviewModel = ReviewSchema;
   }
 
   async likeChosenItemData(member, data) {
@@ -27,7 +29,6 @@ class Like {
       assert.ok(validateItem, Definer.smth_err1);
       //Does exsist in likes
       const doesExist = await this.exsistLikedItem(
-        mb_id,
         like_item_id,
         like_group
       );
@@ -49,7 +50,7 @@ class Like {
   async validateLikedItem(like_item_id, like_group) {
     try {
       let result;
-      switch (like_group) {
+      switch (like_group.toLowerCase()) {
         case "member":
           result = await this.memberModel
             .find({ _id: like_item_id, mb_status: "ACTIVE" })
@@ -65,6 +66,11 @@ class Like {
             .find({ _id: like_item_id, blog_status: "ACTIVE" })
             .exec();
           break;
+        case "review":
+          result = await this.reviewModel
+            .find({ _id: like_item_id })
+            .exec();
+          break;
         default:
           break;
       }
@@ -74,11 +80,10 @@ class Like {
     }
   }
 
-  async exsistLikedItem(member, like_item_id, like_group) {
+  async exsistLikedItem( like_item_id, like_group) {
     try {
       const result = await this.likeModel
         .find({
-          mb_id: member,
           like_item_id: like_item_id,
           like_group: like_group,
         })
@@ -92,7 +97,7 @@ class Like {
   async modifyLikeCount(like_item_id, like_group, modifier) {
     try {
       let result;
-      switch (like_group) {
+      switch (like_group.toLowerCase()) {
         case "member":
           result = await this.memberModel
             .findOneAndUpdate(
@@ -116,6 +121,15 @@ class Like {
             .findOneAndUpdate(
               { _id: like_item_id, blog_status: "ACTIVE" },
               { $inc: { blog_likes: modifier } },
+              { returnDocument: "after" }
+            )
+            .exec();
+          break;
+        case "review":
+          result = await this.reviewModel
+            .findOneAndUpdate(
+              { _id: like_item_id },
+              { $inc: { review_likes: modifier } },
               { returnDocument: "after" }
             )
             .exec();

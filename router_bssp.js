@@ -59,7 +59,12 @@ router
     communityController.createPost
   )
   .get("/blogs/getTargetBlogs", communityController.getTargetBlogs);
-
+//Community Reviews
+router.post(
+  "/review/createReview/:item_id",
+  memberController.memberRetrieve,
+  communityController.createReview
+);
 //Bank Card related API
 router
   .post(
@@ -139,4 +144,5 @@ router.post(
   memberController.memberRetrieve,
   bankCardController.transaction
 );
+
 module.exports = router;
