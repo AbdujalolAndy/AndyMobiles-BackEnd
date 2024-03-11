@@ -96,8 +96,8 @@ class Product {
           break;
       }
       //Searching Item
-      if(queries.search){
-        match["product_name"]=new RegExp("^"+queries.search,"i")
+      if (queries.search) {
+        match["product_name"] = new RegExp("^" + queries.search, "i");
       }
 
       //Left Filter
@@ -115,8 +115,8 @@ class Product {
       }
       if (queries.minMonthlyFee && queries.maxMonthlyFee) {
         sort["product_monthly_fee"] = {
-          $gte: queries.minMonthlyFee*1,
-          $lte: queries.maxMonthlyFee*1,
+          $gte: queries.minMonthlyFee * 1,
+          $lte: queries.maxMonthlyFee * 1,
         };
       }
       if (queries.storage) {
@@ -126,6 +126,27 @@ class Product {
       pipelines.push({ $limit: queries.limit * 1 });
       const result = await this.productModel.aggregate(pipelines).exec();
       return result;
+    } catch (err) {
+      throw err;
+    }
+  }
+  async getChosenProductData(product_id) {
+    try {
+      const id = shapeMongooseObjectId(product_id);
+      const product = await this.productModel
+        .aggregate([
+          { $match: { _id: id } },
+          {
+            $lookup: {
+              from: "members",
+              localField: "company_id",
+              foreignField: "_id",
+              as: "company_data",
+            },
+          },
+        ])
+        .exec();
+      return product;
     } catch (err) {
       throw err;
     }

@@ -38,6 +38,10 @@ router.get("/brands/getTargetBrands", companyController.getTargetBrands);
 //Product releted APIs
 router
   .get("/products/getTargetProducts", productController.getTargetProducts)
+  .get(
+    "/product/getChosenProduct/:product_id",
+    productController.getChosenProduct
+  )
   .post(
     "/product/create-product",
     memberController.memberRetrieve,

@@ -77,3 +77,16 @@ productController.getTargetProducts = async (req, res) => {
     res.json({ state: "fail", message: err.message });
   }
 };
+
+productController.getChosenProduct = async (req, res) => {
+  try {
+    console.log("GET: CONT/getChosenProduct");
+    const product_id = req.params.product_id;
+    const product = new Product();
+    const result = await product.getChosenProductData(product_id);
+    res.json({ state: "success", value: result });
+  } catch (err) {
+    console.log(`ERROR: cont/getChosenProduct, ${err.message}`);
+    res.json({ state: "fail", message: err.message });
+  }
+};
