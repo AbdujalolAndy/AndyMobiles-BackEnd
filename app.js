@@ -10,6 +10,7 @@ const router_bssp = require("./router_bssp");
 const jwt = require("jsonwebtoken");
 const NotificationModel = require("./schema/notificationSchema");
 const memberSchema = require("./schema/memberSchema");
+const cors = require("cors");
 
 const store = new MongoDb_store({
   uri: process.env.MONGODB_URL,
@@ -36,6 +37,15 @@ app.use(
     saveUninitialized: true,
   })
 );
+
+//Permission to outside APIs
+app.use(
+  cors({
+    origin: true,
+    credentials: true,
+  })
+);
+
 //view engine
 app.set("./views", "./views");
 app.set("view engine", "ejs");

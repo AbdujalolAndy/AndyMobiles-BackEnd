@@ -213,6 +213,16 @@ memberController.logout = async (req, res) => {
   }
 };
 
+memberController.logoutProcess = async (req, res) => {
+  try {
+    console.log("GET: cont/logoutProcess");
+    res.cookie("access_token", null, { maxAge: 0, httpOnly: false });
+  } catch (err) {
+    console.log(`ERROR: cont/logoutProcess, ${err.message}`);
+    res.json({ state: "fail", message: err });
+  }
+};
+
 memberController.checkAuthentification = async (req, res) => {
   try {
     console.log("GET: cont/checkAuthentification");
@@ -252,7 +262,6 @@ memberController.getAllWishedList = async (req, res) => {
     res.json({ state: "fail", message: err.message });
   }
 };
-
 
 memberController.memberRetrieveEjs = (req, res, next) => {
   if (req.cookies.access_token) {

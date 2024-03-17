@@ -23,8 +23,9 @@ const photoImageUploaderCommunity = require("./utilities/multerUploader")(
 
 //Member related APIs
 router
-  .get("/login", memberController.loginJson)
+  .post("/login", memberController.loginJson)
   .post("/signup", memberController.signupJson)
+  .get("/logout", memberController.memberRetrieve, memberController.logout)
   .post(
     "/member/member-edit",
     memberController.memberRetrieve,

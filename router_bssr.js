@@ -12,7 +12,7 @@ const notificationController = require("./controllers/notificationController");
 router
   .post("/signup", memberController.signup)
   .post("/login", memberController.login)
-  .get("/logout", memberController.logout)
+  .get("/logout", memberController.memberRetrieveEjs, memberController.logout)
   .get("/authentification", memberController.checkAuthentification)
   .get("/register", memberController.register)
   .get(

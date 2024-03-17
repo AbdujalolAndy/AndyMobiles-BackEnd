@@ -25,7 +25,13 @@ class Member {
 
   async loginData(data) {
     try {
-      const member = await this.memberModel.findOne({ mb_nick: data.mb_nick });
+      const match={mb_status:"ACTIVE"}
+      if (data.mb_nick) {
+        match.mb_nick = data.mb_nick;
+      } else {
+        match.mb_email = data.mb_email;
+      }
+      const member = await this.memberModel.findOne(match);
       assert.ok(member, Definer.auth_err1);
       const exsist_member = await bcrypt.compare(
         data.mb_password,

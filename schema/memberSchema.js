@@ -52,6 +52,7 @@ const memberSchema = new mongoose.Schema(
     mb_email: {
       type: String,
       default: "no Email address",
+      unique:true
     },
     mb_likes: {
       type: Number,
