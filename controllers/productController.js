@@ -26,7 +26,7 @@ productController.createProduct = async (req, res) => {
     console.log(data.product_date_manufacture);
     const product = new Product();
     await product.createProductData(req.member, data);
-    res.send(window.location.reload());
+    res.render("addProduct");
   } catch (err) {
     console.log(`ERROR: cont/createProducts, ${err.message}`);
     res.json({ state: "fail", message: err.message });
@@ -68,9 +68,9 @@ productController.getAllProducts = async (req, res) => {
 productController.getTargetProducts = async (req, res) => {
   try {
     console.log(`GET: cont/getTargetProducts`);
-    const queries = req.query;
+    const data = req.body;
     const product = new Product();
-    const result = await product.getTargetProductsData(queries);
+    const result = await product.getTargetProductsData(data);
     res.json({ state: "success", value: result });
   } catch (err) {
     console.log(`ERROR: cont/getTargetProducts, ${err.message}`);

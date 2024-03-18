@@ -363,7 +363,7 @@
                 <section id="price" class="product_name d-flex flex-column position-relative ">
                     <h1 class="fs-1 fom-label">How much your poduct costs?</h1>
                     <div class="input-group mt-5 w-50 m-auto">
-                        <input type="number" step="0.01" min="100" max="4000" name="product_price"
+                        <input type="number" step="0.001" min="100" max="4000000" name="product_price"
                             class="form-control p-3 actual_price">
                         <div class="currency">
                             $
@@ -381,7 +381,7 @@
                 <section id="monthly_fee" class="product_name d-flex flex-column position-relative">
                     <div class="product_camera-data">
                         <label for="eachFee" class="form-label fs-1 mb-5">Monthly Fee Payment Option </label>
-                        <select name="product_monthly_fee_period" class="form-select p-3 eachFee" id="eachFee">
+                        <select name="product_monthly_fee_period" class="form-select p-3 eachFee monthly_fee" id="eachFee">
                             <option value=0>0 Month</option>
                             <option value=6>6 Months</option>
                             <option value=12>12 Months</option>
@@ -431,6 +431,7 @@
             $(".demo-page-content").on("submit", (e) => {
                 const product_name = $(".poduct_name").val(),
                     product_color = $(".product_color").val(),
+                    product_monthly_fee = $(".monthly_fee").val(),
                     product_display = $(".product_display").val(),
                     product_core = $(".product_core").val(),
                     product_memory = $(".product_memory").val(),
@@ -447,6 +448,7 @@
                     product_till_used = $(".product_till_used").val();
                 if (
                     product_name === "" ||
+                    product_monthly_fee === "" ||
                     product_color === "" ||
                     product_display === "" ||
                     product_core === "" ||
@@ -467,7 +469,7 @@
             function previewFileHandler(input, order) {
                 const className = input.className;
                 const file = $(`.${className}`)[0].files[0];
-                const valid_types = ["image/jpeg", "image/png", "image/jpg"];
+                const valid_types = ["image/jpeg", "image/png", "image/jpg", "image/webp"];
                 if (!valid_types.includes(file.type)) {
                     alert("Please, Insert Valid formatted file");
                 } else {

@@ -27,6 +27,15 @@
 .photo_insert {
   height: 94vh;
 }
+.photo_insert .card_photo{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.photo_insert .card_photo img{
+  height:80%;
+  width: 150px;
+}
 
 .product_secondhand {
   height: 40vh;

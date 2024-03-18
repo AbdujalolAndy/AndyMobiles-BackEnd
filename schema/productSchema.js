@@ -80,7 +80,6 @@ const productSchema = new mongoose.Schema(
     },
     product_monthly_fee: {
       type: Number,
-      required: true,
     },
     product_likes: {
       type: Number,
@@ -102,8 +101,6 @@ productSchema.index(
   {
     company_id: 1,
     product_name: 1,
-    product_memory: 1,
-    product_core: 1,
     product_color: 1,
   },
   { unique: true }
