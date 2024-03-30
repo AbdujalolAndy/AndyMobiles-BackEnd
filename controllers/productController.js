@@ -1,7 +1,7 @@
 const assert = require("assert");
 const Product = require("../modals/Product");
-const Definer = require("../lib/Definer");
 const moment = require("moment");
+const { Definer } = require("../lib/Definer");
 
 const productController = module.exports;
 productController.createProductProcess = async (req, res) => {
@@ -26,7 +26,9 @@ productController.createProduct = async (req, res) => {
     console.log(data.product_date_manufacture);
     const product = new Product();
     await product.createProductData(req.member, data);
-    res.render("addProduct");
+    res.send(
+      '<script>window.location.replace("/admin/products/?order=ALL")</script>'
+    );
   } catch (err) {
     console.log(`ERROR: cont/createProducts, ${err.message}`);
     res.json({ state: "fail", message: err.message });
@@ -71,6 +73,7 @@ productController.getTargetProducts = async (req, res) => {
     const data = req.body;
     const product = new Product();
     const result = await product.getTargetProductsData(data);
+    assert.ok(result[0], )
     res.json({ state: "success", value: result });
   } catch (err) {
     console.log(`ERROR: cont/getTargetProducts, ${err.message}`);
@@ -84,6 +87,7 @@ productController.getChosenProduct = async (req, res) => {
     const product_id = req.params.product_id;
     const product = new Product();
     const result = await product.getChosenProductData(product_id);
+    assert.ok(result[0], Definer.product_err1)
     res.json({ state: "success", value: result });
   } catch (err) {
     console.log(`ERROR: cont/getChosenProduct, ${err.message}`);

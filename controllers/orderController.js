@@ -1,7 +1,7 @@
 const orderController = module.exports;
 const Order = require("../modals/Order");
 const assert = require("assert");
-const Definer = require("../lib/Definer");
+const {Definer} = require("../lib/Definer");
 
 orderController.createOrder = async (req, res) => {
   try {

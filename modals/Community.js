@@ -2,7 +2,7 @@ const assert = require("assert");
 const { shapeMongooseObjectId } = require("../lib/convert");
 const CommunitySchema = require("../schema/communityShema");
 const ReviewSchema = require("../schema/reviewSchema");
-const Definer = require("../lib/Definer");
+const {Definer} = require("../lib/Definer");
 
 class Community {
   constructor() {
@@ -60,8 +60,8 @@ class Community {
           .aggregate([
             { $match: match },
             { $sort: sort },
-            { $skip: (queries.page * 1 - 1) * queries.limit * 1 },
-            { $limit: queries.limit * 1 },
+            { $skip: (queries.page * 1 - 1) * limit * 1 },
+            { $limit: limit * 1 },
             {
               $lookup: {
                 from: "members",
@@ -70,6 +70,7 @@ class Community {
                 as: "mb_data",
               },
             },
+            { $unwind: "$mb_data" },
           ])
           .exec();
       return targetBlogs;
@@ -86,7 +87,7 @@ class Community {
         mb_id: mb_id,
         review_target_id: item_id,
         review_context: data.review_context,
-        review_stars: data.review_stars
+        review_stars: data.review_stars,
       });
       const result = await review.save();
       return result;

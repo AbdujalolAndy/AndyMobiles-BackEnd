@@ -1,6 +1,6 @@
 const Member = require("../modals/Member");
 const token = require("jsonwebtoken");
-const Definer = require("../lib/Definer");
+const {Definer} = require("../lib/Definer");
 const bcrypt = require("bcryptjs");
 const Product = require("../modals/Product");
 const Like = require("../modals/Like");

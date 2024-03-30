@@ -1,5 +1,5 @@
 const assert = require("assert");
-const Definer = require("../lib/Definer");
+const {Definer} = require("../lib/Definer");
 const { shapeMongooseObjectId } = require("../lib/convert");
 const FollowSchema = require("../schema/followSchema");
 const Like = require("./Like");

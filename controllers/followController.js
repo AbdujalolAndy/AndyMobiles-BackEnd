@@ -1,7 +1,7 @@
 const followController = module.exports;
 const assert = require("assert");
 const Follow = require("../modals/Follow");
-const Definer = require("../lib/Definer");
+const {Definer} = require("../lib/Definer");
 
 followController.followMember = async (req, res) => {
   try {

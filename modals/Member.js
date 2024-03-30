@@ -1,7 +1,7 @@
 const assert = require("assert");
 const bcrypt = require("bcryptjs");
 const MemberSchema = require("../schema/memberSchema");
-const Definer = require("../lib/Definer");
+const { Definer } = require("../lib/Definer");
 const { shapeMongooseObjectId } = require("../lib/convert");
 const LikeSchema = require("../schema/likeSchema");
 
@@ -25,7 +25,7 @@ class Member {
 
   async loginData(data) {
     try {
-      const match={mb_status:"ACTIVE"}
+      const match = { mb_status: "ACTIVE" };
       if (data.mb_nick) {
         match.mb_nick = data.mb_nick;
       } else {

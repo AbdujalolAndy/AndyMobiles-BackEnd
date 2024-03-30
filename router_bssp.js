@@ -34,13 +34,15 @@ router
   );
 
 //Brands related API
-router.get("/brands/getTargetBrands", companyController.getTargetBrands);
+router
+  .get("/brands/getTargetBrands", companyController.getTargetBrands)
+  .get("/brands/getAllBrands", companyController.getAllBrands);
 
 //Product releted APIs
 router
   .post("/products/getTargetProducts", productController.getTargetProducts)
   .get(
-    "/product/getChosenProduct/:product_id",
+    "/products/product/:product_id",
     productController.getChosenProduct
   )
   .post(

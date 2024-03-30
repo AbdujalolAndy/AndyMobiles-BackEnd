@@ -1,6 +1,6 @@
 const assert = require("assert");
-const Definer = require("../lib/Definer");
 const BankCard = require("../modals/BankCard");
+const { Definer } = require("../lib/Definer");
 
 const bankCadController = module.exports;
 

@@ -381,7 +381,7 @@
                 <section id="monthly_fee" class="product_name d-flex flex-column position-relative">
                     <div class="product_camera-data">
                         <label for="eachFee" class="form-label fs-1 mb-5">Monthly Fee Payment Option </label>
-                        <select name="product_monthly_fee_period" class="form-select p-3 eachFee monthly_fee" id="eachFee">
+                        <select name="product_contract" class="form-select p-3 eachFee monthly_fee" id="eachFee">
                             <option value=0>0 Month</option>
                             <option value=6>6 Months</option>
                             <option value=12>12 Months</option>
@@ -438,14 +438,10 @@
                     product_ram = $(".product_ram").val(),
                     product_camera = $(".product_camera").val(),
                     product_price = $(".product_price").val(),
-                    product_deal = $(".product_deal").val(),
                     product_water_proof = $("#proofCheck").on("change", (e) =>
                         e.target.checked ? "Y" : "N"
                     ),
-                    product_second_hand = $(".product_second_hand").val(),
-                    product_description = $(".product_description").val(),
-                    product_manufacture = $(".product_manufacture").val(),
-                    product_till_used = $(".product_till_used").val();
+                    product_description = $(".product_description").val()
                 if (
                     product_name === "" ||
                     product_monthly_fee === "" ||

@@ -4,7 +4,7 @@ const MemberSchema = require("../schema/memberSchema");
 const ProductSchema = require("../schema/productSchema");
 const CommunitySchema = require("../schema/communityShema");
 const ReviewSchema = require("../schema/reviewSchema");
-const Definer = require("../lib/Definer");
+const {Definer} = require("../lib/Definer");
 const assert = require("assert");
 
 class Like {

@@ -1,6 +1,6 @@
 const assert = require("assert");
 const Community = require("../modals/Community");
-const Definer = require("../lib/Definer");
+const {Definer} = require("../lib/Definer");
 
 const communityController = module.exports;
 

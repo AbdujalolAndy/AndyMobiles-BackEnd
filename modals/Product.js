@@ -51,18 +51,16 @@ class Product {
   async getTargetProductsData(data) {
     try {
       //Initialization Filter
+      console.log(data)
       const match = { product_status: "PROCESS" };
-
       if (data.company_id) {
         match["company_id"] = shapeMongooseObjectId(data.company_id);
       }
-
       const pipelines = [{ $match: match }];
-
-      if (data.random) {
-        pipelines.push({ $sample: { size: data.limit * 1 } });
-      }
-
+      pipelines.push(
+        { $group: { _id: "$product_name", doc: { $first: "$$ROOT" } } },
+        { $replaceRoot: { newRoot: "$doc" } }
+      );
       // Sorting
       const sort = {};
       switch (data.order) {
@@ -78,7 +76,7 @@ class Product {
         case "oldToNew":
           sort["createdAt"] = 1;
           break;
-        case "like":
+        case "like" || "popular":
           sort["product_likes"] = -1;
           break;
         case "view":
@@ -86,6 +84,9 @@ class Product {
           break;
         case "new":
           match["product_new_released"] = "Y";
+          break;
+        case "sale":
+          match["product_discount"] = { $gte: 1 };
           break;
         default:
           break;
@@ -100,7 +101,7 @@ class Product {
       }
 
       //Left Filter
-      if (data.minPrice && data.maxPrice) {
+      if (data.minPrice>0 && data.maxPrice>0) {
         match["product_price"] = {
           $gte: data.minPrice * 1,
           $lte: data.maxPrice * 1,
@@ -111,33 +112,40 @@ class Product {
         match["product_color"] = data.color;
       }
 
-      if (data.minMonthlyFee && data.maxMonthlyFee) {
-        match["product_monthly_fee"] = {
-          $gte: data.minMonthlyFee * 1,
-          $lte: data.maxMonthlyFee * 1,
+      if (data.contractMonth[0]) {
+        const monthList = data.contractMonth.split(",")
+        match["product_contract"] = {
+          $gte: monthList[0] * 1,
+          $lte: monthList[1] * 1,
         };
       }
-
       if (data.storage) {
-        match["product_storage"] = data.storage * 1;
+        match["product_memory"] = data.storage * 1;
       }
-
-      if (data.page) {
-        pipelines.push({ $skip: (data.page * 1 - 1) * data.limit });
-      }
-
-      // Push $limit after all other stages
-      pipelines.push({ $limit: data.limit * 1 });
 
       // Add $lookup stage to fetch related colors
-      pipelines.push({
-        $lookup: {
-          from: "products",
-          localField: "product_name",
-          foreignField: "product_name",
-          as: "product_related_colors",
-        },
-      });
+      if (data.homeProduct == "Y") {
+        pipelines.push(
+          {
+            $lookup: {
+              from: "members",
+              localField: "company_id",
+              foreignField: "_id",
+              as: "owner_data",
+            },
+          },
+          { $unwind: "$owner_data" }
+        );
+      } else if(!data.color) {
+        pipelines.push({
+          $lookup: {
+            from: "products",
+            localField: "product_name",
+            foreignField: "product_name",
+            as: "product_related_colors",
+          },
+        });
+      }
 
       // Project only the necessary fields from the related colors
       pipelines.push({
@@ -152,7 +160,7 @@ class Product {
           product_ram: 1,
           product_camera: 1,
           product_price: 1,
-          product_monthly_price: 1,
+          product_contract: 1,
           product_water_proof: 1,
           product_status: 1,
           product_new_released: 1,
@@ -161,21 +169,26 @@ class Product {
           product_likes: 1,
           product_views: 1,
           product_description: 1,
-          product_related_colors: { _id: 1, product_color: 1, product_images:1 },
+          product_related_colors: {
+            _id: 1,
+            product_color: 1,
+            product_images: 1,
+          },
+          owner_data: {
+            mb_nick: 1,
+            mb_image: 1,
+          },
         },
       });
+      if (data.page) {
+        pipelines.push({ $skip: (data.page * 1 - 1) * data.limit });
+      }
+      pipelines.push({ $limit: data.limit * 1 });
 
       const result = await this.productModel.aggregate(pipelines).exec();
-      const uniqueResult = [];
-      result.forEach((product) => {
-        if (
-          !uniqueResult.some((ele) => ele.product_name == product.product_name)
-        ) {
-          uniqueResult.push(product);
-        }
-      });
-      return uniqueResult;
+      return result;
     } catch (err) {
+      console.log(err)
       throw err;
     }
   }

@@ -9,6 +9,7 @@ const productSchema = new mongoose.Schema(
   {
     company_id: {
       type: mongoose.Schema.Types.ObjectId,
+      ref:"Member",
       required: true,
     },
     product_name: {
@@ -47,9 +48,6 @@ const productSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    product_monthly_price: {
-      type: Number,
-    },
     product_water_proof: {
       type: String,
       default: "N",
@@ -78,7 +76,7 @@ const productSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
-    product_monthly_fee: {
+    product_contract: {
       type: Number,
     },
     product_likes: {
@@ -86,6 +84,10 @@ const productSchema = new mongoose.Schema(
       default: 0,
     },
     product_views: {
+      type: Number,
+      default: 0,
+    },
+    product_comments: {
       type: Number,
       default: 0,
     },
