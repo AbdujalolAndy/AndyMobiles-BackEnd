@@ -1,6 +1,6 @@
 const Member = require("../modals/Member");
 const token = require("jsonwebtoken");
-const {Definer} = require("../lib/Definer");
+const { Definer } = require("../lib/Definer");
 const bcrypt = require("bcryptjs");
 const Product = require("../modals/Product");
 const Like = require("../modals/Like");
@@ -111,6 +111,17 @@ memberController.memberUpdate = async (req, res) => {
     res.json({ state: "sucess", value: result });
   } catch (err) {
     console.log(`ERROR: cont/memberUpdate, ${err.message}`);
+    res.json({ state: "fail", message: err.message });
+  }
+};
+
+memberController.resetPassword = async (req, res) => {
+  try {
+    const member = new Member();
+    const result = await member.resetPasswordData(req.body, req.member);
+    res.json({ state: "success", value: result });
+  } catch (err) {
+    console.log(`ERROR: cont/resetPassword, ${err.message}`);
     res.json({ state: "fail", message: err.message });
   }
 };
@@ -246,19 +257,6 @@ memberController.likeChosenItem = async (req, res) => {
     res.json({ state: "success", value: result });
   } catch (err) {
     console.log(`ERROR: cont/likeChosenItem, ${err.message}`);
-    res.json({ state: "fail", message: err.message });
-  }
-};
-
-memberController.getAllWishedList = async (req, res) => {
-  try {
-    console.log("GET: cont/getAllWishList");
-    assert.ok(req.member, Definer.auth_err5);
-    const member = new Member();
-    const result = await member.getAllWishedItems(req.member);
-    res.json({ state: "success", value: result });
-  } catch (err) {
-    console.log(`ERROR: cont/getAllWishList, ${err.message}`);
     res.json({ state: "fail", message: err.message });
   }
 };

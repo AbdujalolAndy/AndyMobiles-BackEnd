@@ -1,5 +1,5 @@
 const assert = require("assert");
-const {Definer} = require("../lib/Definer");
+const { Definer } = require("../lib/Definer");
 const { shapeMongooseObjectId } = require("../lib/convert");
 const FollowSchema = require("../schema/followSchema");
 const Like = require("./Like");
@@ -114,8 +114,10 @@ class Follow {
             as: "member_data",
           },
         },
+        { $unwind: "$member_data" },
         { $skip: (data.page * 1 - 1) * data.limit },
         { $limit: data.limit * 1 },
+        { $project: { __v: 0 } },
       ]);
       return followers;
     } catch (err) {
@@ -137,6 +139,7 @@ class Follow {
             as: "member_data",
           },
         },
+        { $unwind: "$member_data" },
         { $skip: (data.page * 1 - 1) * (data.limit * 1) },
         { $limit: data.limit * 1 },
       ]);

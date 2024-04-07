@@ -18,19 +18,6 @@ bankCadController.createBankCard = async (req, res) => {
   }
 };
 
-bankCadController.updateCard = async (req, res) => {
-  try {
-    console.log("POST: cont/updateCard");
-    assert.ok(req.member, Definer.auth_err5);
-    const updateData = req.body;
-    const bankcard = new BankCard(),
-      result = await bankcard.updateCardData(req.member, updateData);
-    res.json({ state: "success", value: result });
-  } catch (err) {
-    console.log(`ERROR: cont/updateCard, ${err.message}`);
-    res.json({ state: "fail", message: err.message });
-  }
-};
 
 bankCadController.getTargetCard = async (req, res) => {
   try {

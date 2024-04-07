@@ -4,6 +4,7 @@ const MemberSchema = require("../schema/memberSchema");
 const { Definer } = require("../lib/Definer");
 const { shapeMongooseObjectId } = require("../lib/convert");
 const LikeSchema = require("../schema/likeSchema");
+const Like = require("./Like");
 
 class Member {
   constructor() {
@@ -116,24 +117,25 @@ class Member {
       throw err;
     }
   }
-
-  async getAllWishedItems(member, data) {
+  async resetPasswordData(data, mb_data) {
     try {
-      const mb_id = shapeMongooseObjectId(member._id);
-      const wishedItems = await this.likeModel
-        .aggregate([
-          { $match: { mb_id: mb_id, like_group: "product" } },
-          {
-            $lookup: {
-              from: "products",
-              localField: "like_item_id",
-              foreignField: "_id",
-              as: "product_data",
-            },
-          },
-        ])
+      const id = shapeMongooseObjectId(mb_data._id);
+      const member = await this.memberModel.findById({ _id: id }).exec();
+      const equality = await bcrypt.compare(
+        data.old_password,
+        member.mb_password
+      );
+      assert.ok(equality, Definer.auth_err2);
+      const salt = await bcrypt.genSalt();
+      const newPassword = await bcrypt.hash(data.new_password, salt);
+      const updatedMember = await this.memberModel
+        .findByIdAndUpdate(
+          { _id: id },
+          { mb_password: newPassword },
+          { returnDocument: "after" }
+        )
         .exec();
-      return wishedItems;
+      return updatedMember;
     } catch (err) {
       throw err;
     }

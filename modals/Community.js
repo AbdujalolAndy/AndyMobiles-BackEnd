@@ -2,7 +2,7 @@ const assert = require("assert");
 const { shapeMongooseObjectId } = require("../lib/convert");
 const CommunitySchema = require("../schema/communityShema");
 const ReviewSchema = require("../schema/reviewSchema");
-const {Definer} = require("../lib/Definer");
+const { Definer } = require("../lib/Definer");
 
 class Community {
   constructor() {
@@ -50,6 +50,12 @@ class Community {
         case "oldToNew":
           sort["createdAt"] = 1;
           break;
+        case "like":
+          sort["blog_likes"] = -1;
+          break;
+        case "view":
+          sort["blog_views"] = -1;
+          break;
         default:
           break;
       }
@@ -79,10 +85,10 @@ class Community {
     }
   }
 
-  async createReviewData(member, id, data) {
+  async createReviewData(member, data) {
     try {
       const mb_id = shapeMongooseObjectId(member._id),
-        item_id = shapeMongooseObjectId(id);
+        item_id = shapeMongooseObjectId(data.review_target_id);
       const review = new this.reviewModel({
         mb_id: mb_id,
         review_target_id: item_id,
@@ -90,6 +96,26 @@ class Community {
         review_stars: data.review_stars,
       });
       const result = await review.save();
+      return result;
+    } catch (err) {
+      throw err;
+    }
+  }
+  async getReviewsData(id) {
+    try {
+      const product_id = shapeMongooseObjectId(id);
+      const result = await this.reviewModel.aggregate([
+        { $match: { review_target_id: product_id } },
+        {
+          $lookup: {
+            from: "members",
+            localField: "mb_id",
+            foreignField: "_id",
+            as: "member_data",
+          },
+        },
+        { $unwind: "$member_data" },
+      ]);
       return result;
     } catch (err) {
       throw err;

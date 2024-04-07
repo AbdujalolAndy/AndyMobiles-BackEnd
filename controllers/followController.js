@@ -1,7 +1,7 @@
 const followController = module.exports;
 const assert = require("assert");
 const Follow = require("../modals/Follow");
-const {Definer} = require("../lib/Definer");
+const { Definer } = require("../lib/Definer");
 
 followController.followMember = async (req, res) => {
   try {
@@ -20,6 +20,9 @@ followController.getFollowingMembers = async (req, res) => {
   try {
     assert.ok(req.member, Definer.auth_err5);
     const data = req.body;
+    if (req.member) {
+      data.mb_id = req.member._id;
+    }
     const follow = new Follow();
     const result = await follow.getFollowingMembersData(data);
     res.json({ state: "success", value: result });
@@ -32,10 +35,12 @@ followController.getFollowingMembers = async (req, res) => {
 followController.getFollowerMembers = async (req, res) => {
   try {
     console.log("GET: cont/getFollowerMembers");
-    assert.ok(req.member, Definer.auth_err5);
     const data = req.body,
-      follow = new Follow(),
-      result = await follow.getFollowerMembersData(data);
+      follow = new Follow();
+    if (req.member) {
+      data.mb_id = req.member._id;
+    }
+    const result = await follow.getFollowerMembersData(data);
     res.json({ state: "success", value: result });
   } catch (err) {
     console.log(`ERROR: cont/getFollowerMembers, ${err.message}`);

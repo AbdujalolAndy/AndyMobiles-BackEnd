@@ -4,8 +4,9 @@ const MemberSchema = require("../schema/memberSchema");
 const ProductSchema = require("../schema/productSchema");
 const CommunitySchema = require("../schema/communityShema");
 const ReviewSchema = require("../schema/reviewSchema");
-const {Definer} = require("../lib/Definer");
+const { Definer } = require("../lib/Definer");
 const assert = require("assert");
+const wishListSchema = require("../schema/wishListSchema");
 
 class Like {
   constructor() {
@@ -14,6 +15,7 @@ class Like {
     this.productModel = ProductSchema;
     this.communityModel = CommunitySchema;
     this.reviewModel = ReviewSchema;
+    this.wishListModel = wishListSchema
   }
 
   async likeChosenItemData(member, data) {
@@ -28,13 +30,10 @@ class Like {
       );
       assert.ok(validateItem, Definer.smth_err1);
       //Does exsist in likes
-      const doesExist = await this.exsistLikedItem(
-        like_item_id,
-        like_group
-      );
+      const doesExist = await this.exsistLikedItem(like_item_id, like_group);
       //Update likes count
       let result;
-      if (!doesExist) {
+      if (!doesExist[0]) {
         await this.addLikeChosenItem(mb_id, like_group, like_item_id);
         result = await this.modifyLikeCount(like_item_id, like_group, 1);
       } else {
@@ -67,9 +66,7 @@ class Like {
             .exec();
           break;
         case "review":
-          result = await this.reviewModel
-            .find({ _id: like_item_id })
-            .exec();
+          result = await this.reviewModel.find({ _id: like_item_id }).exec();
           break;
         default:
           break;
@@ -80,7 +77,7 @@ class Like {
     }
   }
 
-  async exsistLikedItem( like_item_id, like_group) {
+  async exsistLikedItem(like_item_id, like_group) {
     try {
       const result = await this.likeModel
         .find({
@@ -88,7 +85,7 @@ class Like {
           like_group: like_group,
         })
         .exec();
-      return !!result[0];
+      return result;
     } catch (err) {
       throw err;
     }
@@ -99,40 +96,56 @@ class Like {
       let result;
       switch (like_group.toLowerCase()) {
         case "member":
-          result = await this.memberModel
+          await this.memberModel
             .findOneAndUpdate(
               { _id: like_item_id, mb_status: "ACTIVE" },
               { $inc: { mb_likes: modifier } },
               { returnDocument: "after" }
             )
             .exec();
+          result = await this.likeModel.find(
+            { like_item_id: like_item_id },
+            { __v: 0, _id: 0 }
+          );
           break;
         case "product":
-          result = await this.productModel
+          await this.productModel
             .findOneAndUpdate(
               { _id: like_item_id, product_status: "PROCESS" },
               { $inc: { product_likes: modifier } },
               { returnDocument: "after" }
             )
             .exec();
+          result = await this.likeModel.find(
+            { like_item_id: like_item_id },
+            { __v: 0, _id: 0 }
+          );
           break;
         case "comunity":
-          result = await this.communityModel
+          await this.communityModel
             .findOneAndUpdate(
               { _id: like_item_id, blog_status: "ACTIVE" },
               { $inc: { blog_likes: modifier } },
               { returnDocument: "after" }
             )
             .exec();
+          result = await this.likeModel.find(
+            { like_item_id: like_item_id },
+            { __v: 0, _id: 0 }
+          );
           break;
         case "review":
-          result = await this.reviewModel
+          await this.reviewModel
             .findOneAndUpdate(
               { _id: like_item_id },
               { $inc: { review_likes: modifier } },
               { returnDocument: "after" }
             )
             .exec();
+          result = await this.likeModel.find(
+            { like_item_id: like_item_id },
+            { __v: 0, _id: 0 }
+          );
           break;
         default:
           break;
@@ -151,6 +164,7 @@ class Like {
         like_group: like_group,
       });
       const result = await likedItem.save();
+      return result;
     } catch (err) {
       throw err;
     }

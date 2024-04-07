@@ -6,6 +6,7 @@ const communityController = require("./controllers/communityController");
 const bankCardController = require("./controllers/bankCardController");
 const orderController = require("./controllers/orderController");
 const followController = require("./controllers/followController");
+const wishListController = require("./controllers/wishListContoller");
 const photoImageUploaderProduct = require("./utilities/multerUploader")(
   "products"
 );
@@ -31,6 +32,11 @@ router
     memberController.memberRetrieve,
     photoImageUploaderMember.single("mb_image"),
     memberController.memberUpdate
+  )
+  .post(
+    "/member/resetPassword",
+    memberController.memberRetrieve,
+    memberController.resetPassword
   );
 
 //Brands related API
@@ -40,11 +46,12 @@ router
 
 //Product releted APIs
 router
-  .post("/products/getTargetProducts", productController.getTargetProducts)
-  .get(
-    "/products/product/:product_id",
-    productController.getChosenProduct
+  .post(
+    "/products/getTargetProducts",
+    memberController.memberRetrieve,
+    productController.getTargetProducts
   )
+  .get("/products/product/:product_id", productController.getChosenProduct)
   .post(
     "/product/create-product",
     memberController.memberRetrieve,
@@ -66,23 +73,21 @@ router
     communityController.createPost
   )
   .get("/blogs/getTargetBlogs", communityController.getTargetBlogs);
+
 //Community Reviews
 router.post(
-  "/review/createReview/:item_id",
+  "/review/createReview",
   memberController.memberRetrieve,
   communityController.createReview
 );
+router.get("/review/getReviews/:item_id", communityController.getReviews);
+
 //Bank Card related API
 router
   .post(
     "/bankcard/createBankCard",
     memberController.memberRetrieve,
     bankCardController.createBankCard
-  )
-  .post(
-    "/bankcard/bankCardEdit",
-    memberController.memberRetrieve,
-    bankCardController.updateCard
   )
   .get(
     "/bankcard/getTargetCard",
@@ -104,12 +109,12 @@ router
     memberController.memberRetrieve,
     followController.followMember
   )
-  .get(
+  .post(
     "/follow/followings",
     memberController.memberRetrieve,
     followController.getFollowingMembers
   )
-  .get(
+  .post(
     "/follow/followers",
     memberController.memberRetrieve,
     followController.getFollowerMembers
@@ -119,7 +124,24 @@ router
 router.get(
   "/wishlist/getAllWishedItems",
   memberController.memberRetrieve,
-  memberController.getAllWishedList
+  wishListController.getAllWishedList
+);
+
+router.post(
+  "/wishlist/createWishlistItem",
+  memberController.memberRetrieve,
+  wishListController.createWishListItem
+);
+router.put(
+  "/wishlist/editWishlistItem",
+  memberController.memberRetrieve,
+  wishListController.editWishListItem
+);
+
+router.get(
+  "/wishlist/removeWishlistItem/:product_id",
+  memberController.memberRetrieve,
+  wishListController.removeWishListItem
 );
 
 //Order Related APIs

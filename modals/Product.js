@@ -1,5 +1,6 @@
 const { shapeMongooseObjectId } = require("../lib/convert");
 const productSchema = require("../schema/productSchema");
+const { lookup_auth_member_liked } = require("../lib/enums");
 
 class Product {
   constructor() {
@@ -48,10 +49,13 @@ class Product {
     }
   }
 
-  async getTargetProductsData(data) {
+  async getTargetProductsData(member, data) {
     try {
       //Initialization Filter
-      console.log(data)
+      let mb_id;
+      if (member?._id) {
+        mb_id = shapeMongooseObjectId(member._id);
+      }
       const match = { product_status: "PROCESS" };
       if (data.company_id) {
         match["company_id"] = shapeMongooseObjectId(data.company_id);
@@ -101,7 +105,7 @@ class Product {
       }
 
       //Left Filter
-      if (data.minPrice>0 && data.maxPrice>0) {
+      if (data.minPrice > 0 && data.maxPrice > 0) {
         match["product_price"] = {
           $gte: data.minPrice * 1,
           $lte: data.maxPrice * 1,
@@ -113,7 +117,7 @@ class Product {
       }
 
       if (data.contractMonth[0]) {
-        const monthList = data.contractMonth.split(",")
+        const monthList = data.contractMonth.split(",");
         match["product_contract"] = {
           $gte: monthList[0] * 1,
           $lte: monthList[1] * 1,
@@ -136,7 +140,7 @@ class Product {
           },
           { $unwind: "$owner_data" }
         );
-      } else if(!data.color) {
+      } else if (!data.color) {
         pipelines.push({
           $lookup: {
             from: "products",
@@ -178,17 +182,18 @@ class Product {
             mb_nick: 1,
             mb_image: 1,
           },
+          me_liked: 1,
         },
       });
       if (data.page) {
         pipelines.push({ $skip: (data.page * 1 - 1) * data.limit });
       }
       pipelines.push({ $limit: data.limit * 1 });
+      pipelines.push(lookup_auth_member_liked(mb_id));
 
       const result = await this.productModel.aggregate(pipelines).exec();
       return result;
     } catch (err) {
-      console.log(err)
       throw err;
     }
   }
@@ -207,6 +212,15 @@ class Product {
               as: "company_data",
             },
           },
+          {
+            $lookup: {
+              from: "products",
+              localField: "product_name",
+              foreignField: "product_name",
+              as: "product_related",
+            },
+          },
+          { $unwind: "$company_data" },
         ])
         .exec();
       return product;

@@ -2,7 +2,7 @@ const assert = require("assert");
 const { shapeMongooseObjectId } = require("../lib/convert");
 const bankInfoSchema = require("../schema/bankInfoSchema");
 const TransactionSchema = require("../schema/bankTransaction");
-const Cryptr = require("cryptr");
+const bcrypt = require("bcryptjs");
 
 class BankCard {
   constructor() {
@@ -13,42 +13,64 @@ class BankCard {
   async createBankCardData(member, data) {
     try {
       const mb_id = shapeMongooseObjectId(member._id);
-      //Validate Card Number
-      if (!data.card_pincode.length === 16) {
-        throw new Error("Card Number should be number with length of 16");
-      }
-      //Encode Card Number
-      const cryptr = new Cryptr(process.env.SECRET_CARD);
-      data.card_pincode = cryptr.encrypt(data.card_pincode);
-      const bankCard = new this.bankModel({
+      //Current saved card does exist
+      const searchData = {
         mb_id: mb_id,
-        card_owner_name: data.card_owner_name,
-        card_number: data.card_number,
-        card_expiry: data.card_expiry,
-        card_cvc: data.card_cvc,
-        card_pincode: data.card_pincode,
-      });
-      //mongodb database
-      const result = await bankCard.save();
+        card_status: "ACTIVE",
+      };
+      const doesExist = await this.existBankCardData(searchData);
+      //Validate Card Number
+      if (data.card_number) {
+        data.card_number = data.card_number.replace(/\s/g, "") * 1;
+      }
+      let result;
+      const salt = await bcrypt.genSalt();
+      data.card_pincode = await bcrypt.hash(data.card_pincode, salt);
+      if (doesExist) {
+        for(let prop in data){
+          if(!data[prop]){
+            delete data[prop]
+          }
+        }
+        result = await this.bankModel.findOneAndUpdate(
+          {
+            card_status: "ACTIVE",
+            mb_id: mb_id,
+          },
+          data,
+          { returnDocument: "after" }
+        );
+      } else {
+        if (!data.card_pincode.length === 16) {
+          throw new Error("Card Number should be number with length of 16");
+        }
+        const bankCard = new this.bankModel({
+          mb_id: mb_id,
+          card_owner_name: data.card_owner_name,
+          card_number: data.card_number,
+          card_expiry: data.card_expiry,
+          card_cvc: data.card_cvc,
+          card_pincode: data.card_pincode,
+        });
+        //mongodb database
+        result = await bankCard.save();
+      }
+      console.log(result);
       return result;
     } catch (err) {
       throw err;
     }
   }
-  async updateCardData(member, data) {
+
+  async existBankCardData(data) {
     try {
-      const mb_id = shapeMongooseObjectId(member._id);
-      const result = await this.bankModel
-        .findOneAndUpdate({ mb_id: mb_id }, data, {
-          runValidators: true,
-          returnDocument: "after",
-        })
-        .exec();
-      return result;
+      const bankCard = await this.bankModel.find(data).exec();
+      return !!bankCard[0];
     } catch (err) {
       throw err;
     }
   }
+
   async getTargetCardData(member) {
     try {
       const mb_id = shapeMongooseObjectId(member._id);
@@ -69,11 +91,14 @@ class BankCard {
       const mb_id = shapeMongooseObjectId(member._id);
       const order_id = shapeMongooseObjectId(id);
       let transaction;
-      const isDataEmpty = !!Object.keys(data)[0]
+      const isDataEmpty = !!Object.keys(data)[0];
       if (!isDataEmpty) {
         //Exsist bank card
         const existCard = await this.bankModel.findOne({ mb_id: mb_id }).exec();
-        assert.ok(existCard, "att: You do not have Existed card on your account")
+        assert.ok(
+          existCard,
+          "att: You do not have Existed card on your account"
+        );
         transaction = new this.transactionModel({
           mb_id: mb_id,
           order_id: order_id,
@@ -83,7 +108,7 @@ class BankCard {
           trans_card_cvc: existCard.card_cvc,
           trans_card_pincode: existCard.card_pincode,
         });
-      } else{
+      } else {
         const trans_card_pincode = new Cryptr(process.env.SECRET_CARD).encrypt(
           data.trans_card_pincode
         );

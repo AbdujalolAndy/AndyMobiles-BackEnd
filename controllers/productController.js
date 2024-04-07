@@ -72,8 +72,7 @@ productController.getTargetProducts = async (req, res) => {
     console.log(`GET: cont/getTargetProducts`);
     const data = req.body;
     const product = new Product();
-    const result = await product.getTargetProductsData(data);
-    assert.ok(result[0], )
+    const result = await product.getTargetProductsData(req.member,data);
     res.json({ state: "success", value: result });
   } catch (err) {
     console.log(`ERROR: cont/getTargetProducts, ${err.message}`);
@@ -87,7 +86,7 @@ productController.getChosenProduct = async (req, res) => {
     const product_id = req.params.product_id;
     const product = new Product();
     const result = await product.getChosenProductData(product_id);
-    assert.ok(result[0], Definer.product_err1)
+    assert.ok(result[0], Definer.product_err1);
     res.json({ state: "success", value: result });
   } catch (err) {
     console.log(`ERROR: cont/getChosenProduct, ${err.message}`);
