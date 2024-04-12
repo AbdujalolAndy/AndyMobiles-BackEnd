@@ -69,6 +69,20 @@ memberController.getAllUsers = async (req, res) => {
     res.json({ state: "fail", message: err.message });
   }
 };
+
+memberController.getChosenMember = async (req, res) => {
+  try {
+    console.log("GET: cont/getChosenMember");
+    const mb_id = req.params.mb_id;
+    const member = new Member();
+    const result = await member.getChosenMemberData(req.member, mb_id);
+    assert.ok(result, Definer.auth_err1);
+    res.json({ state: "success", value: result[0] });
+  } catch (err) {
+    console.log(`ERROR: cont/getChosenMember, ${err.message}`);
+    res.json({ state: "fail", message: err.message });
+  }
+};
 memberController.createToken = async (new_member) => {
   try {
     console.log("CREATE: cont/createToken");

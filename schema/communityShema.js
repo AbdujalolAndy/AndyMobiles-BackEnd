@@ -23,6 +23,10 @@ const communitySchema = new Schema(
       type: String,
       required: true,
     },
+    blog_images: {
+      type: Array,
+      default: [],
+    },
     blog_likes: {
       type: Number,
       default: 0,

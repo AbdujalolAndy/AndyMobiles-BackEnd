@@ -10,16 +10,15 @@ class Community {
     this.reviewModel = ReviewSchema;
   }
 
-  async createPostData(member, file, data) {
+  async createPostData(member, data) {
     try {
       const mb_id = shapeMongooseObjectId(member._id);
-      console.log(mb_id);
-      data.blog_image = file.pathname;
       const blog = new this.communityModel({
         mb_id: mb_id,
         blog_category: data.blog_category,
         blog_title: data.blog_title,
         blog_context: data.blog_context,
+        blog_images: data.blog_images,
       });
       assert(blog, Definer.smth_err1);
       const result = await blog.save();
@@ -29,9 +28,27 @@ class Community {
     }
   }
 
+  async getChosenBlogData(id) {
+    try {
+      const blog_id = shapeMongooseObjectId(id);
+      const result = await this.communityModel
+        .findById({ _id: blog_id })
+        .exec();
+      return result;
+    } catch (err) {
+      throw err;
+    }
+  }
+
   async getTargetBlogsData(queries) {
     try {
       //Matching
+      for (let prop in queries) {
+        if (!queries[prop] || queries[prop] === "undefined") {
+          delete queries[prop];
+        }
+      }
+      console.log(queries);
       const match = {};
       match.blog_status = "ACTIVE";
       if (queries.order && queries.order !== "ALL") {

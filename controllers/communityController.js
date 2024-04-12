@@ -9,11 +9,7 @@ communityController.createPost = async (req, res) => {
     console.log(`POST: cont/createPost`);
     assert(req.member, Definer.auth_err5);
     const community = new Community();
-    const result = await community.createPostData(
-      req.member,
-      req.file,
-      req.body
-    );
+    const result = await community.createPostData(req.member, req.body);
     res.json({ state: "success", value: result });
   } catch (err) {
     console.log(`ERROR: cont/createPost, ${err.message}`);
@@ -30,6 +26,19 @@ communityController.getTargetBlogs = async (req, res) => {
     res.json({ state: "success", value: result });
   } catch (err) {
     console.log(`ERROR: cont/getTargetBlogs, ${err.message}`);
+    res.json({ state: "fail", message: err.message });
+  }
+};
+
+communityController.getChosenBlog = async (req, res) => {
+  try {
+    console.log(`GET: cont/getChosenBlog`);
+    const blog_id = req.params.blog_id;
+    const community = new Community();
+    const result = await community.getChosenBlogData(blog_id);
+    res.json({ state: "success", value: result });
+  } catch (err) {
+    console.log(`ERROR: cont/getChosenBlog, ${err.message}`);
     res.json({ state: "fail", message: err.message });
   }
 };
@@ -56,6 +65,19 @@ communityController.getReviews = async (req, res) => {
     res.json({ state: "success", value: result });
   } catch (err) {
     console.log(`ERROR: cont/getReviews, ${err.message}`);
+    res.json({ state: "fail", message: err.message });
+  }
+};
+
+communityController.returImagePath = async (req, res) => {
+  try {
+    console.log("POST: cont/returnImagePath");
+    assert.ok(req.member, Definer.auth_err5);
+    assert.ok(req.file, Definer.smth_err1);
+    const result = req.file.path.replace(/\\/g, "/");
+    res.json({ state: "success", value: result });
+  } catch (err) {
+    console.log(`ERROR: cont/returnImagePath, ${err.message}`);
     res.json({ state: "fail", message: err.message });
   }
 };

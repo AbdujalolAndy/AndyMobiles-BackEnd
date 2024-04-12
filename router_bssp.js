@@ -37,6 +37,11 @@ router
     "/member/resetPassword",
     memberController.memberRetrieve,
     memberController.resetPassword
+  )
+  .get(
+    "/member/:mb_id",
+    memberController.memberRetrieve,
+    memberController.getChosenMember
   );
 
 //Brands related API
@@ -69,10 +74,16 @@ router
   .post(
     "/blogs/createBlog",
     memberController.memberRetrieve,
-    photoImageUploaderCommunity.single("blog_image"),
     communityController.createPost
   )
-  .get("/blogs/getTargetBlogs", communityController.getTargetBlogs);
+  .get("/blogs/getTargetBlogs", communityController.getTargetBlogs)
+  .post(
+    "/community/image",
+    memberController.memberRetrieve,
+    photoImageUploaderCommunity.single("community_image"),
+    communityController.returImagePath
+  )
+  .get("/community/chosenBlog/:blog_id", communityController.getChosenBlog);
 
 //Community Reviews
 router.post(
@@ -105,9 +116,14 @@ router.post(
 //Following
 router
   .post(
-    "/follow/following",
+    "/follow/subscribe",
     memberController.memberRetrieve,
-    followController.followMember
+    followController.subscribeMember
+  )
+  .post(
+    "/follow/unsubscribe",
+    memberController.memberRetrieve,
+    followController.unsubscribeMember
   )
   .post(
     "/follow/followings",
