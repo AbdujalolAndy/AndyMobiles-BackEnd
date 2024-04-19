@@ -32,8 +32,9 @@ class Like {
       //Does exsist in likes
       const doesExist = await this.exsistLikedItem(like_item_id, like_group);
       //Update likes count
+      console.log(doesExist)
       let result;
-      if (!doesExist[0]) {
+      if (!doesExist) {
         await this.addLikeChosenItem(mb_id, like_group, like_item_id);
         result = await this.modifyLikeCount(like_item_id, like_group, 1);
       } else {
@@ -85,7 +86,7 @@ class Like {
           like_group: like_group,
         })
         .exec();
-      return result;
+      return !!result[0];
     } catch (err) {
       throw err;
     }
@@ -121,7 +122,7 @@ class Like {
             { __v: 0, _id: 0 }
           );
           break;
-        case "comunity":
+        case "community":
           await this.communityModel
             .findOneAndUpdate(
               { _id: like_item_id, blog_status: "ACTIVE" },

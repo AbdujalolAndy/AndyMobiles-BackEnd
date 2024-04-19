@@ -47,7 +47,7 @@ const memberSchema = new mongoose.Schema(
     },
     mb_address: {
       type: String,
-      default: "Not have Address",
+      default: "",
     },
     mb_email: {
       type: String,

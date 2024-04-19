@@ -3,11 +3,14 @@ const { shapeMongooseObjectId } = require("../lib/convert");
 const CommunitySchema = require("../schema/communityShema");
 const ReviewSchema = require("../schema/reviewSchema");
 const { Definer } = require("../lib/Definer");
+const { lookup_auth_member_liked } = require("../lib/enums");
+const productSchema = require("../schema/productSchema");
 
 class Community {
   constructor() {
     this.communityModel = CommunitySchema;
     this.reviewModel = ReviewSchema;
+    this.productModel = productSchema;
   }
 
   async createPostData(member, data) {
@@ -39,16 +42,31 @@ class Community {
       throw err;
     }
   }
-
-  async getTargetBlogsData(queries) {
+  async removeBlogData(member, id) {
     try {
+      const blog_id = shapeMongooseObjectId(id);
+      const mb_id = shapeMongooseObjectId(member._id);
+      const result = await this.communityModel
+        .findOneAndDelete({
+          _id: blog_id,
+          mb_id: mb_id,
+        })
+        .exec();
+      return result;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  async getTargetBlogsData(member, queries) {
+    try {
+      const aggrigation = [];
       //Matching
       for (let prop in queries) {
         if (!queries[prop] || queries[prop] === "undefined") {
           delete queries[prop];
         }
       }
-      console.log(queries);
       const match = {};
       match.blog_status = "ACTIVE";
       if (queries.order && queries.order !== "ALL") {
@@ -76,26 +94,30 @@ class Community {
         default:
           break;
       }
-
+      const limit = queries.limit * 1;
+      aggrigation.push(
+        { $match: match },
+        { $sort: sort },
+        { $skip: (queries.page * 1 - 1) * limit * 1 },
+        { $limit: limit * 1 },
+        {
+          $lookup: {
+            from: "members",
+            localField: "mb_id",
+            foreignField: "_id",
+            as: "mb_data",
+          },
+        },
+        { $unwind: "$mb_data" }
+      );
+      if (member) {
+        const mb_id = shapeMongooseObjectId(member._id);
+        aggrigation.push(lookup_auth_member_liked(mb_id));
+      }
       //Final Return
-      const limit = queries.limit * 1,
-        targetBlogs = await this.communityModel
-          .aggregate([
-            { $match: match },
-            { $sort: sort },
-            { $skip: (queries.page * 1 - 1) * limit * 1 },
-            { $limit: limit * 1 },
-            {
-              $lookup: {
-                from: "members",
-                localField: "mb_id",
-                foreignField: "_id",
-                as: "mb_data",
-              },
-            },
-            { $unwind: "$mb_data" },
-          ])
-          .exec();
+      const targetBlogs = await this.communityModel
+        .aggregate(aggrigation)
+        .exec();
       return targetBlogs;
     } catch (err) {
       throw err;
@@ -109,9 +131,38 @@ class Community {
       const review = new this.reviewModel({
         mb_id: mb_id,
         review_target_id: item_id,
+        review_group: data.review_group,
         review_context: data.review_context,
         review_stars: data.review_stars,
       });
+      assert.ok(review, Definer.smth_err1);
+      switch (data.review_group) {
+        case "PRODUCT":
+          await this.productModel
+            .findOneAndUpdate(
+              {
+                _id: item_id,
+                product_status: "PROCESS",
+              },
+              { $inc: { product_comments: 1 } },
+              { returnDocument: "after" }
+            )
+            .exec();
+          break;
+        case "COMMUNITY":
+          await this.communityModel
+            .findOneAndUpdate(
+              {
+                _id: item_id,
+                blog_status: "ACTIVE",
+              },
+              { $inc: { blog_comments: 1 } },
+              { returnDocument: "after" }
+            )
+            .exec();
+        default:
+          break;
+      }
       const result = await review.save();
       return result;
     } catch (err) {

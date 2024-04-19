@@ -18,7 +18,6 @@ bankCadController.createBankCard = async (req, res) => {
   }
 };
 
-
 bankCadController.getTargetCard = async (req, res) => {
   try {
     console.log("GET: cont/getAllbankCards");
@@ -36,13 +35,31 @@ bankCadController.transaction = async (req, res) => {
   try {
     console.log("POST: cont/transaction");
     assert.ok(req.member, Definer.auth_err5);
-    const order_id = req.params.id;
     const data = req.body;
     const bankCard = new BankCard();
-    const result = await bankCard.transactionData(req.member, order_id, data);
+    const result = await bankCard.transactionData(req.member, data);
     res.json({ state: "sucess", value: result });
   } catch (err) {
     console.log(`ERROR: cont/transaction, ${err.message}`);
+    res.json({ state: "fail", message: err.message });
+  }
+};
+
+bankCadController.getTargetTransaction = async (req, res) => {
+  try {
+    console.log("GET: getTragetTransaction");
+    assert.ok(req.member, Definer.auth_err5);
+    const transaction_id = req.params;
+    console.log(transaction_id);
+    const bankCard = new BankCard();
+    const result = await bankCard.getTargetTransactionData(
+      req.member,
+      transaction_id
+    );
+    console.log(result)
+    res.json({ state: "success", value: result });
+  } catch (err) {
+    console.log(`ERROR: cont/getTragetTransaction, ${err.message}`);
     res.json({ state: "fail", message: err.message });
   }
 };

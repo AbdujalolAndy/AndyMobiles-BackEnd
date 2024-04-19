@@ -22,7 +22,7 @@ communityController.getTargetBlogs = async (req, res) => {
     console.log(`GET: cont/getTargetBlogs`);
     const queries = req.query,
       community = new Community(),
-      result = await community.getTargetBlogsData(queries);
+      result = await community.getTargetBlogsData(req.member, queries);
     res.json({ state: "success", value: result });
   } catch (err) {
     console.log(`ERROR: cont/getTargetBlogs, ${err.message}`);
@@ -43,6 +43,19 @@ communityController.getChosenBlog = async (req, res) => {
   }
 };
 
+communityController.removeBlog = async (req, res) => {
+  try {
+    console.log("GET:cont/removeBlog");
+    assert.ok(req.member, Definer.auth_err5);
+    const blog_id = req.params.blog_id;
+    const community = new Community();
+    const result = await community.removeBlogData(req.member, blog_id);
+    res.json({ state: "success", value: result });
+  } catch (err) {
+    console.log(`ERROR: cont/removeBlog, ${err.message}`);
+    res.json({ state: "fail", message: err.message });
+  }
+};
 communityController.createReview = async (req, res) => {
   try {
     console.log("POST: cont/createReview");

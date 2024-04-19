@@ -10,6 +10,14 @@ const transactionSchema = new Schema(
       type: Schema.Types.ObjectId,
       required: true,
     },
+    order_code: {
+      type: String,
+      required: true,
+    },
+    order_address: {
+      type: String,
+      required: true,
+    },
     trans_owner: {
       type: String,
       required: true,
@@ -28,26 +36,35 @@ const transactionSchema = new Schema(
         message: "att: Card number should be 16 numbers",
       },
     },
-    trans_card_expiry:{
-        type:String,
-        required:true
-    },
-    trans_card_cvc:{
-        type:Number,
-        required: true,
-        validate: {
-          validator: (value) => {
-            if (value.toString().length == 3) {
-              return true;
-            }
+    trans_card_expiry: {
+      type: String,
+      validate: {
+        validator: (value) => {
+          if (value.toString().length > 6) {
             return false;
-          },
-          message: "att: Card CVC number should be 16 numbers",
+          }
+          return true;
         },
+        message: "att: Card expiry should be 4 numbers",
+      },
+      required: true,
     },
-    trans_card_pincode:{
-        type:String
-    }
+    trans_card_cvc: {
+      type: Number,
+      required: true,
+      validate: {
+        validator: (value) => {
+          if (value.toString().length == 3) {
+            return true;
+          }
+          return false;
+        },
+        message: "att: Card CVC number should be 16 numbers",
+      },
+    },
+    trans_card_pincode: {
+      type: String,
+    },
   },
   { timestamps: true }
 );

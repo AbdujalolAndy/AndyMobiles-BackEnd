@@ -23,25 +23,28 @@ const OrderSchema = new Schema(
         message: "{VALUE} is not among permitted values",
       },
     },
+    order_shipping_time: {
+      type: Date,
+      default:new Date()
+    },
+    order_shipped_time: {
+      type: Date,
+      default:new Date()
+    },
+    order_delivered_time: {
+      type: Date,
+      default:new Date()
+    },
     order_delivery_cost: {
       type: Number,
     },
     order_subtotal_amount: {
       type: Number,
     },
-    order_product_qty:{
-      type:Number,
-      required:true
-    }, 
-    order_delivery_address:{
-      type:String,
+    order_product_qty: {
+      type: Number,
+      required: true,
     },
-    order_owner_name:{
-      type:String,
-    },
-    order_delivery_postal:{
-      type:Number,
-    }
   },
   { timestamps: true }
 );

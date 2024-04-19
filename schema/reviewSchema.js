@@ -18,7 +18,15 @@ const reviewSchema = new Schema(
       type: String,
       required: true,
     },
+    review_group:{
+      type:String,
+      required:true,
+    },
     review_likes: {
+      type: Number,
+      default: 0,
+    },
+    review_dislikes: {
       type: Number,
       default: 0,
     },

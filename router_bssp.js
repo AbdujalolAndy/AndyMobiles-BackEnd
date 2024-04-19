@@ -7,6 +7,7 @@ const bankCardController = require("./controllers/bankCardController");
 const orderController = require("./controllers/orderController");
 const followController = require("./controllers/followController");
 const wishListController = require("./controllers/wishListContoller");
+const viewController = require("./controllers/viewController");
 const photoImageUploaderProduct = require("./utilities/multerUploader")(
   "products"
 );
@@ -38,11 +39,7 @@ router
     memberController.memberRetrieve,
     memberController.resetPassword
   )
-  .get(
-    "/member/:mb_id",
-    memberController.memberRetrieve,
-    memberController.getChosenMember
-  );
+  .get("/member/:mb_id", memberController.getChosenMember);
 
 //Brands related API
 router
@@ -76,16 +73,29 @@ router
     memberController.memberRetrieve,
     communityController.createPost
   )
-  .get("/blogs/getTargetBlogs", communityController.getTargetBlogs)
+  .get(
+    "/blogs/getTargetBlogs",
+    memberController.memberRetrieve,
+    communityController.getTargetBlogs
+  )
   .post(
     "/community/image",
     memberController.memberRetrieve,
     photoImageUploaderCommunity.single("community_image"),
     communityController.returImagePath
   )
-  .get("/community/chosenBlog/:blog_id", communityController.getChosenBlog);
+  .get(
+    "/community/chosenBlog/:blog_id",
+    memberController.memberRetrieve,
+    communityController.getChosenBlog
+  )
+  .get(
+    "/community/removeBlog/:blog_id",
+    memberController.memberRetrieve,
+    communityController.removeBlog
+  );
 
-//Community Reviews
+//Comment Reviews
 router.post(
   "/review/createReview",
   memberController.memberRetrieve,
@@ -172,10 +182,25 @@ router
     memberController.memberRetrieve,
     orderController.updateOrder
   )
+  .post(
+    "/orders/orderItem/:item_id",
+    memberController.memberRetrieve,
+    orderController.updateItemOrder
+  )
   .get(
+    "/orders/orderItemRemmove/:item_id",
+    memberController.memberRetrieve,
+    orderController.removeOrderItem
+  )
+  .post(
     "/orders/getAllOrders",
     memberController.memberRetrieve,
     orderController.getAllOrders
+  )
+  .post(
+    "/orders/deleteOrder",
+    memberController.memberRetrieve,
+    orderController.deleteOrder
   )
   .get(
     "/orders/getTargetOrder/:id",
@@ -184,10 +209,23 @@ router
   );
 
 //Transaction
+router
+  .post(
+    "/bankCard/transaction",
+    memberController.memberRetrieve,
+    bankCardController.transaction
+  )
+  .get(
+    "/bankCard/transaction/:id",
+    memberController.memberRetrieve,
+    bankCardController.getTargetTransaction
+  );
+
+//Views
 router.post(
-  "/bankCard/transaction/:id",
+  "/member/viewItem",
   memberController.memberRetrieve,
-  bankCardController.transaction
+  viewController.viewedItem
 );
 
 module.exports = router;

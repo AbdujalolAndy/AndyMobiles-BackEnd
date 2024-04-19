@@ -65,16 +65,18 @@ class Member {
 
   async getChosenMemberData(member, mb_id) {
     try {
-      const my_id = shapeMongooseObjectId(member._id);
       const id = shapeMongooseObjectId(mb_id);
-      const aggrigation = []
+      const aggrigation = [];
       const match = {
-        $match:{mb_status:"ACTIVE", _id:id}
+        $match: { mb_status: "ACTIVE", _id: id },
+      };
+      aggrigation.push(match);
+      if (member) {
+        const my_id = shapeMongooseObjectId(member._id);
+        aggrigation.push(lookup_member_follow(my_id));
       }
-      aggrigation.push(match)
-      aggrigation.push(lookup_member_follow(my_id))
-      const  result = await this.memberModel.aggregate(aggrigation).exec()
-      console.log(result)
+      const result = await this.memberModel.aggregate(aggrigation).exec();
+      console.log(result);
       return result;
     } catch (err) {
       throw err;

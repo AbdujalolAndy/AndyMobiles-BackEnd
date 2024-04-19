@@ -27,9 +27,9 @@ class BankCard {
       const salt = await bcrypt.genSalt();
       data.card_pincode = await bcrypt.hash(data.card_pincode, salt);
       if (doesExist) {
-        for(let prop in data){
-          if(!data[prop]){
-            delete data[prop]
+        for (let prop in data) {
+          if (!data[prop]) {
+            delete data[prop];
           }
         }
         result = await this.bankModel.findOneAndUpdate(
@@ -86,13 +86,13 @@ class BankCard {
     }
   }
 
-  async transactionData(member, id, data) {
+  async transactionData(member, data) {
     try {
       const mb_id = shapeMongooseObjectId(member._id);
-      const order_id = shapeMongooseObjectId(id);
+      const order_id = shapeMongooseObjectId(data.order_id);
       let transaction;
-      const isDataEmpty = !!Object.keys(data)[0];
-      if (!isDataEmpty) {
+      console.log(data);
+      if (data.exist_card) {
         //Exsist bank card
         const existCard = await this.bankModel.findOne({ mb_id: mb_id }).exec();
         assert.ok(
@@ -102,6 +102,8 @@ class BankCard {
         transaction = new this.transactionModel({
           mb_id: mb_id,
           order_id: order_id,
+          order_code: data.order_code,
+          order_address: data.order_address,
           trans_owner: existCard.card_owner_name,
           trans_card_number: existCard.card_number,
           trans_card_expiry: existCard.card_expiry,
@@ -109,12 +111,16 @@ class BankCard {
           trans_card_pincode: existCard.card_pincode,
         });
       } else {
-        const trans_card_pincode = new Cryptr(process.env.SECRET_CARD).encrypt(
-          data.trans_card_pincode
+        const genSalt = await bcrypt.genSalt();
+        const trans_card_pincode = await bcrypt.hash(
+          data.trans_card_pincode.toString(),
+          genSalt
         );
         transaction = new this.transactionModel({
           mb_id: mb_id,
           order_id: order_id,
+          order_code: data.order_code,
+          order_address: data.order_address,
           trans_owner: data.trans_owner,
           trans_card_number: data.trans_card_number,
           trans_card_expiry: data.trans_card_expiry,
@@ -123,6 +129,21 @@ class BankCard {
         });
       }
       const result = await transaction.save();
+      console.log(result);
+      return result;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  async getTargetTransactionData(member, transaction_id) {
+    try {
+      const mb_id = shapeMongooseObjectId(member._id);
+      const id = shapeMongooseObjectId(transaction_id.id);
+      console.log(id);
+      const result = await this.transactionModel
+        .aggregate([{ $match: { mb_id: mb_id, order_id: id } }])
+        .exec();
       return result;
     } catch (err) {
       throw err;

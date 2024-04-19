@@ -38,7 +38,6 @@ followController.unsubscribeMember = async (req, res) => {
 
 followController.getFollowingMembers = async (req, res) => {
   try {
-    assert.ok(req.member, Definer.auth_err5);
     const data = req.body;
     if (!data.mb_id) {
       data.mb_id = req.member._id;

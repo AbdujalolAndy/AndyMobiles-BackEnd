@@ -7,8 +7,12 @@ const wishListController = module.exports;
 wishListController.getAllWishedList = async (req, res) => {
   try {
     console.log("GET: cont/getAllWishList");
-    assert.ok(req.member, Definer.auth_err5);
+
     const wishlist = new WishList();
+    if (!req.member) {
+      res.json({ state: "sucess", value: null });
+      return false;
+    }
     const result = await wishlist.getAllWishListItems(req.member);
     res.json({ state: "success", value: result });
   } catch (err) {
@@ -36,7 +40,7 @@ wishListController.editWishListItem = async (req, res) => {
     assert.ok(req.member, Definer.auth_err5);
     const wishlist = new WishList();
     const result = await wishlist.editWishListItem(req.member, req.body);
-    assert.ok(result, Definer.data_err1)
+    assert.ok(result, Definer.data_err1);
     res.json({ state: "success", value: result });
   } catch (err) {
     console.log(`ERROR: cont/editWishListItem, ${err.message}`);
