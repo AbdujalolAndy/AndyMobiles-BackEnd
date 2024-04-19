@@ -1,5 +1,6 @@
 const { shapeMongooseObjectId } = require("../lib/convert");
 const communityShema = require("../schema/communityShema");
+const memberSchema = require("../schema/memberSchema");
 const productSchema = require("../schema/productSchema");
 const viewSchema = require("../schema/viewSchema");
 
@@ -8,6 +9,7 @@ class View {
     this.viewModel = viewSchema;
     this.productModel = productSchema;
     this.communityModel = communityShema;
+    this.memberModel = memberSchema;
   }
 
   async viewedItemData(member, data) {
@@ -64,6 +66,15 @@ class View {
     try {
       let result = [];
       switch (view_group) {
+        case "MEMBER":
+          result = await this.memberModel
+            .findOneAndUpdate(
+              { _id: view_item, mb_status: "ACTIVE" },
+              { $inc: { mb_views: 1 } },
+              { returnDocument: "after" }
+            )
+            .exec();
+          break;
         case "PRODUCT":
           result = await this.productModel
             .findOneAndUpdate(

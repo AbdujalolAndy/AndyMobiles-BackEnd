@@ -6,7 +6,7 @@ companyController.getTargetBrands = async (req, res) => {
     console.log(`GET: cont/getTargetProducts`);
     const queries = req.query;
     const company = new Company();
-    const result = await company.getTargetBrandsData(queries);
+    const result = await company.getTargetBrandsData(req.member, queries);
     res.json({ state: "success", value: result });
   } catch (err) {
     console.log(`ERROR: cont/getTargetProducts, ${err.message}`);

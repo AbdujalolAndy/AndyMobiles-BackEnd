@@ -43,7 +43,11 @@ router
 
 //Brands related API
 router
-  .get("/brands/getTargetBrands", companyController.getTargetBrands)
+  .get(
+    "/brands/getTargetBrands",
+    memberController.memberRetrieve,
+    companyController.getTargetBrands
+  )
   .get("/brands/getAllBrands", companyController.getAllBrands);
 
 //Product releted APIs

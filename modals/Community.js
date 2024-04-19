@@ -5,12 +5,14 @@ const ReviewSchema = require("../schema/reviewSchema");
 const { Definer } = require("../lib/Definer");
 const { lookup_auth_member_liked } = require("../lib/enums");
 const productSchema = require("../schema/productSchema");
+const memberSchema = require("../schema/memberSchema");
 
 class Community {
   constructor() {
     this.communityModel = CommunitySchema;
     this.reviewModel = ReviewSchema;
     this.productModel = productSchema;
+    this.memberModel = memberSchema;
   }
 
   async createPostData(member, data) {
@@ -137,6 +139,18 @@ class Community {
       });
       assert.ok(review, Definer.smth_err1);
       switch (data.review_group) {
+        case "MEMBER":
+          await this.memberModel
+            .findOneAndUpdate(
+              {
+                _id: item_id,
+                mb_status: "ACTIVE",
+              },
+              { $inc: { mb_comments: 1 } },
+              { returnDocument: "after" }
+            )
+            .exec();
+          break;
         case "PRODUCT":
           await this.productModel
             .findOneAndUpdate(

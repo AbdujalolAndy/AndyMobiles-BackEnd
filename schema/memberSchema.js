@@ -62,6 +62,10 @@ const memberSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    mb_comments: {
+      type: Number,
+      default: 0,
+    },
     mb_followers: {
       type: Number,
       default: 0,
