@@ -139,7 +139,6 @@ class Order {
         default:
           break;
       }
-      console.log(data)
       const updatedOrder = await this.orderModel
         .findOneAndUpdate({ _id: order_id }, data, {
           returnDocument: "after",

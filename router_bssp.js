@@ -57,7 +57,11 @@ router
     memberController.memberRetrieve,
     productController.getTargetProducts
   )
-  .get("/products/product/:product_id", productController.getChosenProduct)
+  .get(
+    "/products/product/:product_id",
+    memberController.memberRetrieve,
+    productController.getChosenProduct
+  )
   .post(
     "/product/create-product",
     memberController.memberRetrieve,

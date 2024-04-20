@@ -172,6 +172,7 @@ class Product {
           product_monthly_fee: 1,
           product_likes: 1,
           product_views: 1,
+          product_comments: 1,
           product_description: 1,
           product_related_colors: {
             _id: 1,
@@ -198,31 +199,35 @@ class Product {
     }
   }
 
-  async getChosenProductData(product_id) {
+  async getChosenProductData(member, product_id) {
     try {
       const id = shapeMongooseObjectId(product_id);
-      const product = await this.productModel
-        .aggregate([
-          { $match: { _id: id } },
-          {
-            $lookup: {
-              from: "members",
-              localField: "company_id",
-              foreignField: "_id",
-              as: "company_data",
-            },
+      const mb_id = shapeMongooseObjectId(member?._id);
+      const aggrigation = [];
+      aggrigation.push(
+        { $match: { _id: id } },
+        {
+          $lookup: {
+            from: "members",
+            localField: "company_id",
+            foreignField: "_id",
+            as: "company_data",
           },
-          {
-            $lookup: {
-              from: "products",
-              localField: "product_name",
-              foreignField: "product_name",
-              as: "product_related",
-            },
+        },
+        {
+          $lookup: {
+            from: "products",
+            localField: "product_name",
+            foreignField: "product_name",
+            as: "product_related",
           },
-          { $unwind: "$company_data" },
-        ])
-        .exec();
+        },
+        { $unwind: "$company_data" }
+      );
+      if (mb_id) {
+        aggrigation.push(lookup_auth_member_liked(mb_id));
+      }
+      const product = await this.productModel.aggregate(aggrigation).exec();
       return product;
     } catch (err) {
       throw err;
