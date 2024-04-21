@@ -39,7 +39,11 @@ router
     memberController.memberRetrieve,
     memberController.resetPassword
   )
-  .get("/member/:mb_id", memberController.getChosenMember);
+  .get(
+    "/member/:mb_id",
+    memberController.memberRetrieve,
+    memberController.getChosenMember
+  );
 
 //Brands related API
 router

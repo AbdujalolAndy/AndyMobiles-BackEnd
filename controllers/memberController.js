@@ -22,7 +22,6 @@ memberController.home = async (req, res) => {
 memberController.myPage = async (req, res) => {
   try {
     console.log("GET: cont/myPage");
-    console.log(req.member);
     res.render("myPage", { member: req.member });
   } catch (err) {
     console.log(`ERROR: cont/myPage, ${err.message}`);
@@ -36,7 +35,6 @@ memberController.getAllCompanies = async (req, res) => {
     const member = new Member();
     const product = new Product();
     const allCompanies = await member.getAllCompaniesData(req.query);
-    console.log("Companies query", req.query);
     const amount_poducts = await Promise.all(
       allCompanies.map(async (ele) => {
         return (await product.getAllProductsData(ele, req.query)).length;

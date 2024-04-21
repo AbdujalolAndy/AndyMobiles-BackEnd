@@ -5,7 +5,6 @@ const uuid = require("uuid")
 const markedAddressUploader=(address)=>{
 return multer.diskStorage({
   destination:(req, file, cb)=>{
-    console.log(file)
     cb(null, `./uploads/${address}`)
   },
   filename:(req, file, cb)=>{

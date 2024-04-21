@@ -50,13 +50,11 @@ bankCadController.getTargetTransaction = async (req, res) => {
     console.log("GET: getTragetTransaction");
     assert.ok(req.member, Definer.auth_err5);
     const transaction_id = req.params;
-    console.log(transaction_id);
     const bankCard = new BankCard();
     const result = await bankCard.getTargetTransactionData(
       req.member,
       transaction_id
     );
-    console.log(result)
     res.json({ state: "success", value: result });
   } catch (err) {
     console.log(`ERROR: cont/getTragetTransaction, ${err.message}`);

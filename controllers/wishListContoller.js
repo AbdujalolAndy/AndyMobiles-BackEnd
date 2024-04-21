@@ -7,7 +7,6 @@ const wishListController = module.exports;
 wishListController.getAllWishedList = async (req, res) => {
   try {
     console.log("GET: cont/getAllWishList");
-
     const wishlist = new WishList();
     if (!req.member) {
       res.json({ state: "sucess", value: null });

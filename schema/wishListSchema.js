@@ -18,6 +18,14 @@ const wishListSchema = new Schema(
       type: String,
       required: true,
     },
+    product_color: {
+      type: String,
+      required: true,
+    },
+    product_memory: {
+      type: Number,
+      required: true,
+    },
     product_price: {
       type: Number,
       required: true,

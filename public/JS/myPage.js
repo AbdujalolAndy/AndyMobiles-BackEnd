@@ -7,7 +7,6 @@ $(".btn_submit").on("click", (e) => {
   data.append("mb_phone", $("#tel_phone").val());
   data.append("mb_address", $("#mb_address").val());
   data.append("mb_description", $("textarea").val());
-  console.log(data);
 
   if ((old_password = "" && (mb_password || confirm_password))) {
     alert("Please, fill old password first!");

@@ -1,7 +1,5 @@
-const assert = require("assert");
 const { shapeMongooseObjectId } = require("../lib/convert");
 const wishListSchema = require("../schema/wishListSchema");
-const { Definer } = require("../lib/Definer");
 
 class WishList {
   constructor() {
@@ -29,6 +27,8 @@ class WishList {
         product_price: data.product_price,
         product_discount: data.product_discount,
         product_qnt: data.product_qnt,
+        product_memory: data.product_memory,
+        product_color:data.product_color
       });
       const result = await newWishItem.save();
       return result;
@@ -43,7 +43,7 @@ class WishList {
       const result = await this.wishListModel
         .findOneAndUpdate(
           { mb_id: mb_id, product_id },
-          { $inc: {product_qnt:data.modifier} },
+          { $inc: { product_qnt: data.modifier } },
           { returnDocument: "after" }
         )
         .exec();

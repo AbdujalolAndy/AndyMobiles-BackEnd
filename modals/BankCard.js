@@ -55,7 +55,6 @@ class BankCard {
         //mongodb database
         result = await bankCard.save();
       }
-      console.log(result);
       return result;
     } catch (err) {
       throw err;
@@ -91,7 +90,6 @@ class BankCard {
       const mb_id = shapeMongooseObjectId(member._id);
       const order_id = shapeMongooseObjectId(data.order_id);
       let transaction;
-      console.log(data);
       if (data.exist_card) {
         //Exsist bank card
         const existCard = await this.bankModel.findOne({ mb_id: mb_id }).exec();
@@ -129,7 +127,6 @@ class BankCard {
         });
       }
       const result = await transaction.save();
-      console.log(result);
       return result;
     } catch (err) {
       throw err;
@@ -139,11 +136,13 @@ class BankCard {
   async getTargetTransactionData(member, transaction_id) {
     try {
       const mb_id = shapeMongooseObjectId(member._id);
-      const id = shapeMongooseObjectId(transaction_id.id);
-      console.log(id);
-      const result = await this.transactionModel
-        .aggregate([{ $match: { mb_id: mb_id, order_id: id } }])
-        .exec();
+      const id = shapeMongooseObjectId(transaction_id?.id);
+      let result = null;
+      if (id) {
+        result = await this.transactionModel
+          .aggregate([{ $match: { mb_id: mb_id, order_id: id } }])
+          .exec();
+      }
       return result;
     } catch (err) {
       throw err;

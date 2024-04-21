@@ -32,7 +32,6 @@ class Like {
       //Does exsist in likes
       const doesExist = await this.exsistLikedItem(like_item_id, like_group);
       //Update likes count
-      console.log(doesExist)
       let result;
       if (!doesExist) {
         await this.addLikeChosenItem(mb_id, like_group, like_item_id);

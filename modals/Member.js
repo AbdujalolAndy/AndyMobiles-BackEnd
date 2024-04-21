@@ -71,12 +71,11 @@ class Member {
         $match: { mb_status: "ACTIVE", _id: id },
       };
       aggrigation.push(match);
-      if (member) {
+      if (member?._id) {
         const my_id = shapeMongooseObjectId(member._id);
         aggrigation.push(lookup_member_follow(my_id));
       }
       const result = await this.memberModel.aggregate(aggrigation).exec();
-      console.log(result);
       return result;
     } catch (err) {
       throw err;

@@ -23,7 +23,6 @@ productController.createProduct = async (req, res) => {
     data.product_date_manufacture = moment(
       data.product_date_manufacture
     ).format("YYYY-MM-DD");
-    console.log(data.product_date_manufacture);
     const product = new Product();
     await product.createProductData(req.member, data);
     res.send(

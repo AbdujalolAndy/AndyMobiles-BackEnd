@@ -6,7 +6,6 @@ viewController.viewedItem = async (req, res) => {
   try {
     console.log("POST: cont/viewedItem");
     const data = req.body;
-    console.log(data)
     const view = new View();
     if (!req.member) {
       res.json({ state: "success", value: null });
