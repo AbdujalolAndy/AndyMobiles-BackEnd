@@ -113,7 +113,11 @@ router.post(
   memberController.memberRetrieve,
   communityController.createReview
 );
-router.get("/review/getReviews/:item_id", communityController.getReviews);
+router.get(
+  "/review/getReviews/:item_id",
+  memberController.memberRetrieve,
+  communityController.getReviews
+);
 
 //Bank Card related API
 router
@@ -134,6 +138,13 @@ router.post(
   memberController.memberRetrieve,
   memberController.likeChosenItem
 );
+
+// //Dislike item
+// router.post(
+//   "/disliked-item",
+//   memberController.memberRetrieve,
+//   memberController.dislikeChosenItem
+// )
 
 //Following
 router
@@ -238,6 +249,13 @@ router.post(
   "/member/viewItem",
   memberController.memberRetrieve,
   viewController.viewedItem
+);
+
+//Socket Io Messages
+router.get(
+  "/socketIo/getAllMessages/",
+  memberController.memberRetrieve,
+  memberController.getAllMessages
 );
 
 module.exports = router;

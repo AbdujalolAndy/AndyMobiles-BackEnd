@@ -74,7 +74,10 @@ communityController.getReviews = async (req, res) => {
   try {
     console.log("GET: cont/getReviews");
     const community = new Community();
-    const result = await community.getReviewsData(req.params.item_id);
+    const result = await community.getReviewsData(
+      req.member,
+      req.params.item_id
+    );
     res.json({ state: "success", value: result });
   } catch (err) {
     console.log(`ERROR: cont/getReviews, ${err.message}`);

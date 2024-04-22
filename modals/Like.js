@@ -33,12 +33,13 @@ class Like {
       const doesExist = await this.exsistLikedItem(like_item_id, like_group);
       //Update likes count
       let result;
-      if (!doesExist) {
-        await this.addLikeChosenItem(mb_id, like_group, like_item_id);
-        result = await this.modifyLikeCount(like_item_id, like_group, 1);
-      } else {
+      console.log(doesExist)
+      if (doesExist) {
         await this.removeLikeChosenItem(mb_id, like_group, like_item_id);
         result = await this.modifyLikeCount(like_item_id, like_group, -1);
+      } else {
+        await this.addLikeChosenItem(mb_id, like_group, like_item_id);
+        result = await this.modifyLikeCount(like_item_id, like_group, 1);
       }
       return result;
     } catch (err) {

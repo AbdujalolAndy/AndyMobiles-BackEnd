@@ -6,6 +6,7 @@ const Product = require("../modals/Product");
 const Like = require("../modals/Like");
 const Follow = require("../modals/Follow");
 const assert = require("assert");
+const Message = require("../modals/Message");
 
 const memberController = module.exports;
 
@@ -294,5 +295,18 @@ memberController.memberRetrieve = (req, res, next) => {
     next();
   } else {
     next();
+  }
+};
+
+memberController.getAllMessages = async (req, res) => {
+  try {
+    console.log("GET: cont/getAllMessages");
+    assert.ok(req.member, Definer.auth_err5);
+    const message = new Message();
+    const result = await message.getAllMessagesData();
+    res.json({ state: "success", value: result });
+  } catch (err) {
+    console.log(`ERROR: cont/getAllMessages, ${err.message}`);
+    res.json({ state: "fail", message: err.message });
   }
 };

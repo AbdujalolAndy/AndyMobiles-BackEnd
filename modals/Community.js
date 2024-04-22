@@ -183,10 +183,11 @@ class Community {
       throw err;
     }
   }
-  async getReviewsData(id) {
+  async getReviewsData(member, id) {
     try {
       const product_id = shapeMongooseObjectId(id);
-      const result = await this.reviewModel.aggregate([
+      const aggrigation = [];
+      aggrigation.push(
         { $match: { review_target_id: product_id } },
         {
           $lookup: {
@@ -196,8 +197,13 @@ class Community {
             as: "member_data",
           },
         },
-        { $unwind: "$member_data" },
-      ]);
+        { $unwind: "$member_data" }
+      );
+      if (member?._id) {
+        const mb_id = shapeMongooseObjectId(member._id);
+        aggrigation.push(lookup_auth_member_liked(mb_id));
+      }
+      const result = await this.reviewModel.aggregate(aggrigation);
       return result;
     } catch (err) {
       throw err;
