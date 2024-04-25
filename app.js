@@ -43,8 +43,8 @@ app.use(
 //Permission to outside APIs
 app.use(
   cors({
-    origin: true,
     credentials: true,
+    origin: true,
   })
 );
 
@@ -57,7 +57,11 @@ app.use("/admin", router_bssr);
 app.use("/", router_bssp);
 
 const server = http.createServer(app);
-const io = require("socket.io")(server);
+const io = require("socket.io")(server, {
+  serveClient: false,
+  origins: "*:*",
+  transport: ["websocket", "xhr-polling"],
+});
 //SOCKET IO
 const people = {};
 let onlineUser = 0;
