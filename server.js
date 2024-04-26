@@ -3,7 +3,9 @@ const mongoose = require("mongoose");
 const color = require("colors/safe");
 env.config();
 
-const MONGODB_URL = process.env.MONGODB_URL || null;
+console.log(process.env.NODE_ENV)
+const MONGODB_URL =
+  process.env.NODE_ENV === "production" ? null : process.env.MONGODB_URL;
 const PORT = process.env.PORT || 3001;
 
 mongoose.set({ strictQuery: false });
@@ -11,7 +13,7 @@ mongoose
   .connect(MONGODB_URL)
   .then((data) => {
     console.log(color.bgBlue("Connected to the server!"));
-    const server = require("./app")
+    const server = require("./app");
     server.listen(
       PORT,
       console.info(
