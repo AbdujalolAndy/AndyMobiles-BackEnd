@@ -1,7 +1,7 @@
 module.exports = {
   apps: [
     {
-      name: "andymobile",
+      name: "ANDYMOBILES",
       watch: true,
       cwd: "./",
       script: "./server.js",
