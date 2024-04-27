@@ -1,4 +1,4 @@
-const Notification = require("../modals/notification");
+const Notification = require("../modals/Notification")
 
 const notificationController = module.exports;
 
