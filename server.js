@@ -3,7 +3,6 @@ const mongoose = require("mongoose");
 const color = require("colors/safe");
 env.config();
 
-console.log(process.env.NODE_ENV);
 const MONGODB_URL = process.env.MONGODB_URL ?? null;
 const PORT = process.env.PORT || 3001;
 
